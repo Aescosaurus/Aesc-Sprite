@@ -3,6 +3,9 @@
 
 #include "stdafx.h"
 #include "AescSprite.h"
+#include "Vec2.h"
+#include "Editor.h"
+#include <windowsx.h>
 
 #define MAX_LOADSTRING 100
 
@@ -16,6 +19,8 @@ ATOM                MyRegisterClass( HINSTANCE hInstance );
 BOOL                InitInstance( HINSTANCE,int );
 LRESULT CALLBACK    WndProc( HWND,UINT,WPARAM,LPARAM );
 INT_PTR CALLBACK    About( HWND,UINT,WPARAM,LPARAM );
+
+Editor editor;
 
 int APIENTRY wWinMain( _In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
@@ -123,6 +128,9 @@ BOOL InitInstance( HINSTANCE hInstance,int nCmdShow )
 //
 LRESULT CALLBACK WndProc( HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam )
 {
+	const auto pos = Vei2{
+		GET_X_LPARAM( lParam ),
+		GET_Y_LPARAM( lParam ) };
 	switch( message )
 	{
 	case WM_COMMAND:
@@ -150,6 +158,30 @@ LRESULT CALLBACK WndProc( HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam )
 		EndPaint( hWnd,&ps );
 	}
 	break;
+	case WM_LBUTTONDOWN:
+		editor.HandleMouseDown( pos );
+	break;
+	case WM_LBUTTONUP:
+		editor.HandleMouseUp( pos );
+		break;
+	case WM_MOUSEMOVE:
+		editor.HandleMouseMove( pos );
+		break;
+	case WM_KEYDOWN:
+		editor.HandleKeyDown( static_cast<unsigned char>( wParam ) );
+		break;
+	case WM_KEYUP:
+		editor.HandleKeyUp( static_cast<unsigned char>( wParam ) );
+		break;
+	case WM_SIZE:
+		RECT clientRect;
+		if( GetClientRect( hWnd,&clientRect ) )
+		{
+			editor.HandleWindowResize( Vei2{
+				clientRect.right - clientRect.left,
+				clientRect.bottom - clientRect.top } );
+		}
+		break;
 	case WM_DESTROY:
 		PostQuitMessage( 0 );
 		break;
