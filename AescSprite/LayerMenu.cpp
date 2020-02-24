@@ -19,7 +19,8 @@ void LayerMenu::OnWindowResize( const RectI& area )
 void LayerMenu::OnPaint( HDC hdc )
 {
 	const auto rc = RECT( area );
-	FillRect( hdc,&rc,HBRUSH( CreateSolidBrush( RGB( 50,50,50 ) ) ) );
+	if( bgColor == nullptr ) bgColor = HBRUSH( CreateSolidBrush( RGB( 70,70,70 ) ) );
+	FillRect( hdc,&rc,bgColor );
 }
 
 void LayerMenu::ResizeCanvas( const Vei2& canvSize )
@@ -33,4 +34,14 @@ void LayerMenu::ResizeCanvas( const Vei2& canvSize )
 Surface& LayerMenu::GetCurLayer()
 {
 	return( layers[selectedLayer] );
+}
+
+Surface LayerMenu::GenerateFinalImage() const
+{
+	Surface temp = Surface{ layers[0].GetWidth(),layers[0].GetHeight() };
+	for( const auto& layer : layers )
+	{
+		temp.Overlay( layer );
+	}
+	return( temp );
 }

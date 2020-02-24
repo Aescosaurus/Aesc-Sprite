@@ -7,7 +7,8 @@ Editor::Editor( const Vei2& windowSize )
 	toolbarArea( 0,0,0,0 ),
 	sidebarArea( 0,0,0,0 ),
 	pal( sidebarArea ),
-	layers( sidebarArea,canvSize )
+	layers( sidebarArea,canvSize ),
+	canv( canvasArea,layers.GenerateFinalImage() )
 {
 	pal.LoadPalette( "Palettes/Gr8.bmp" );
 	HandleWindowResize( windowSize );
@@ -57,10 +58,12 @@ void Editor::HandleWindowResize( const Vei2& windowSize )
 	pal.OnWindowResize( sidebarArea );
 	sidebarArea.top = pal.GetBottom();
 	layers.OnWindowResize( sidebarArea );
+	canv.OnWindowResize( canvasArea );
 }
 
 void Editor::HandlePaint( HDC hdc )
 {
 	pal.OnPaint( hdc );
 	layers.OnPaint( hdc );
+	canv.OnPaint( hdc );
 }

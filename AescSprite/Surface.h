@@ -21,6 +21,8 @@ public:
 
 	void PutPixel( int x,int y,Color c );
 	void Resize( const Vei2& newSize );
+	// Overlay the other surface on top of this one.
+	void Overlay( const Surface& other );
 
 	Color GetPixel( int x,int y ) const;
 	int GetWidth() const;

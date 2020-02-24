@@ -4,6 +4,7 @@
 #include "Rect.h"
 #include "Palette.h"
 #include "LayerMenu.h"
+#include "Canvas.h"
 
 class Editor
 {
@@ -29,4 +30,5 @@ private:
 
 	Palette pal;
 	LayerMenu layers;
+	Canvas canv;
 };

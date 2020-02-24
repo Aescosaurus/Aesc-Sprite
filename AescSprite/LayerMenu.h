@@ -14,8 +14,11 @@ public:
 	void ResizeCanvas( const Vei2& canvSize );
 
 	Surface& GetCurLayer();
+	Surface GenerateFinalImage() const;
 private:
 	RectI area;
 	std::vector<Surface> layers;
 	int selectedLayer = 0;
+	
+	HBRUSH bgColor = nullptr;
 };

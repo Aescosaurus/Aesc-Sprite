@@ -148,6 +148,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="AescSprite.h" />
+    <ClInclude Include="Canvas.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Editor.h" />
     <ClInclude Include="LayerMenu.h" />
@@ -161,6 +162,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AescSprite.cpp" />
+    <ClCompile Include="Canvas.cpp" />
     <ClCompile Include="Editor.cpp" />
     <ClCompile Include="LayerMenu.cpp" />
     <ClCompile Include="Palette.cpp" />

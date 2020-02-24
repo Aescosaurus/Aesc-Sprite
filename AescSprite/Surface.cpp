@@ -116,6 +116,24 @@ void Surface::Resize( const Vei2& newSize )
 	}
 }
 
+void Surface::Overlay( const Surface& other )
+{
+	assert( width == other.width );
+	assert( height == other.height );
+
+	for( int y = 0; y < height; ++y )
+	{
+		for( int x = 0; x < width; ++x )
+		{
+			const auto pix = other.GetPixel( x,y );
+			if( pix != Colors::Magenta )
+			{
+				PutPixel( x,y,pix );
+			}
+		}
+	}
+}
+
 Color Surface::GetPixel( int x,int y ) const
 {
 	return( pixels[y * width + x] );
