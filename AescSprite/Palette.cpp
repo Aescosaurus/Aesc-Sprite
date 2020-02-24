@@ -56,6 +56,11 @@ void Palette::OnPaint( HDC hdc )
 	}
 }
 
+int Palette::GetBottom() const
+{
+	return( colors.back().area.bottom );
+}
+
 Palette::ColorItem::ColorItem( Color c,const RectI& area )
 	:
 	col( c ),

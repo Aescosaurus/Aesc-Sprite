@@ -24,6 +24,8 @@ public:
 	void LoadPalette( const std::string& src );
 	void OnWindowResize( const RectI& area );
 	void OnPaint( HDC hdc );
+
+	int GetBottom() const;
 private:
 	RectI area;
 	std::vector<ColorItem> colors;

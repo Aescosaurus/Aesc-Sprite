@@ -3,6 +3,7 @@
 #include "Vec2.h"
 #include "Rect.h"
 #include "Palette.h"
+#include "LayerMenu.h"
 
 class Editor
 {
@@ -24,5 +25,8 @@ private:
 	RectI toolbarArea;
 	RectI sidebarArea;
 
+	Vei2 canvSize = { 8,8 };
+
 	Palette pal;
+	LayerMenu layers;
 };

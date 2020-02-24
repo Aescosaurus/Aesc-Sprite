@@ -150,6 +150,7 @@
     <ClInclude Include="AescSprite.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Editor.h" />
+    <ClInclude Include="LayerMenu.h" />
     <ClInclude Include="Palette.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="Resource.h" />
@@ -161,6 +162,7 @@
   <ItemGroup>
     <ClCompile Include="AescSprite.cpp" />
     <ClCompile Include="Editor.cpp" />
+    <ClCompile Include="LayerMenu.cpp" />
     <ClCompile Include="Palette.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

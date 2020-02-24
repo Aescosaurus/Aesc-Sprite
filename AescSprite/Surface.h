@@ -20,6 +20,7 @@ public:
 	Surface& operator=( Surface&& rhs );
 
 	void PutPixel( int x,int y,Color c );
+	void Resize( const Vei2& newSize );
 
 	Color GetPixel( int x,int y ) const;
 	int GetWidth() const;

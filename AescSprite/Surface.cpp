@@ -100,6 +100,22 @@ void Surface::PutPixel( int x,int y,Color c )
 	pixels.data()[y * width + x] = c;
 }
 
+void Surface::Resize( const Vei2& newSize )
+{
+	Surface old = *this;
+	*this = Surface( newSize.x,newSize.y );
+
+	const auto minWidth = min( GetWidth(),old.GetWidth() );
+	const auto minHeight = min( GetHeight(),old.GetHeight() );
+	for( int y = 0; y < minHeight; ++y )
+	{
+		for( int x = 0; x < minWidth; ++x )
+		{
+			PutPixel( x,y,old.GetPixel( x,y ) );
+		}
+	}
+}
+
 Color Surface::GetPixel( int x,int y ) const
 {
 	return( pixels[y * width + x] );

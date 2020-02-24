@@ -6,7 +6,8 @@ Editor::Editor( const Vei2& windowSize )
 	canvasArea( 0,0,0,0 ),
 	toolbarArea( 0,0,0,0 ),
 	sidebarArea( 0,0,0,0 ),
-	pal( sidebarArea )
+	pal( sidebarArea ),
+	layers( sidebarArea,canvSize )
 {
 	pal.LoadPalette( "Palettes/Gr8.bmp" );
 	HandleWindowResize( windowSize );
@@ -53,12 +54,13 @@ void Editor::HandleWindowResize( const Vei2& windowSize )
 	sidebarArea = RectI{ canvasArea.right,windowSize.x,
 		toolbarArea.bottom,int( windowSize.y ) };
 
-	// TODO: Update toolbar, canvas, and sidebar items with new sizes.
 	pal.OnWindowResize( sidebarArea );
-	// TODO: Layers go below pal.
+	sidebarArea.top = pal.GetBottom();
+	layers.OnWindowResize( sidebarArea );
 }
 
 void Editor::HandlePaint( HDC hdc )
 {
 	pal.OnPaint( hdc );
+	layers.OnPaint( hdc );
 }
