@@ -24,6 +24,7 @@ void Palette::LoadPalette( const std::string& src )
 
 void Palette::OnWindowResize( const RectI& area )
 {
+	// TODO: Calculate padding.
 	this->area = area;
 	const int itemSize = area.GetWidth() / 5;
 
@@ -33,7 +34,7 @@ void Palette::OnWindowResize( const RectI& area )
 	{
 		col.area = RectI{ pos,itemSize,itemSize };
 		pos.x += itemSize;
-		if( pos.x > area.right )
+		if( pos.x >= area.right - itemSize / 2 )
 		{
 			pos.x = start.x;
 			pos.y += itemSize;

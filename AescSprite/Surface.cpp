@@ -61,7 +61,7 @@ Surface::Surface( const std::string& filename )
 	{
 		for( int x = 0; x < width; ++x )
 		{
-			PutPixel( x,y,Color{ file.get(),file.get(),file.get() } );
+			PutPixel( x,y,Color( file.get(),file.get(),file.get() ) );
 			if( is32b )
 			{
 				file.seekg( 1,std::ios::cur );
