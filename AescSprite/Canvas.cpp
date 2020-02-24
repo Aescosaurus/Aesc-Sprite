@@ -20,8 +20,8 @@ void Canvas::OnPaint( HDC hdc )
 	const auto rc = RECT( area );
 	if( bgColor == nullptr ) bgColor = HBRUSH( CreateSolidBrush( RGB( 40,40,40 ) ) );
 	FillRect( hdc,&rc,bgColor );
-	// TODO: Draw image to screen using pos and scale.
-	// Make sure to clip to window area.
+	image.Draw( hdc,area.GetTopLeft() + imagePos,imageScale );
+	// TODO: Make sure to clip to window area.
 }
 
 void Canvas::CacheImage( const Surface& img )

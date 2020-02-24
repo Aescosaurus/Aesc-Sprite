@@ -19,6 +19,11 @@ void Palette::LoadPalette( const std::string& src )
 		colors.emplace_back( ColorItem{ pal.GetPixel( x,0 ),
 			RectI{ 0,0,0,0 } } );
 	}
+	colors.emplace_back( ColorItem{ Color{ 255,0,255 },
+		RectI{ 0,0,0,0 } } );
+
+	Surface::CacheBrushes( pal,*this );
+
 	OnWindowResize( area );
 }
 
@@ -59,6 +64,19 @@ void Palette::OnPaint( HDC hdc )
 int Palette::GetBottom() const
 {
 	return( colors.back().area.bottom );
+}
+
+const HBRUSH* Palette::GetBrush( Color c ) const
+{
+	for( const auto& item : colors )
+	{
+		if( item.col == c )
+		{
+			return( &item.solidBrush );
+		}
+	}
+	assert( false );
+	return( nullptr );
 }
 
 Palette::ColorItem::ColorItem( Color c,const RectI& area )

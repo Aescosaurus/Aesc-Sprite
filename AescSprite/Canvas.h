@@ -15,8 +15,8 @@ public:
 private:
 	RectI area;
 	Surface image;
-	Vei2 imagePos;
-	Vec2 imageScale;
+	Vei2 imagePos = Vei2::Zero();
+	float imageScale = 1.0f;
 
 	HBRUSH bgColor = nullptr;
 };

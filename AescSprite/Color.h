@@ -10,6 +10,28 @@ public:
 		dword( RGB( r,g,b ) )
 	{}
 
+	constexpr int GetR() const
+	{
+		return( ( dword >> 16u ) & 0xFFu );
+	}
+	constexpr int GetG() const
+	{
+		return( ( dword >> 8u ) & 0xFFu );
+	}
+	constexpr int GetB() const
+	{
+		return( dword & 0xFFu );
+	}
+
+	constexpr operator uint() const
+	{
+		return( dword );
+	}
+
+	constexpr bool operator==( Color rhs ) const
+	{
+		return( dword == rhs.dword );
+	}
 	constexpr bool operator!=( Color rhs ) const
 	{
 		return( dword != rhs.dword );

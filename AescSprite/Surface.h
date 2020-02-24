@@ -4,6 +4,7 @@
 #include <string>
 #include "Rect.h"
 #include <vector>
+#include <unordered_map>
 
 class Surface
 {
@@ -23,10 +24,16 @@ public:
 	void Resize( const Vei2& newSize );
 	// Overlay the other surface on top of this one.
 	void Overlay( const Surface& other );
+	void Fill( Color fill );
+
+	void Draw( HDC hdc,const Vei2& pos,float scale ) const;
+	static void CacheBrushes( const Surface& test,const class Palette& pal );
 
 	Color GetPixel( int x,int y ) const;
 	int GetWidth() const;
 	int GetHeight() const;
+private:
+	static std::unordered_map<unsigned int,const HBRUSH*>& GetColorPal();
 private:
 	std::vector<Color> pixels;
 	int width;

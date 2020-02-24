@@ -26,6 +26,8 @@ public:
 	void OnPaint( HDC hdc );
 
 	int GetBottom() const;
+
+	const HBRUSH* GetBrush( Color c ) const;
 private:
 	RectI area;
 	std::vector<ColorItem> colors;

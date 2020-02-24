@@ -2,6 +2,7 @@
 #include "Surface.h"
 #include <cassert>
 #include <fstream>
+#include "Palette.h"
 
 Surface::Surface( int width,int height )
 	:
@@ -103,7 +104,9 @@ void Surface::PutPixel( int x,int y,Color c )
 void Surface::Resize( const Vei2& newSize )
 {
 	Surface old = *this;
-	*this = Surface( newSize.x,newSize.y );
+	*this = Surface{ newSize.x,newSize.y };
+
+	Fill( Colors::Magenta );
 
 	const auto minWidth = min( GetWidth(),old.GetWidth() );
 	const auto minHeight = min( GetHeight(),old.GetHeight() );
@@ -126,10 +129,53 @@ void Surface::Overlay( const Surface& other )
 		for( int x = 0; x < width; ++x )
 		{
 			const auto pix = other.GetPixel( x,y );
-			if( pix != Colors::Magenta )
+			// if( pix != Colors::Magenta )
 			{
 				PutPixel( x,y,pix );
 			}
+		}
+	}
+}
+
+void Surface::Fill( Color fill )
+{
+	for( int y = 0; y < height; ++y )
+	{
+		for( int x = 0; x < width; ++x )
+		{
+			PutPixel( x,y,fill );
+		}
+	}
+}
+
+void Surface::Draw( HDC hdc,const Vei2& pos,float scale ) const
+{
+	static auto& colorRefs = GetColorPal();
+	for( int y = 0; y < height; ++y )
+	{
+		for( int x = 0; x < width; ++x )
+		{
+			const auto pix = GetPixel( x,y );
+			// assert( colorRefs.find( pix ) != colorRefs.end() );
+			const RECT rc = RECT( RectI{ pos + Vei2{ x,y } * int( scale ),
+				int( scale ),int( scale ) } );
+			// FillRect( hdc,&rc,*colorRefs.at( GetPixel( x,y ) ) );
+			FillRect( hdc,&rc,HBRUSH( CreateSolidBrush( RGB( pix.GetR(),pix.GetG(),pix.GetB() ) ) ) );
+		}
+	}
+}
+
+void Surface::CacheBrushes( const Surface& test,const Palette& pal )
+{
+	static auto& colorRefs = GetColorPal();
+	if( !colorRefs.empty() ) colorRefs.clear();
+	for( auto pix : test.pixels )
+	{
+		if( colorRefs.empty() ||
+			colorRefs.find( pix ) == colorRefs.end() )
+		{
+			// colorRefs.emplace( pix,pal.GetBrush( pix ) );
+			colorRefs.insert( std::make_pair<unsigned int,const HBRUSH*>( pix,pal.GetBrush( pix ) ) );
 		}
 	}
 }
@@ -147,4 +193,10 @@ int Surface::GetWidth() const
 int Surface::GetHeight() const
 {
 	return( height );
+}
+
+std::unordered_map<unsigned int,const HBRUSH*>& Surface::GetColorPal()
+{
+	static std::unordered_map<unsigned int,const HBRUSH*> colorRefs;
+	return( colorRefs );
 }
