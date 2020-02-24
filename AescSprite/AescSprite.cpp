@@ -20,7 +20,8 @@ BOOL                InitInstance( HINSTANCE,int );
 LRESULT CALLBACK    WndProc( HWND,UINT,WPARAM,LPARAM );
 INT_PTR CALLBACK    About( HWND,UINT,WPARAM,LPARAM );
 
-Editor editor;
+static constexpr Vei2 initWindowSize = { 960,540 };
+Editor editor{ initWindowSize };
 
 int APIENTRY wWinMain( _In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
@@ -103,7 +104,9 @@ BOOL InitInstance( HINSTANCE hInstance,int nCmdShow )
 	hInst = hInstance; // Store instance handle in our global variable
 
 	HWND hWnd = CreateWindowW( szWindowClass,szTitle,WS_OVERLAPPEDWINDOW,
-		CW_USEDEFAULT,0,CW_USEDEFAULT,0,nullptr,nullptr,hInstance,nullptr );
+		// CW_USEDEFAULT,0,CW_USEDEFAULT,0,
+		150,350,initWindowSize.x,initWindowSize.y,
+		nullptr,nullptr,hInstance,nullptr );
 
 	if( !hWnd )
 	{
@@ -155,23 +158,24 @@ LRESULT CALLBACK WndProc( HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam )
 		PAINTSTRUCT ps;
 		HDC hdc = BeginPaint( hWnd,&ps );
 		// TODO: Add any drawing code that uses hdc here...
+		editor.HandlePaint( hdc );
 		EndPaint( hWnd,&ps );
 	}
 	break;
 	case WM_LBUTTONDOWN:
-		editor.HandleMouseDown( pos );
+		if( editor.HandleMouseDown( pos ) ) UpdateWindow( hWnd );
 	break;
 	case WM_LBUTTONUP:
-		editor.HandleMouseUp( pos );
+		if( editor.HandleMouseUp( pos ) ) UpdateWindow( hWnd );
 		break;
 	case WM_MOUSEMOVE:
-		editor.HandleMouseMove( pos );
+		if( editor.HandleMouseMove( pos ) ) UpdateWindow( hWnd );
 		break;
 	case WM_KEYDOWN:
-		editor.HandleKeyDown( static_cast<unsigned char>( wParam ) );
+		if( editor.HandleKeyDown( static_cast<unsigned char>( wParam ) ) ) UpdateWindow( hWnd );
 		break;
 	case WM_KEYUP:
-		editor.HandleKeyUp( static_cast<unsigned char>( wParam ) );
+		if( editor.HandleKeyUp( static_cast<unsigned char>( wParam ) ) ) UpdateWindow( hWnd );
 		break;
 	case WM_SIZE:
 		RECT clientRect;
@@ -180,6 +184,7 @@ LRESULT CALLBACK WndProc( HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam )
 			editor.HandleWindowResize( Vei2{
 				clientRect.right - clientRect.left,
 				clientRect.bottom - clientRect.top } );
+			UpdateWindow( hWnd ); // We always want repaint on resize.
 		}
 		break;
 	case WM_DESTROY:
