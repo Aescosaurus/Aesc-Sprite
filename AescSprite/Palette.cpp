@@ -31,17 +31,19 @@ void Palette::OnWindowResize( const RectI& area )
 {
 	// TODO: Calculate padding.
 	this->area = area;
-	const int itemSize = area.GetWidth() / max( 1,colors.size() / 2 );
+	const float itemSize = float( area.GetWidth() ) /
+		float( max( 1,colors.size() / 2 ) );
 
 	const Vei2 start = area.GetTopLeft();
-	auto pos = start;
+	auto pos = Vec2( start );
 	for( auto& col : colors )
 	{
-		col.area = RectI{ pos,itemSize,itemSize };
+		col.area = RectI{ Vei2( pos ),
+			int( ceil( itemSize ) ),int( ceil( itemSize ) ) };
 		pos.x += itemSize;
 		if( pos.x >= area.right - itemSize / 2 )
 		{
-			pos.x = start.x;
+			pos.x = float( start.x );
 			pos.y += itemSize;
 		}
 	}
