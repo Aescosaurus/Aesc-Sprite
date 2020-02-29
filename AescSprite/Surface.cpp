@@ -156,11 +156,13 @@ void Surface::Draw( HDC hdc,const Vei2& pos,float scale ) const
 		for( int x = 0; x < width; ++x )
 		{
 			const auto pix = GetPixel( x,y );
-			// assert( colorRefs.find( pix ) != colorRefs.end() );
-			const RECT rc = RECT( RectI{ pos + Vei2{ x,y } * int( scale ),
-				int( scale ),int( scale ) } );
-			// FillRect( hdc,&rc,*colorRefs.at( GetPixel( x,y ) ) );
-			FillRect( hdc,&rc,HBRUSH( CreateSolidBrush( RGB( pix.GetR(),pix.GetG(),pix.GetB() ) ) ) );
+			if( pix != Colors::Magenta )
+			{
+				// assert( colorRefs.find( pix ) != colorRefs.end() );
+				const RECT rc = RECT( RectI{ pos + Vei2{ x,y } *int( scale ),
+					int( scale ),int( scale ) } );
+				FillRect( hdc,&rc,*colorRefs[pix] );
+			}
 		}
 	}
 }
@@ -169,12 +171,11 @@ void Surface::CacheBrushes( const Surface& test,const Palette& pal )
 {
 	static auto& colorRefs = GetColorPal();
 	if( !colorRefs.empty() ) colorRefs.clear();
+	colorRefs.insert( std::make_pair<unsigned int,const HBRUSH*>( Colors::Magenta,pal.GetBrush( Colors::Magenta ) ) );
 	for( auto pix : test.pixels )
 	{
-		if( colorRefs.empty() ||
-			colorRefs.find( pix ) == colorRefs.end() )
+		if( colorRefs.find( pix ) == colorRefs.end() )
 		{
-			// colorRefs.emplace( pix,pal.GetBrush( pix ) );
 			colorRefs.insert( std::make_pair<unsigned int,const HBRUSH*>( pix,pal.GetBrush( pix ) ) );
 		}
 	}
