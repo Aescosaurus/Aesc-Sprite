@@ -31,7 +31,7 @@ void Palette::OnWindowResize( const RectI& area )
 {
 	// TODO: Calculate padding.
 	this->area = area;
-	const int itemSize = area.GetWidth() / 5;
+	const int itemSize = area.GetWidth() / max( 1,colors.size() / 2 );
 
 	const Vei2 start = area.GetTopLeft();
 	auto pos = start;
@@ -63,7 +63,7 @@ void Palette::OnPaint( HDC hdc )
 
 int Palette::GetBottom() const
 {
-	return( colors.back().area.bottom );
+	return( colors[colors.size() - 2].area.bottom );
 }
 
 const HBRUSH* Palette::GetBrush( Color c ) const
