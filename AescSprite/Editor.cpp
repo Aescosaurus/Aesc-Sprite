@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Editor.h"
+#include "FileOpener.h"
 
 Editor::Editor( const Vei2& windowSize )
 	:
@@ -10,7 +11,7 @@ Editor::Editor( const Vei2& windowSize )
 	layers( sidebarArea,canvSize ),
 	canv( canvasArea,layers.GenerateFinalImage() )
 {
-	pal.LoadPalette( "Palettes/Gr8.bmp" );
+	pal.LoadPalette( Surface{ "Palettes/Gr8.bmp" } );
 	HandleWindowResize( windowSize );
 }
 
@@ -66,4 +67,15 @@ void Editor::HandlePaint( HDC hdc )
 	pal.OnPaint( hdc );
 	layers.OnPaint( hdc );
 	canv.OnPaint( hdc );
+}
+
+void Editor::OpenFile()
+{
+	const auto path = FileOpener::OpenFile();
+	if( path.length() > 0 )
+	{
+		pal.GeneratePalette( path );
+		layers.OpenImage( path );
+		canv.CacheImage( layers.GenerateFinalImage() );
+	}
 }

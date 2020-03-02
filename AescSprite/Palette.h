@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include "Color.h"
+#include "Surface.h"
 
 class Palette
 {
@@ -21,7 +22,8 @@ private:
 public:
 	Palette( const RectI& area );
 
-	void LoadPalette( const std::string& src );
+	void LoadPalette( const Surface& pal );
+	void GeneratePalette( const std::string& src );
 	void OnWindowResize( const RectI& area );
 	void OnPaint( HDC hdc );
 

@@ -32,6 +32,7 @@ public:
 	Color GetPixel( int x,int y ) const;
 	int GetWidth() const;
 	int GetHeight() const;
+	Vei2 GetSize() const;
 private:
 	static std::unordered_map<unsigned int,const HBRUSH*>& GetColorPal();
 private:

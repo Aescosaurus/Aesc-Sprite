@@ -2,6 +2,7 @@
 #include "Palette.h"
 #include "Surface.h"
 #include <cassert>
+#include <algorithm>
 
 Palette::Palette( const RectI& area )
 	:
@@ -10,9 +11,8 @@ Palette::Palette( const RectI& area )
 	OnWindowResize( area );
 }
 
-void Palette::LoadPalette( const std::string& src )
+void Palette::LoadPalette( const Surface& pal )
 {
-	const Surface pal{ src };
 	assert( pal.GetHeight() == 1 );
 	for( int x = 0; x < pal.GetWidth(); ++x )
 	{
@@ -25,6 +25,31 @@ void Palette::LoadPalette( const std::string& src )
 	Surface::CacheBrushes( pal,*this );
 
 	OnWindowResize( area );
+}
+
+void Palette::GeneratePalette( const std::string& src )
+{
+	const Surface img{ src };
+	std::vector<Color> uniqueColors;
+	for( int y = 0; y < img.GetHeight(); ++y )
+	{
+		for( int x = 0; x < img.GetWidth(); ++x )
+		{
+			const auto pix = img.GetPixel( x,y );
+			if( std::find( uniqueColors.begin(),uniqueColors.end(),
+				pix ) == uniqueColors.end() )
+			{
+				uniqueColors.emplace_back( pix );
+			}
+		}
+	}
+
+	Surface tempPal{ int( uniqueColors.size() ),1 };
+	for( int i = 0; i < int( uniqueColors.size() ); ++i )
+	{
+		tempPal.PutPixel( i,0,uniqueColors[i] );
+	}
+	LoadPalette( tempPal );
 }
 
 void Palette::OnWindowResize( const RectI& area )

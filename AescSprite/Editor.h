@@ -5,6 +5,7 @@
 #include "Palette.h"
 #include "LayerMenu.h"
 #include "Canvas.h"
+#include <string>
 
 class Editor
 {
@@ -21,6 +22,8 @@ public:
 	void HandleWindowResize( const Vei2& windowSize );
 
 	void HandlePaint( HDC hdc );
+
+	void OpenFile();
 private:
 	RectI canvasArea;
 	RectI toolbarArea;

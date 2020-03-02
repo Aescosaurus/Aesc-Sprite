@@ -31,6 +31,13 @@ void LayerMenu::ResizeCanvas( const Vei2& canvSize )
 	}
 }
 
+void LayerMenu::OpenImage( const std::string& imgPath )
+{
+	const auto loadedImage = Surface{ imgPath };
+	ResizeCanvas( loadedImage.GetSize() );
+	layers.emplace_back( loadedImage );
+}
+
 Surface& LayerMenu::GetCurLayer()
 {
 	return( layers[selectedLayer] );

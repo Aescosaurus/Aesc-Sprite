@@ -151,6 +151,7 @@
     <ClInclude Include="Canvas.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Editor.h" />
+    <ClInclude Include="FileOpener.h" />
     <ClInclude Include="LayerMenu.h" />
     <ClInclude Include="Palette.h" />
     <ClInclude Include="Rect.h" />
@@ -164,6 +165,7 @@
     <ClCompile Include="AescSprite.cpp" />
     <ClCompile Include="Canvas.cpp" />
     <ClCompile Include="Editor.cpp" />
+    <ClCompile Include="FileOpener.cpp" />
     <ClCompile Include="LayerMenu.cpp" />
     <ClCompile Include="Palette.cpp" />
     <ClCompile Include="stdafx.cpp">

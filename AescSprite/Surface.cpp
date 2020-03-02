@@ -196,6 +196,11 @@ int Surface::GetHeight() const
 	return( height );
 }
 
+Vei2 Surface::GetSize() const
+{
+	return( Vei2{ width,height } );
+}
+
 std::unordered_map<unsigned int,const HBRUSH*>& Surface::GetColorPal()
 {
 	static std::unordered_map<unsigned int,const HBRUSH*> colorRefs;
