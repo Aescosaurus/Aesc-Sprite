@@ -151,6 +151,9 @@ void Surface::Fill( Color fill )
 void Surface::Draw( HDC hdc,const Vei2& pos,float scale ) const
 {
 	static auto& colorRefs = GetColorPal();
+	const int iscale = int( scale );
+	const RECT start = RECT( RectI{ pos,iscale,iscale } );
+	RECT rc = start;
 	for( int y = 0; y < height; ++y )
 	{
 		for( int x = 0; x < width; ++x )
@@ -159,8 +162,12 @@ void Surface::Draw( HDC hdc,const Vei2& pos,float scale ) const
 			if( pix != Colors::Magenta )
 			{
 				// assert( colorRefs.find( pix ) != colorRefs.end() );
-				const RECT rc = RECT( RectI{ pos + Vei2{ x,y } *int( scale ),
-					int( scale ),int( scale ) } );
+				// const RECT rc = RECT( RectI{ pos + Vei2{ x,y } * iscale,
+				// 	iscale,iscale } );
+				rc.left = start.left + x * iscale;
+				rc.top = start.top + y * iscale;
+				rc.right = rc.left + iscale;
+				rc.bottom = rc.top + iscale;
 				FillRect( hdc,&rc,*colorRefs[pix] );
 			}
 		}

@@ -23,6 +23,18 @@ INT_PTR CALLBACK    About( HWND,UINT,WPARAM,LPARAM );
 static constexpr Vei2 initWindowSize = { 960,540 };
 Editor editor{ initWindowSize };
 
+void Repaint( HWND hWnd )
+{
+	RECT clientRect;
+	if( GetClientRect( hWnd,&clientRect ) )
+	{
+		editor.HandleWindowResize( Vei2{
+			clientRect.right - clientRect.left,
+			clientRect.bottom - clientRect.top } );
+		InvalidateRect( hWnd,&clientRect,TRUE );
+	}
+}
+
 int APIENTRY wWinMain( _In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
 	_In_ LPWSTR    lpCmdLine,
@@ -147,6 +159,7 @@ LRESULT CALLBACK WndProc( HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam )
 			break;
 		case ID_FILE_OPEN:
 			editor.OpenFile();
+			Repaint( hWnd );
 			break;
 		case IDM_EXIT:
 			DestroyWindow( hWnd );
@@ -166,29 +179,22 @@ LRESULT CALLBACK WndProc( HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam )
 	}
 	break;
 	case WM_LBUTTONDOWN:
-		if( editor.HandleMouseDown( pos ) ) UpdateWindow( hWnd );
+		if( editor.HandleMouseDown( pos ) ) Repaint( hWnd );
 	break;
 	case WM_LBUTTONUP:
-		if( editor.HandleMouseUp( pos ) ) UpdateWindow( hWnd );
+		if( editor.HandleMouseUp( pos ) ) Repaint( hWnd );
 		break;
 	case WM_MOUSEMOVE:
-		if( editor.HandleMouseMove( pos ) ) UpdateWindow( hWnd );
+		if( editor.HandleMouseMove( pos ) ) Repaint( hWnd );
 		break;
 	case WM_KEYDOWN:
-		if( editor.HandleKeyDown( static_cast<unsigned char>( wParam ) ) ) UpdateWindow( hWnd );
+		if( editor.HandleKeyDown( static_cast<unsigned char>( wParam ) ) ) Repaint( hWnd );
 		break;
 	case WM_KEYUP:
-		if( editor.HandleKeyUp( static_cast<unsigned char>( wParam ) ) ) UpdateWindow( hWnd );
+		if( editor.HandleKeyUp( static_cast<unsigned char>( wParam ) ) ) Repaint( hWnd );
 		break;
 	case WM_SIZE:
-		RECT clientRect;
-		if( GetClientRect( hWnd,&clientRect ) )
-		{
-			editor.HandleWindowResize( Vei2{
-				clientRect.right - clientRect.left,
-				clientRect.bottom - clientRect.top } );
-			UpdateWindow( hWnd ); // We always want repaint on resize.
-		}
+		Repaint( hWnd );
 		break;
 	case WM_DESTROY:
 		PostQuitMessage( 0 );

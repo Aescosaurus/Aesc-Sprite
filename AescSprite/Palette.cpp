@@ -16,8 +16,12 @@ void Palette::LoadPalette( const Surface& pal )
 	assert( pal.GetHeight() == 1 );
 	for( int x = 0; x < pal.GetWidth(); ++x )
 	{
-		colors.emplace_back( ColorItem{ pal.GetPixel( x,0 ),
-			RectI{ 0,0,0,0 } } );
+		const auto pix = pal.GetPixel( x,0 );
+		if( pix != Colors::Magenta )
+		{
+			colors.emplace_back( ColorItem{ pix,
+				RectI{ 0,0,0,0 } } );
+		}
 	}
 	colors.emplace_back( ColorItem{ Color{ 255,0,255 },
 		RectI{ 0,0,0,0 } } );
