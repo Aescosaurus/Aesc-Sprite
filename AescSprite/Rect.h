@@ -68,7 +68,7 @@ public:
 
 		return( *this );
 	}
-	constexpr Rect_ GetMovedBy( const Vec2_<T>& amount )
+	constexpr Rect_ GetMovedBy( const Vec2_<T>& amount ) const
 	{
 		auto temp = *this;
 		temp.MoveBy( amount );

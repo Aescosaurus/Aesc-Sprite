@@ -6,6 +6,7 @@
 #include "LayerMenu.h"
 #include "Canvas.h"
 #include <string>
+#include "Tool.h"
 
 class Editor
 {
@@ -34,4 +35,6 @@ private:
 	Palette pal;
 	LayerMenu layers;
 	Canvas canv;
+	std::vector<Tool> tools;
+	int curTool = 0;
 };

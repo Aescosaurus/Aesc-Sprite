@@ -17,7 +17,7 @@ Editor::Editor( const Vei2& windowSize )
 
 bool Editor::HandleMouseDown( const Vei2& pos )
 {
-	// update tools
+	// update cur tool
 	// if tool returns true we return true
 	return false;
 }
@@ -60,6 +60,11 @@ void Editor::HandleWindowResize( const Vei2& windowSize )
 	sidebarArea.top = pal.GetBottom();
 	layers.OnWindowResize( sidebarArea );
 	canv.OnWindowResize( canvasArea );
+	tools[0].OnWindowResize( toolbarArea );
+	for( int i = 1; i < int( tools.size() ); ++i )
+	{
+		tools[i].OnWindowResize( tools[i - 1].GetNextRect() );
+	}
 }
 
 void Editor::HandlePaint( HDC hdc )
@@ -67,6 +72,10 @@ void Editor::HandlePaint( HDC hdc )
 	pal.OnPaint( hdc );
 	layers.OnPaint( hdc );
 	canv.OnPaint( hdc );
+	for( auto& tool : tools )
+	{
+		tool.OnPaint( hdc );
+	}
 }
 
 void Editor::OpenFile()
@@ -77,5 +86,10 @@ void Editor::OpenFile()
 		pal.GeneratePalette( path );
 		layers.OpenImage( path );
 		canv.CacheImage( layers.GenerateFinalImage() );
+		auto& curLayer = layers.GetCurLayer();
+		for( auto& tool : tools )
+		{
+			tool.CacheImage( curLayer );
+		}
 	}
 }

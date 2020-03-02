@@ -159,6 +159,7 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Surface.h" />
     <ClInclude Include="targetver.h" />
+    <ClInclude Include="Tool.h" />
     <ClInclude Include="Vec2.h" />
   </ItemGroup>
   <ItemGroup>
