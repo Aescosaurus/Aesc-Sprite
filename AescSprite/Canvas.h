@@ -12,6 +12,8 @@ public:
 	void OnPaint( HDC hdc );
 
 	void CacheImage( const Surface& img );
+
+	Vei2& GetImagePos();
 private:
 	RectI area;
 	Surface image;

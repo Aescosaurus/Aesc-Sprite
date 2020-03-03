@@ -2,6 +2,8 @@
 #include "Editor.h"
 #include "FileOpener.h"
 
+#include "Pointer.h"
+
 Editor::Editor( const Vei2& windowSize )
 	:
 	canvasArea( 0,0,0,0 ),
@@ -12,34 +14,55 @@ Editor::Editor( const Vei2& windowSize )
 	canv( canvasArea,layers.GenerateFinalImage() )
 {
 	pal.LoadPalette( Surface{ "Palettes/Gr8.bmp" } );
+
+	tools.emplace_back( std::make_unique<Pointer>() );
+
+	for( auto& tool : tools )
+	{
+		tool->SetCanvasRef( canv );
+	}
+
 	HandleWindowResize( windowSize );
 }
 
 bool Editor::HandleMouseDown( const Vei2& pos )
 {
-	// update cur tool
-	// if tool returns true we return true
-	return false;
+	bool redraw = false;
+	auto& tool = tools[curTool];
+	if( tool->OnMouseDown( pos ) ) redraw = true;
+	return( redraw );
 }
 
 bool Editor::HandleMouseUp( const Vei2& pos )
 {
-	return false;
+	bool redraw = false;
+	auto& tool = tools[curTool];
+	if( tool->OnMouseUp( pos ) ) redraw = true;
+	return( redraw );
 }
 
 bool Editor::HandleMouseMove( const Vei2& pos )
 {
-	return false;
+	bool redraw = false;
+	auto& tool = tools[curTool];
+	if( tool->OnMouseMove( pos ) ) redraw = true;
+	return( redraw );
 }
 
 bool Editor::HandleKeyDown( unsigned char key )
 {
-	return false;
+	bool redraw = false;
+	auto& tool = tools[curTool];
+	if( tool->OnKeyDown( key ) ) redraw = true;
+	return( redraw );
 }
 
 bool Editor::HandleKeyUp( unsigned char key )
 {
-	return false;
+	bool redraw = false;
+	auto& tool = tools[curTool];
+	if( tool->OnKeyUp( key ) ) redraw = true;
+	return( redraw );
 }
 
 void Editor::HandleWindowResize( const Vei2& windowSize )
@@ -60,10 +83,10 @@ void Editor::HandleWindowResize( const Vei2& windowSize )
 	sidebarArea.top = pal.GetBottom();
 	layers.OnWindowResize( sidebarArea );
 	canv.OnWindowResize( canvasArea );
-	tools[0].OnWindowResize( toolbarArea );
+	tools[0]->OnWindowResize( toolbarArea );
 	for( int i = 1; i < int( tools.size() ); ++i )
 	{
-		tools[i].OnWindowResize( tools[i - 1].GetNextRect() );
+		tools[i]->OnWindowResize( tools[i - 1]->GetNextRect() );
 	}
 }
 
@@ -74,7 +97,7 @@ void Editor::HandlePaint( HDC hdc )
 	canv.OnPaint( hdc );
 	for( auto& tool : tools )
 	{
-		tool.OnPaint( hdc );
+		tool->OnPaint( hdc );
 	}
 }
 
@@ -89,7 +112,7 @@ void Editor::OpenFile()
 		auto& curLayer = layers.GetCurLayer();
 		for( auto& tool : tools )
 		{
-			tool.CacheImage( curLayer );
+			tool->CacheImage( curLayer );
 		}
 	}
 }

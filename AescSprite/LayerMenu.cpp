@@ -7,8 +7,8 @@ LayerMenu::LayerMenu( const RectI& area,const Vei2& canvSize )
 {
 	OnWindowResize( area );
 	
-	layers.emplace_back( Surface{ 0,0 } );
-	ResizeCanvas( canvSize );
+	layers.emplace_back( Surface{ "Icons/Pointer.bmp" } );
+	ResizeCanvas( layers.back().GetSize() );
 }
 
 void LayerMenu::OnWindowResize( const RectI& area )

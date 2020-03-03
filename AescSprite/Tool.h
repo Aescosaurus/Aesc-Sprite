@@ -11,21 +11,26 @@ public:
 		icon( icon )
 	{}
 
-	virtual bool OnMouseDown( const Vei2& pos ) {}
-	virtual bool OnMouseUp( const Vei2& pos ) {}
-	virtual bool OnMouseMove( const Vei2& pos ) {}
+	void SetCanvasRef( Canvas& canv )
+	{
+		this->canv = &canv;
+	}
 
-	virtual bool OnKeyDown( unsigned char key ) {}
-	virtual bool OnKeyUp( unsigned char key ) {}
+	virtual bool OnMouseDown( const Vei2& pos ) { return( false ); }
+	virtual bool OnMouseUp( const Vei2& pos ) { return( false ); }
+	virtual bool OnMouseMove( const Vei2& pos ) { return( false ); }
+
+	virtual bool OnKeyDown( unsigned char key ) { return( false ); }
+	virtual bool OnKeyUp( unsigned char key ) { return( false ); }
 
 	void OnWindowResize( const RectI& area )
 	{
-		drawScale = area.GetHeight();
+		drawScale = float( area.GetHeight() ) / icon.GetHeight();
 		this->area = area;
-		this->area.right = area.left + icon.GetWidth() * drawScale;
+		this->area.right = area.left + icon.GetWidth() * int( drawScale );
 	}
 
-	virtual bool OnPaint( HDC hdc )
+	virtual void OnPaint( HDC hdc )
 	{
 		icon.Draw( hdc,area.GetTopLeft(),drawScale );
 	}
@@ -38,11 +43,12 @@ public:
 	RectI GetNextRect() const
 	{
 		return( area.GetMovedBy( Vei2::Right() *
-			icon.GetWidth() * drawScale ) );
+			icon.GetWidth() * int( drawScale ) ) );
 	}
-private:
+protected:
 	float drawScale = 0.0f;
 	Surface icon;
 	RectI area = RectI{ 0,0,0,0 };
-	Surface* activeLayer;
+	Surface* activeLayer = nullptr;
+	Canvas* canv = nullptr;
 };

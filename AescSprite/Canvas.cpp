@@ -28,3 +28,8 @@ void Canvas::CacheImage( const Surface& img )
 {
 	image = img;
 }
+
+Vei2& Canvas::GetImagePos()
+{
+	return( imagePos );
+}

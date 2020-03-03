@@ -7,6 +7,7 @@
 #include "Canvas.h"
 #include <string>
 #include "Tool.h"
+#include <memory>
 
 class Editor
 {
@@ -35,6 +36,6 @@ private:
 	Palette pal;
 	LayerMenu layers;
 	Canvas canv;
-	std::vector<Tool> tools;
+	std::vector<std::unique_ptr<Tool>> tools;
 	int curTool = 0;
 };

@@ -31,7 +31,7 @@ void Repaint( HWND hWnd )
 		editor.HandleWindowResize( Vei2{
 			clientRect.right - clientRect.left,
 			clientRect.bottom - clientRect.top } );
-		InvalidateRect( hWnd,&clientRect,TRUE );
+		InvalidateRect( hWnd,&clientRect,FALSE );
 	}
 }
 

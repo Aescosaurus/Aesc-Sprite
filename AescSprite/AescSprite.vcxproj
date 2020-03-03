@@ -154,6 +154,7 @@
     <ClInclude Include="FileOpener.h" />
     <ClInclude Include="LayerMenu.h" />
     <ClInclude Include="Palette.h" />
+    <ClInclude Include="Pointer.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="stdafx.h" />
