@@ -25,6 +25,8 @@ public:
 	// Overlay the other surface on top of this one.
 	void Overlay( const Surface& other );
 	void Fill( Color fill );
+	// Move selection of surface in direction of movement.
+	void Move( const RectI& selection,const Vei2& movement );
 
 	void Draw( HDC hdc,const Vei2& pos,float scale ) const;
 	static void CacheBrushes( const Surface& test,const class Palette& pal );
@@ -33,6 +35,7 @@ public:
 	int GetWidth() const;
 	int GetHeight() const;
 	Vei2 GetSize() const;
+	RectI GetRect() const;
 private:
 	static std::unordered_map<unsigned int,const HBRUSH*>& GetColorPal();
 private:

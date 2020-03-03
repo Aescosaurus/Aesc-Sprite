@@ -17,9 +17,11 @@ Editor::Editor( const Vei2& windowSize )
 
 	tools.emplace_back( std::make_unique<Pointer>() );
 
+	auto& curLayer = layers.GetCurLayer();
 	for( auto& tool : tools )
 	{
 		tool->SetCanvasRef( canv );
+		tool->CacheImage( curLayer );
 	}
 
 	HandleWindowResize( windowSize );

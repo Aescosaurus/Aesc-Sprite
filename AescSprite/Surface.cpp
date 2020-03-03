@@ -148,6 +148,28 @@ void Surface::Fill( Color fill )
 	}
 }
 
+void Surface::Move( const RectI& selection,const Vei2& movement )
+{
+	assert( selection.left >= 0 );
+	assert( selection.right < width );
+	assert( selection.top >= 0 );
+	assert( selection.bottom < height );
+	assert( selection.GetMovedBy( movement ).left >= 0 );
+	assert( selection.GetMovedBy( movement ).right < width );
+	assert( selection.GetMovedBy( movement ).top >= 0 );
+	assert( selection.GetMovedBy( movement ).bottom < height );
+
+	for( int y = selection.top; y < selection.bottom; ++y )
+	{
+		for( int x = selection.left; x < selection.right; ++x )
+		{
+			PutPixel( x + movement.x,y + movement.y,
+				GetPixel( x,y ) );
+			PutPixel( x,y,Colors::Magenta );
+		}
+	}
+}
+
 void Surface::Draw( HDC hdc,const Vei2& pos,float scale ) const
 {
 	static auto& colorRefs = GetColorPal();
@@ -206,6 +228,11 @@ int Surface::GetHeight() const
 Vei2 Surface::GetSize() const
 {
 	return( Vei2{ width,height } );
+}
+
+RectI Surface::GetRect() const
+{
+	return( RectI{ 0,width,0,height } );
 }
 
 std::unordered_map<unsigned int,const HBRUSH*>& Surface::GetColorPal()

@@ -107,6 +107,14 @@ public:
 		}
 		return *this;
 	}
+	// Returns vec2 where each component is -1, 0, or 1.
+	constexpr Vec2_ GetOneized() const
+	{
+		Vec2_<T> temp = *this;
+		if( temp.x != T( 0.0 ) ) temp.x /= abs( temp.x );
+		if( temp.y != T( 0.0 ) ) temp.y /= abs( temp.y );
+		return( temp );
+	}
 
 	static constexpr Vec2_ Up()
 	{

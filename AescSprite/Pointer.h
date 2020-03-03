@@ -31,7 +31,9 @@ public:
 			if( oldPos != Vei2{ -1,-1 } )
 			{
 				const auto diff = pos - oldPos;
-				canv->GetImagePos() += diff;
+				// canv->GetImagePos() += diff;
+				activeLayer->Move( activeLayer->GetRect(),
+					diff.GetOneized() );
 				repaint = true;
 			}
 			oldPos = pos;
