@@ -3,6 +3,7 @@
 #include "FileOpener.h"
 
 #include "Pointer.h"
+#include "Selector.h"
 
 Editor::Editor( const Vei2& windowSize )
 	:
@@ -16,6 +17,7 @@ Editor::Editor( const Vei2& windowSize )
 	pal.LoadPalette( Surface{ "Palettes/Gr8.bmp" } );
 
 	tools.emplace_back( std::make_unique<Pointer>() );
+	tools.emplace_back( std::make_unique<Selector>() );
 
 	auto& curLayer = layers.GetCurLayer();
 	for( auto& tool : tools )
@@ -29,42 +31,37 @@ Editor::Editor( const Vei2& windowSize )
 
 bool Editor::HandleMouseDown( const Vei2& pos )
 {
-	bool redraw = false;
 	auto& tool = tools[curTool];
-	if( tool->OnMouseDown( pos ) ) redraw = true;
-	return( redraw );
+	const auto type = tool->OnMouseDown( pos );
+	return( GetReturnType( type ) );
 }
 
 bool Editor::HandleMouseUp( const Vei2& pos )
 {
-	bool redraw = false;
 	auto& tool = tools[curTool];
-	if( tool->OnMouseUp( pos ) ) redraw = true;
-	return( redraw );
+	const auto type = tool->OnMouseUp( pos );
+	return( GetReturnType( type ) );
 }
 
 bool Editor::HandleMouseMove( const Vei2& pos )
 {
-	bool redraw = false;
 	auto& tool = tools[curTool];
-	if( tool->OnMouseMove( pos ) ) redraw = true;
-	return( redraw );
+	const auto type = tool->OnMouseMove( pos );
+	return( GetReturnType( type ) );
 }
 
 bool Editor::HandleKeyDown( unsigned char key )
 {
-	bool redraw = false;
 	auto& tool = tools[curTool];
-	if( tool->OnKeyDown( key ) ) redraw = true;
-	return( redraw );
+	const auto type = tool->OnKeyDown( key );
+	return( GetReturnType( type ) );
 }
 
 bool Editor::HandleKeyUp( unsigned char key )
 {
-	bool redraw = false;
 	auto& tool = tools[curTool];
-	if( tool->OnKeyUp( key ) ) redraw = true;
-	return( redraw );
+	const auto type = tool->OnKeyUp( key );
+	return( GetReturnType( type ) );
 }
 
 void Editor::HandleWindowResize( const Vei2& windowSize )
@@ -110,11 +107,34 @@ void Editor::OpenFile()
 	{
 		pal.GeneratePalette( path );
 		layers.OpenImage( path );
-		canv.CacheImage( layers.GenerateFinalImage() );
-		auto& curLayer = layers.GetCurLayer();
-		for( auto& tool : tools )
-		{
-			tool->CacheImage( curLayer );
-		}
+		RegenImage();
 	}
+}
+
+void Editor::RegenImage()
+{
+	canv.CacheImage( layers.GenerateFinalImage() );
+	auto& curLayer = layers.GetCurLayer();
+	for( auto& tool : tools )
+	{
+		tool->CacheImage( curLayer );
+	}
+}
+
+bool Editor::GetReturnType( Tool::ReturnType type )
+{
+	switch( type )
+	{
+	case Tool::ReturnType::None:
+		return( false );
+		break;
+	case Tool::ReturnType::Repaint:
+		return( true );
+		break;
+	case Tool::ReturnType::RegenImage:
+		RegenImage();
+		return( true );
+		break;
+	}
+	return( false );
 }

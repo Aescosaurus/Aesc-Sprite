@@ -33,3 +33,12 @@ Vei2& Canvas::GetImagePos()
 {
 	return( imagePos );
 }
+
+Vei2 Canvas::Mouse2CanvPos( const Vei2& mousePos ) const
+{
+	Vei2 temp = mousePos;
+	temp -= area.GetTopLeft();
+	temp -= imagePos;
+	temp /= int( imageScale );
+	return( temp );
+}

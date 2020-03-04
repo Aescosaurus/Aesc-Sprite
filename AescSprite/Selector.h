@@ -2,12 +2,12 @@
 
 #include "Tool.h"
 
-class Pointer
+class Selector
 	:
 	public Tool
 {
 public:
-	Pointer()
+	Selector()
 		:
 		Tool( Surface{ "Icons/Pointer.bmp" } )
 	{}
@@ -20,7 +20,6 @@ public:
 	ReturnType OnMouseUp( const Vei2& pos ) override
 	{
 		mouseDown = false;
-		oldPos = Vei2{ -1,-1 };
 		return( ReturnType::None );
 	}
 	ReturnType OnMouseMove( const Vei2& pos ) override
@@ -28,19 +27,17 @@ public:
 		ReturnType type = ReturnType::None;
 		if( mouseDown )
 		{
-			if( oldPos != Vei2{ -1,-1 } )
+			const auto canvPos = canv->Mouse2CanvPos( pos );
+			if( activeLayer->GetRect().ContainsPoint( canvPos ) )
 			{
-				const auto diff = pos - oldPos;
-				// canv->GetImagePos() += diff;
-				activeLayer->Move( activeLayer->GetRect(),
-					diff.GetOneized() );
-				type = ReturnType::Repaint;
+				activeLayer->PutPixel( canvPos.x,canvPos.y,
+					Color{ 239,18,36 } );
+				type = ReturnType::RegenImage;
 			}
-			oldPos = pos;
 		}
+
 		return( type );
 	}
 private:
 	bool mouseDown = false;
-	Vei2 oldPos = Vei2{ -1,-1 };
 };

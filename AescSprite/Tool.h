@@ -2,9 +2,17 @@
 
 #include "Vec2.h"
 #include "Surface.h"
+#include "Canvas.h"
 
 class Tool
 {
+public:
+	enum class ReturnType
+	{
+		None,
+		Repaint,
+		RegenImage
+	};
 public:
 	Tool( const Surface& icon )
 		:
@@ -16,12 +24,12 @@ public:
 		this->canv = &canv;
 	}
 
-	virtual bool OnMouseDown( const Vei2& pos ) { return( false ); }
-	virtual bool OnMouseUp( const Vei2& pos ) { return( false ); }
-	virtual bool OnMouseMove( const Vei2& pos ) { return( false ); }
+	virtual ReturnType OnMouseDown( const Vei2& pos ) { return( ReturnType::None ); }
+	virtual ReturnType OnMouseUp( const Vei2& pos ) { return( ReturnType::None ); }
+	virtual ReturnType OnMouseMove( const Vei2& pos ) { return( ReturnType::None ); }
 
-	virtual bool OnKeyDown( unsigned char key ) { return( false ); }
-	virtual bool OnKeyUp( unsigned char key ) { return( false ); }
+	virtual ReturnType OnKeyDown( unsigned char key ) { return( ReturnType::None ); }
+	virtual ReturnType OnKeyUp( unsigned char key ) { return( ReturnType::None ); }
 
 	void OnWindowResize( const RectI& area )
 	{

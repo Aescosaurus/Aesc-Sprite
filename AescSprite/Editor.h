@@ -26,6 +26,8 @@ public:
 	void HandlePaint( HDC hdc );
 
 	void OpenFile();
+	void RegenImage();
+	bool GetReturnType( Tool::ReturnType type );
 private:
 	RectI canvasArea;
 	RectI toolbarArea;
@@ -37,5 +39,5 @@ private:
 	LayerMenu layers;
 	Canvas canv;
 	std::vector<std::unique_ptr<Tool>> tools;
-	int curTool = 0;
+	int curTool = 1;
 };
