@@ -22,16 +22,17 @@ INT_PTR CALLBACK    About( HWND,UINT,WPARAM,LPARAM );
 
 static constexpr Vei2 initWindowSize = { 960,540 };
 Editor editor{ initWindowSize };
+Surface pixelBuffer{ initWindowSize.x,initWindowSize.y };
 
 void Repaint( HWND hWnd )
 {
 	RECT clientRect;
 	if( GetClientRect( hWnd,&clientRect ) )
 	{
+		InvalidateRect( hWnd,&clientRect,FALSE );
 		editor.HandleWindowResize( Vei2{
 			clientRect.right - clientRect.left,
 			clientRect.bottom - clientRect.top } );
-		InvalidateRect( hWnd,&clientRect,FALSE );
 	}
 }
 
@@ -174,7 +175,8 @@ LRESULT CALLBACK WndProc( HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam )
 		PAINTSTRUCT ps;
 		HDC hdc = BeginPaint( hWnd,&ps );
 		// TODO: Add any drawing code that uses hdc here...
-		editor.HandlePaint( hdc );
+		editor.HandlePaint( pixelBuffer );
+		pixelBuffer.DrawRaw( hdc );
 		EndPaint( hWnd,&ps );
 	}
 	break;
@@ -194,8 +196,18 @@ LRESULT CALLBACK WndProc( HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam )
 		if( editor.HandleKeyUp( static_cast<unsigned char>( wParam ) ) ) Repaint( hWnd );
 		break;
 	case WM_SIZE:
+	{
+		RECT clientRect;
+		if( GetClientRect( hWnd,&clientRect ) )
+		{
+			pixelBuffer = Surface{
+				clientRect.right - clientRect.left,
+				clientRect.bottom - clientRect.top
+			};
+		}
 		Repaint( hWnd );
-		break;
+	}
+	break;
 	case WM_DESTROY:
 		PostQuitMessage( 0 );
 		break;

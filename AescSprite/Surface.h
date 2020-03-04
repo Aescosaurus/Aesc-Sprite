@@ -23,12 +23,15 @@ public:
 	void PutPixel( int x,int y,Color c );
 	void Resize( const Vei2& newSize );
 	// Overlay the other surface on top of this one.
-	void Overlay( const Surface& other );
+	void Overlay( const Surface& other,const Vei2& pos = Vei2::Zero() );
 	void Fill( Color fill );
+	void DrawRect( int x,int y,int width,int height,Color c );
+	void DrawRect( const RectI& area,Color c );
 	// Move selection of surface in direction of movement.
 	void Move( const RectI& selection,const Vei2& movement );
 
 	void Draw( HDC hdc,const Vei2& pos,float scale ) const;
+	void DrawRaw( HDC hdc ) const;
 	static void CacheBrushes( const Surface& test,const class Palette& pal );
 
 	Color GetPixel( int x,int y ) const;

@@ -119,19 +119,16 @@ void Surface::Resize( const Vei2& newSize )
 	}
 }
 
-void Surface::Overlay( const Surface& other )
+void Surface::Overlay( const Surface& other,const Vei2& pos )
 {
-	assert( width == other.width );
-	assert( height == other.height );
-
-	for( int y = 0; y < height; ++y )
+	for( int y = 0; y < min( height,other.height ); ++y )
 	{
-		for( int x = 0; x < width; ++x )
+		for( int x = 0; x < min( width,other.width ); ++x )
 		{
 			const auto pix = other.GetPixel( x,y );
 			// if( pix != Colors::Magenta )
 			{
-				PutPixel( x,y,pix );
+				PutPixel( pos.x + x,pos.y + y,pix );
 			}
 		}
 	}
@@ -146,6 +143,22 @@ void Surface::Fill( Color fill )
 			PutPixel( x,y,fill );
 		}
 	}
+}
+
+void Surface::DrawRect( int x,int y,int width,int height,Color c )
+{
+	for( int yc = y; yc < y + height; ++yc )
+	{
+		for( int xc = x; xc < x + width; ++xc )
+		{
+			PutPixel( xc,yc,c );
+		}
+	}
+}
+
+void Surface::DrawRect( const RectI& area,Color c )
+{
+	DrawRect( area.left,area.top,area.GetWidth(),area.GetHeight(),c );
 }
 
 void Surface::Move( const RectI& selection,const Vei2& movement )
@@ -192,6 +205,17 @@ void Surface::Draw( HDC hdc,const Vei2& pos,float scale ) const
 				rc.bottom = rc.top + iscale;
 				FillRect( hdc,&rc,*colorRefs[pix] );
 			}
+		}
+	}
+}
+
+void Surface::DrawRaw( HDC hdc ) const
+{
+	for( int y = 0; y < height; ++y )
+	{
+		for( int x = 0; x < width; ++x )
+		{
+			SetPixel( hdc,x,y,GetPixel( x,y ) );
 		}
 	}
 }

@@ -23,7 +23,7 @@ public:
 
 	void HandleWindowResize( const Vei2& windowSize );
 
-	void HandlePaint( HDC hdc );
+	void HandlePaint( Surface& buffer );
 
 	void OpenFile();
 	void RegenImage();

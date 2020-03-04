@@ -89,14 +89,14 @@ void Editor::HandleWindowResize( const Vei2& windowSize )
 	}
 }
 
-void Editor::HandlePaint( HDC hdc )
+void Editor::HandlePaint( Surface& buffer )
 {
-	pal.OnPaint( hdc );
-	layers.OnPaint( hdc );
-	canv.OnPaint( hdc );
+	pal.OnPaint( buffer );
+	layers.OnPaint( buffer );
+	canv.OnPaint( buffer );
 	for( auto& tool : tools )
 	{
-		tool->OnPaint( hdc );
+		tool->OnPaint( buffer );
 	}
 }
 
