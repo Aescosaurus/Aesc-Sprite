@@ -78,7 +78,7 @@ void Palette::OnWindowResize( const RectI& area )
 	}
 }
 
-void Palette::OnPaint( Surface& buffer )
+void Palette::OnPaint( HDC hdc )
 {
 	for( auto& item : colors )
 	{
@@ -87,8 +87,8 @@ void Palette::OnPaint( Surface& buffer )
 		{
 			item.solidBrush = CreateSolidBrush( item.col.dword );
 		}
-		buffer.DrawRect( item.area,item.col );
-		// FillRect( hdc,&rc,item.solidBrush );
+		// buffer.DrawRect( item.area,item.col );
+		FillRect( hdc,&rc,item.solidBrush );
 	}
 }
 

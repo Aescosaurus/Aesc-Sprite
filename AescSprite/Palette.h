@@ -25,7 +25,7 @@ public:
 	void LoadPalette( const Surface& pal );
 	void GeneratePalette( const std::string& src );
 	void OnWindowResize( const RectI& area );
-	void OnPaint( Surface& buffer );
+	void OnPaint( HDC hdc );
 
 	int GetBottom() const;
 

@@ -38,10 +38,10 @@ public:
 		this->area.right = area.left + icon.GetWidth() * int( drawScale );
 	}
 
-	virtual void OnPaint( Surface& buffer )
+	virtual void OnPaint( HDC hdc )
 	{
-		// icon.Draw( hdc,area.GetTopLeft(),drawScale );
-		buffer.Overlay( icon,area.GetTopLeft() );
+		icon.Draw( hdc,area.GetTopLeft(),drawScale );
+		// buffer.Overlay( icon,area.GetTopLeft() );
 	}
 
 	void CacheImage( Surface& img )

@@ -9,7 +9,7 @@ public:
 	Canvas( const RectI& area,const Surface& img );
 
 	void OnWindowResize( const RectI& area );
-	void OnPaint( Surface& buffer );
+	void OnPaint( HDC hdc );
 
 	void CacheImage( const Surface& img );
 

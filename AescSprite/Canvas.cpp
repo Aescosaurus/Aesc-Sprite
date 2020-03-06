@@ -15,14 +15,14 @@ void Canvas::OnWindowResize( const RectI& area )
 	this->area = area;
 }
 
-void Canvas::OnPaint( Surface& buffer )
+void Canvas::OnPaint( HDC hdc )
 {
-	// const auto rc = RECT( area );
-	// if( bgColor == nullptr ) bgColor = HBRUSH( CreateSolidBrush( RGB( 40,40,40 ) ) );
-	// FillRect( hdc,&rc,bgColor );
-	buffer.DrawRect( area,Color{ 40,40,40 } );
-	// image.Draw( hdc,area.GetTopLeft() + imagePos,imageScale );
-	buffer.Overlay( image );
+	const auto rc = RECT( area );
+	if( bgColor == nullptr ) bgColor = HBRUSH( CreateSolidBrush( RGB( 40,40,40 ) ) );
+	FillRect( hdc,&rc,bgColor );
+	// buffer.DrawRect( area,Color{ 40,40,40 } );
+	image.Draw( hdc,area.GetTopLeft() + imagePos,imageScale );
+	// buffer.Overlay( image );
 	// TODO: Make sure to clip to window area.
 }
 

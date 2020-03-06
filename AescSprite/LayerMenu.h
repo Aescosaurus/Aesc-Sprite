@@ -10,7 +10,7 @@ public:
 	LayerMenu( const RectI& area,const Vei2& canvSize );
 
 	void OnWindowResize( const RectI& area );
-	void OnPaint( Surface& buffer );
+	void OnPaint( HDC hdc );
 	void ResizeCanvas( const Vei2& canvSize );
 	void OpenImage( const std::string& imgPath );
 

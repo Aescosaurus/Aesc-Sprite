@@ -16,12 +16,12 @@ void LayerMenu::OnWindowResize( const RectI& area )
 	this->area = area;
 }
 
-void LayerMenu::OnPaint( Surface& buffer )
+void LayerMenu::OnPaint( HDC hdc )
 {
-	// const auto rc = RECT( area );
-	// if( bgColor == nullptr ) bgColor = HBRUSH( CreateSolidBrush( RGB( 70,70,70 ) ) );
-	buffer.DrawRect( area,Color{ 70,70,70 } );
-	// FillRect( hdc,&rc,bgColor );
+	const auto rc = RECT( area );
+	if( bgColor == nullptr ) bgColor = HBRUSH( CreateSolidBrush( RGB( 70,70,70 ) ) );
+	// buffer.DrawRect( area,Color{ 70,70,70 } );
+	FillRect( hdc,&rc,bgColor );
 }
 
 void LayerMenu::ResizeCanvas( const Vei2& canvSize )
