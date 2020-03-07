@@ -209,17 +209,6 @@ void Surface::Draw( HDC hdc,const Vei2& pos,float scale ) const
 	}
 }
 
-void Surface::DrawRaw( HDC hdc ) const
-{
-	for( int y = 0; y < height; ++y )
-	{
-		for( int x = 0; x < width; ++x )
-		{
-			SetPixel( hdc,x,y,GetPixel( x,y ) );
-		}
-	}
-}
-
 void Surface::CacheBrushes( const Surface& test,const Palette& pal )
 {
 	static auto& colorRefs = GetColorPal();

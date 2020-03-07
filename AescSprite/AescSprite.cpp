@@ -174,16 +174,23 @@ LRESULT CALLBACK WndProc( HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam )
 		PAINTSTRUCT ps;
 		HDC hdc = BeginPaint( hWnd,&ps );
 		// TODO: Add any drawing code that uses hdc here...
-		HDC buffer = GetDC( hWnd );
-		editor.HandlePaint( buffer );
+
 		RECT clientRect;
-		if( GetClientRect( hWnd,&clientRect ) )
-		{
-			BitBlt( hdc,clientRect.left,clientRect.top,
-				clientRect.right - clientRect.left,
-				clientRect.bottom - clientRect.top,
-				buffer,0,0,SRCCOPY );
-		}
+		GetClientRect( hWnd,&clientRect );
+
+		HDC buffer = CreateCompatibleDC( hdc );
+		HBITMAP hBmp = CreateCompatibleBitmap( hdc,
+			clientRect.right - clientRect.left,
+			clientRect.bottom - clientRect.top );
+		SelectObject( buffer,hBmp );
+
+		editor.HandlePaint( buffer );
+
+		BitBlt( hdc,clientRect.left,clientRect.top,
+			clientRect.right - clientRect.left,
+			clientRect.bottom - clientRect.top,
+			buffer,0,0,SRCCOPY );
+		ReleaseDC( hWnd,buffer );
 		EndPaint( hWnd,&ps );
 	}
 	break;

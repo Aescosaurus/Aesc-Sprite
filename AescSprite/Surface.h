@@ -31,7 +31,6 @@ public:
 	void Move( const RectI& selection,const Vei2& movement );
 
 	void Draw( HDC hdc,const Vei2& pos,float scale ) const;
-	void DrawRaw( HDC hdc ) const;
 	static void CacheBrushes( const Surface& test,const class Palette& pal );
 
 	Color GetPixel( int x,int y ) const;
