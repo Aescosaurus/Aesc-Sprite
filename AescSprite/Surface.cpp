@@ -209,17 +209,54 @@ void Surface::Draw( HDC hdc,const Vei2& pos,float scale ) const
 	}
 }
 
+void Surface::DrawDefault( HDC hdc,const Vei2& pos,float scale ) const
+{
+	static auto& colorRefs = GetDefaultColorPal();
+	const int iscale = int( scale );
+	const RECT start = RECT( RectI{ pos,iscale,iscale } );
+	RECT rc = start;
+	for( int y = 0; y < height; ++y )
+	{
+		for( int x = 0; x < width; ++x )
+		{
+			const auto pix = GetPixel( x,y );
+			if( pix != Colors::Magenta )
+			{
+				rc.left = start.left + x * iscale;
+				rc.top = start.top + y * iscale;
+				rc.right = rc.left + iscale;
+				rc.bottom = rc.top + iscale;
+				FillRect( hdc,&rc,*colorRefs[pix] );
+			}
+		}
+	}
+}
+
 void Surface::CacheBrushes( const Surface& test,const Palette& pal )
 {
 	static auto& colorRefs = GetColorPal();
-	if( !colorRefs.empty() ) colorRefs.clear();
-	colorRefs.insert( std::make_pair<unsigned int,const HBRUSH*>( Colors::Magenta,pal.GetBrush( Colors::Magenta ) ) );
+	colorRefs.clear();
+	// colorRefs.insert( std::make_pair<unsigned int,const HBRUSH*>(
+	// 	Colors::Magenta,pal.GetBrush( Colors::Magenta ) ) );
 	for( auto pix : test.pixels )
 	{
 		if( colorRefs.find( pix ) == colorRefs.end() )
 		{
-			colorRefs.insert( std::make_pair<unsigned int,const HBRUSH*>( pix,pal.GetBrush( pix ) ) );
+			colorRefs.insert( std::make_pair<unsigned int,const HBRUSH*>(
+				pix,pal.GetBrush( pix ) ) );
 		}
+	}
+}
+
+void Surface::CacheDefaultBrushes( const Surface& colors,const Palette& pal )
+{
+	static auto& refs = GetDefaultColorPal();
+	refs.insert( std::make_pair<unsigned int,const HBRUSH*>(
+		Colors::Magenta,pal.GetBrush( Colors::Magenta ) ) );
+	for( auto pix : colors.pixels )
+	{
+		refs.insert( std::make_pair<unsigned int,const HBRUSH*>(
+			pix,pal.GetDefaultBrush( pix ) ) );
 	}
 }
 
@@ -252,4 +289,10 @@ std::unordered_map<unsigned int,const HBRUSH*>& Surface::GetColorPal()
 {
 	static std::unordered_map<unsigned int,const HBRUSH*> colorRefs;
 	return( colorRefs );
+}
+
+std::unordered_map<unsigned int,const HBRUSH*>& Surface::GetDefaultColorPal()
+{
+	static std::unordered_map<unsigned int,const HBRUSH*> refs;
+	return( refs );
 }

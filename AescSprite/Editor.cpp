@@ -14,7 +14,7 @@ Editor::Editor( const Vei2& windowSize )
 	layers( sidebarArea,canvSize ),
 	canv( canvasArea,layers.GenerateFinalImage() )
 {
-	pal.LoadPalette( Surface{ "Palettes/Gr8.bmp" } );
+	pal.LoadDefaultPalette( Surface{ "Palettes/Gr8.bmp" } );
 
 	tools.emplace_back( std::make_unique<Pointer>() );
 	tools.emplace_back( std::make_unique<Selector>() );
@@ -23,6 +23,7 @@ Editor::Editor( const Vei2& windowSize )
 	for( auto& tool : tools )
 	{
 		tool->SetCanvasRef( canv );
+		tool->SetPalRef( pal );
 		tool->CacheImage( curLayer );
 	}
 

@@ -23,6 +23,11 @@ public:
 	{
 		this->canv = &canv;
 	}
+	
+	void SetPalRef( Palette& pal )
+	{
+		this->pal = &pal;
+	}
 
 	virtual ReturnType OnMouseDown( const Vei2& pos ) { return( ReturnType::None ); }
 	virtual ReturnType OnMouseUp( const Vei2& pos ) { return( ReturnType::None ); }
@@ -40,7 +45,7 @@ public:
 
 	virtual void OnPaint( HDC hdc )
 	{
-		icon.Draw( hdc,area.GetTopLeft(),drawScale );
+		icon.DrawDefault( hdc,area.GetTopLeft(),drawScale );
 		// buffer.Overlay( icon,area.GetTopLeft() );
 	}
 
@@ -60,4 +65,5 @@ protected:
 	RectI area = RectI{ 0,0,0,0 };
 	Surface* activeLayer = nullptr;
 	Canvas* canv = nullptr;
+	Palette* pal = nullptr;
 };

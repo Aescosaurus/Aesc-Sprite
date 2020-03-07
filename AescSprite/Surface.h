@@ -31,7 +31,9 @@ public:
 	void Move( const RectI& selection,const Vei2& movement );
 
 	void Draw( HDC hdc,const Vei2& pos,float scale ) const;
+	void DrawDefault( HDC hdc,const Vei2& pos,float scale ) const;
 	static void CacheBrushes( const Surface& test,const class Palette& pal );
+	static void CacheDefaultBrushes( const Surface& colors,const class Palette& pal );
 
 	Color GetPixel( int x,int y ) const;
 	int GetWidth() const;
@@ -40,6 +42,7 @@ public:
 	RectI GetRect() const;
 private:
 	static std::unordered_map<unsigned int,const HBRUSH*>& GetColorPal();
+	static std::unordered_map<unsigned int,const HBRUSH*>& GetDefaultColorPal();
 private:
 	std::vector<Color> pixels;
 	int width;

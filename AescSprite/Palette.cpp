@@ -13,6 +13,7 @@ Palette::Palette( const RectI& area )
 
 void Palette::LoadPalette( const Surface& pal )
 {
+	colors.clear();
 	assert( pal.GetHeight() == 1 );
 	for( int x = 0; x < pal.GetWidth(); ++x )
 	{
@@ -29,6 +30,26 @@ void Palette::LoadPalette( const Surface& pal )
 	Surface::CacheBrushes( pal,*this );
 
 	OnWindowResize( area );
+}
+
+void Palette::LoadDefaultPalette( const Surface& pal )
+{
+	assert( pal.GetHeight() == 1 );
+	for( int x = 0; x < pal.GetWidth(); ++x )
+	{
+		const auto pix = pal.GetPixel( x,0 );
+		if( pix != Colors::Magenta )
+		{
+			defaultColors.emplace_back( ColorItem{ pix,
+				RectI{ 0,0,0,0 } } );
+		}
+	}
+	colors.emplace_back( ColorItem{ Color{ 255,0,255 },
+		RectI{ 0,0,0,0 } } );
+
+	Surface::CacheDefaultBrushes( pal,*this );
+
+	LoadPalette( pal );
 }
 
 void Palette::GeneratePalette( const std::string& src )
@@ -80,15 +101,30 @@ void Palette::OnWindowResize( const RectI& area )
 
 void Palette::OnPaint( HDC hdc )
 {
-	for( auto& item : colors )
+	if( defaultColors[0].solidBrush == nullptr )
 	{
-		const auto rc = RECT( item.area );
-		if( item.solidBrush == nullptr )
+		for( auto& item : defaultColors )
 		{
-			item.solidBrush = CreateSolidBrush( item.col.dword );
+			const auto rc = RECT( item.area );
+			if( item.solidBrush == nullptr )
+			{
+				item.solidBrush = CreateSolidBrush( item.col.dword );
+			}
+			FillRect( hdc,&rc,item.solidBrush );
 		}
-		// buffer.DrawRect( item.area,item.col );
-		FillRect( hdc,&rc,item.solidBrush );
+	}
+	// else
+	{
+		for( auto& item : colors )
+		{
+			const auto rc = RECT( item.area );
+			if( item.solidBrush == nullptr )
+			{
+				item.solidBrush = CreateSolidBrush( item.col.dword );
+			}
+			// buffer.DrawRect( item.area,item.col );
+			FillRect( hdc,&rc,item.solidBrush );
+		}
 	}
 }
 
@@ -108,6 +144,26 @@ const HBRUSH* Palette::GetBrush( Color c ) const
 	}
 	assert( false );
 	return( nullptr );
+}
+
+const HBRUSH* Palette::GetDefaultBrush( Color c ) const
+{
+	for( const auto& item : defaultColors )
+	{
+		if( item.col == c )
+		{
+			return( &item.solidBrush );
+		}
+	}
+	assert( false );
+	return( nullptr );
+}
+
+Color Palette::GetColor( int i ) const
+{
+	assert( i >= 0 );
+	assert( i < int( colors.size() ) );
+	return( colors[i].col );
 }
 
 Palette::ColorItem::ColorItem( Color c,const RectI& area )

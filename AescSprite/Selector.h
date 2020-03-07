@@ -31,7 +31,7 @@ public:
 			if( activeLayer->GetRect().ContainsPoint( canvPos ) )
 			{
 				activeLayer->PutPixel( canvPos.x,canvPos.y,
-					Color{ 239,18,36 } );
+					pal->GetColor( 0 ) );
 				type = ReturnType::RegenImage;
 			}
 		}
