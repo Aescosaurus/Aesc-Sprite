@@ -17,6 +17,8 @@ public:
 
 	Vei2& GetImagePos();
 	Vei2 Mouse2CanvPos( const Vei2& mousePos ) const;
+	Vei2 CalcImagePos() const;
+	float GetImageScaling();
 private:
 	RectI area;
 	Surface image;

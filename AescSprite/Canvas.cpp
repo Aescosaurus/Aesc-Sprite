@@ -46,3 +46,13 @@ Vei2 Canvas::Mouse2CanvPos( const Vei2& mousePos ) const
 	temp /= int( imageScale );
 	return( temp );
 }
+
+Vei2 Canvas::CalcImagePos() const
+{
+	return( area.GetTopLeft() + imagePos );
+}
+
+float Canvas::GetImageScaling()
+{
+	return( imageScale );
+}

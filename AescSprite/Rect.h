@@ -49,7 +49,7 @@ public:
 		return pos.x > left && pos.x < right &&
 			pos.y > top && pos.y < bottom;
 	}
-
+	
 	constexpr Rect_ MoveTo( const Vec2_<T>& point )
 	{
 		right += point.x - left;
@@ -68,10 +68,32 @@ public:
 
 		return( *this );
 	}
+	constexpr Rect_ Scale( T amount )
+	{
+		left *= amount;
+		right *= amount;
+		top *= amount;
+		bottom *= amount;
+		
+		return( *this );
+	}
+	constexpr Rect_ Fix()
+	{
+		if( left > right ) std::swap( left,right );
+		if( top > bottom ) std::swap( top,bottom );
+
+		return( *this );
+	}
 	constexpr Rect_ GetMovedBy( const Vec2_<T>& amount ) const
 	{
 		auto temp = *this;
 		temp.MoveBy( amount );
+		return( temp );
+	}
+	constexpr Rect_ GetMovedTo( const Vec2_<T>& pos ) const
+	{
+		auto temp = *this;
+		temp.MoveTo( pos );
 		return( temp );
 	}
 
