@@ -2,11 +2,13 @@
 
 #include "Rect.h"
 #include "Surface.h"
+#include "Palette.h"
 
 class Canvas
 {
 public:
-	Canvas( const RectI& area,const Surface& img );
+	Canvas( const RectI& area,const Surface& img,
+		const Palette& pal );
 
 	void OnWindowResize( const RectI& area );
 	void OnPaint( HDC hdc );
@@ -21,5 +23,5 @@ private:
 	Vei2 imagePos = Vei2::Zero();
 	float imageScale = 15.0f;
 
-	HBRUSH bgColor = nullptr;
+	const HBRUSH* bgColor;
 };

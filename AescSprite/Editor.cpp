@@ -11,11 +11,9 @@ Editor::Editor( const Vei2& windowSize )
 	toolbarArea( 0,0,0,0 ),
 	sidebarArea( 0,0,0,0 ),
 	pal( sidebarArea ),
-	layers( sidebarArea,canvSize ),
-	canv( canvasArea,layers.GenerateFinalImage() )
+	layers( sidebarArea,canvSize,pal ),
+	canv( canvasArea,layers.GenerateFinalImage(),pal )
 {
-	pal.LoadDefaultPalette( Surface{ "Palettes/Gr8.bmp" } );
-
 	tools.emplace_back( std::make_unique<Pointer>() );
 	tools.emplace_back( std::make_unique<Selector>() );
 

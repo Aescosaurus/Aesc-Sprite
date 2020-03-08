@@ -8,6 +8,7 @@ Palette::Palette( const RectI& area )
 	:
 	area( area )
 {
+	LoadDefaultPalette( Surface{ "Palettes/Theme.bmp" } );
 	OnWindowResize( area );
 }
 

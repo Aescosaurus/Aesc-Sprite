@@ -3,11 +3,13 @@
 #include "Rect.h"
 #include <vector>
 #include "Surface.h"
+#include "Palette.h"
 
 class LayerMenu
 {
 public:
-	LayerMenu( const RectI& area,const Vei2& canvSize );
+	LayerMenu( const RectI& area,const Vei2& canvSize,
+		const Palette& pal );
 
 	void OnWindowResize( const RectI& area );
 	void OnPaint( HDC hdc );
@@ -21,5 +23,5 @@ private:
 	std::vector<Surface> layers;
 	int selectedLayer = 0;
 	
-	HBRUSH bgColor = nullptr;
+	const HBRUSH* bgColor;
 };

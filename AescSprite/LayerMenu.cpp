@@ -1,9 +1,11 @@
 #include "stdafx.h"
 #include "LayerMenu.h"
 
-LayerMenu::LayerMenu( const RectI& area,const Vei2& canvSize )
+LayerMenu::LayerMenu( const RectI& area,const Vei2& canvSize,
+	const Palette& pal )
 	:
-	area( area )
+	area( area ),
+	bgColor( pal.GetBrush( pal.GetColor( 8 ) ) )
 {
 	OnWindowResize( area );
 	
@@ -19,9 +21,9 @@ void LayerMenu::OnWindowResize( const RectI& area )
 void LayerMenu::OnPaint( HDC hdc )
 {
 	const auto rc = RECT( area );
-	if( bgColor == nullptr ) bgColor = HBRUSH( CreateSolidBrush( RGB( 70,70,70 ) ) );
+	// if( bgColor == nullptr ) bgColor = HBRUSH( CreateSolidBrush( RGB( 70,70,70 ) ) );
 	// buffer.DrawRect( area,Color{ 70,70,70 } );
-	FillRect( hdc,&rc,bgColor );
+	FillRect( hdc,&rc,*bgColor );
 }
 
 void LayerMenu::ResizeCanvas( const Vei2& canvSize )

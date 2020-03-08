@@ -1,10 +1,12 @@
 #include "stdafx.h"
 #include "Canvas.h"
 
-Canvas::Canvas( const RectI& area,const Surface& img )
+Canvas::Canvas( const RectI& area,const Surface& img,
+	const Palette& pal )
 	:
 	area( area ),
-	image( img )
+	image( img ),
+	bgColor( pal.GetBrush( pal.GetColor( 7 ) ) )
 {
 	OnWindowResize( area );
 	CacheImage( img );
@@ -18,8 +20,8 @@ void Canvas::OnWindowResize( const RectI& area )
 void Canvas::OnPaint( HDC hdc )
 {
 	const auto rc = RECT( area );
-	if( bgColor == nullptr ) bgColor = HBRUSH( CreateSolidBrush( RGB( 40,40,40 ) ) );
-	FillRect( hdc,&rc,bgColor );
+	// if( bgColor == nullptr ) bgColor = HBRUSH( CreateSolidBrush( RGB( 40,40,40 ) ) );
+	FillRect( hdc,&rc,*bgColor );
 	// buffer.DrawRect( area,Color{ 40,40,40 } );
 	image.Draw( hdc,area.GetTopLeft() + imagePos,imageScale );
 	// buffer.Overlay( image );
