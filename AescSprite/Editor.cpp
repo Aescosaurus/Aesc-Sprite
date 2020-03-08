@@ -12,7 +12,8 @@ Editor::Editor( const Vei2& windowSize )
 	sidebarArea( 0,0,0,0 ),
 	pal( sidebarArea ),
 	layers( sidebarArea,canvSize,pal ),
-	canv( canvasArea,layers.GenerateFinalImage(),pal )
+	canv( canvasArea,layers.GenerateFinalImage(),pal ),
+	toolbarBG( pal.GetBrush( pal.GetColor( 14 ) ) )
 {
 	tools.emplace_back( std::make_unique<Pointer>() );
 	tools.emplace_back( std::make_unique<Selector>() );
@@ -93,6 +94,8 @@ void Editor::HandlePaint( HDC hdc )
 	pal.OnPaint( hdc );
 	layers.OnPaint( hdc );
 	canv.OnPaint( hdc );
+	auto toolbarRect = RECT( toolbarArea );
+	FillRect( hdc,&toolbarRect,*toolbarBG );
 	for( auto& tool : tools )
 	{
 		tool->OnPaint( hdc );

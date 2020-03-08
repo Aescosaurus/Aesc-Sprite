@@ -186,7 +186,7 @@ void Surface::Move( const RectI& selection,const Vei2& movement )
 void Surface::Draw( HDC hdc,const Vei2& pos,float scale ) const
 {
 	static auto& colorRefs = GetColorPal();
-	const int iscale = int( scale );
+	const int iscale = int( round( scale ) );
 	const RECT start = RECT( RectI{ pos,iscale,iscale } );
 	RECT rc = start;
 	for( int y = 0; y < height; ++y )
@@ -196,13 +196,10 @@ void Surface::Draw( HDC hdc,const Vei2& pos,float scale ) const
 			const auto pix = GetPixel( x,y );
 			if( pix != Colors::Magenta )
 			{
-				// assert( colorRefs.find( pix ) != colorRefs.end() );
-				// const RECT rc = RECT( RectI{ pos + Vei2{ x,y } * iscale,
-				// 	iscale,iscale } );
-				rc.left = start.left + x * iscale;
-				rc.top = start.top + y * iscale;
-				rc.right = rc.left + iscale;
-				rc.bottom = rc.top + iscale;
+				rc.left = start.left + int( float( x ) * scale );
+				rc.top = start.top + int( float( y ) * scale );
+				rc.right = rc.left + iscale + 1;
+				rc.bottom = rc.top + iscale + 1;
 				FillRect( hdc,&rc,*colorRefs[pix] );
 			}
 		}
@@ -212,7 +209,7 @@ void Surface::Draw( HDC hdc,const Vei2& pos,float scale ) const
 void Surface::DrawDefault( HDC hdc,const Vei2& pos,float scale ) const
 {
 	static auto& colorRefs = GetDefaultColorPal();
-	const int iscale = int( scale );
+	const int iscale = int( round( scale ) );
 	const RECT start = RECT( RectI{ pos,iscale,iscale } );
 	RECT rc = start;
 	for( int y = 0; y < height; ++y )
@@ -222,10 +219,14 @@ void Surface::DrawDefault( HDC hdc,const Vei2& pos,float scale ) const
 			const auto pix = GetPixel( x,y );
 			if( pix != Colors::Magenta )
 			{
-				rc.left = start.left + x * iscale;
-				rc.top = start.top + y * iscale;
-				rc.right = rc.left + iscale;
-				rc.bottom = rc.top + iscale;
+				// rc.left = start.left + int( float( x ) * scale );
+				// rc.top = start.top + int( float( y ) * scale );
+				// rc.right = rc.left + iscale;
+				// rc.bottom = rc.top + iscale;
+				rc.left = start.left + int( float( x ) * scale );
+				rc.top = start.top + int( float( y ) * scale );
+				rc.right = rc.left + iscale + 1;
+				rc.bottom = rc.top + iscale + 1;
 				FillRect( hdc,&rc,*colorRefs[pix] );
 			}
 		}

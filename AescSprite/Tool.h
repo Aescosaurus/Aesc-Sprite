@@ -56,8 +56,12 @@ public:
 
 	RectI GetNextRect() const
 	{
-		return( area.GetMovedBy( Vei2::Right() *
-			icon.GetWidth() * int( drawScale ) ) );
+		auto temp = Rect( area );
+		temp.MoveBy( Vec2::Right() * float( icon.GetWidth() ) *
+			drawScale );
+		return( temp );
+		// return( area.GetMovedBy( Vei2::Right() *
+		// 	icon.GetWidth() * int( drawScale ) ) );
 	}
 protected:
 	float drawScale = 0.0f;
