@@ -9,7 +9,7 @@ class Pointer
 public:
 	Pointer()
 		:
-		Tool( Surface{ "Icons/Pointer.bmp" } )
+		Tool( Surface{ "Icons/Pointer.bmp" },'V' )
 	{}
 
 	ReturnType OnMouseDown( const Vei2& pos ) override

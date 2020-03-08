@@ -163,18 +163,25 @@ void Surface::DrawRect( const RectI& area,Color c )
 
 void Surface::Move( const RectI& selection,const Vei2& movement )
 {
-	assert( selection.left >= 0 );
-	assert( selection.right < width );
-	assert( selection.top >= 0 );
-	assert( selection.bottom < height );
-	assert( selection.GetMovedBy( movement ).left >= 0 );
-	assert( selection.GetMovedBy( movement ).right < width );
-	assert( selection.GetMovedBy( movement ).top >= 0 );
-	assert( selection.GetMovedBy( movement ).bottom < height );
+	// assert( selection.left >= 0 );
+	// assert( selection.right < width );
+	// assert( selection.top >= 0 );
+	// assert( selection.bottom < height );
+	// assert( selection.GetMovedBy( movement ).left >= 0 );
+	// assert( selection.GetMovedBy( movement ).right < width );
+	// assert( selection.GetMovedBy( movement ).top >= 0 );
+	// assert( selection.GetMovedBy( movement ).bottom < height );
 
-	for( int y = selection.top; y < selection.bottom; ++y )
+	// TODO: Fix this.
+
+	const int xStart = max( selection.left + movement.x,1 );
+	const int yStart = max( selection.top + movement.y,1 );
+	const int xEnd = min( selection.right + movement.x,width - 1 );
+	const int yEnd = min( selection.bottom + movement.y,height - 1 );
+
+	for( int y = yStart; y < yEnd; ++y )
 	{
-		for( int x = selection.left; x < selection.right; ++x )
+		for( int x = xStart; x < xEnd; ++x )
 		{
 			PutPixel( x + movement.x,y + movement.y,
 				GetPixel( x,y ) );

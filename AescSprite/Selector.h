@@ -9,7 +9,7 @@ class Selector
 public:
 	Selector()
 		:
-		Tool( Surface{ "Icons/Selector.bmp" } )
+		Tool( Surface{ "Icons/Selector.bmp" },'M' )
 	{}
 
 	ReturnType OnMouseDown( const Vei2& pos ) override

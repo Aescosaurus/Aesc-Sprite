@@ -14,9 +14,10 @@ public:
 		RegenImage
 	};
 public:
-	Tool( const Surface& icon )
+	Tool( const Surface& icon,unsigned char swapKey )
 		:
-		icon( icon )
+		icon( icon ),
+		swapKey( swapKey )
 	{}
 
 	void SetCanvasRef( Canvas& canv )
@@ -63,9 +64,14 @@ public:
 		// return( area.GetMovedBy( Vei2::Right() *
 		// 	icon.GetWidth() * int( drawScale ) ) );
 	}
+	unsigned char GetSwapKey() const
+	{
+		return( swapKey );
+	}
 protected:
 	float drawScale = 0.0f;
 	Surface icon;
+	unsigned char swapKey;
 	RectI area = RectI{ 0,0,0,0 };
 	Surface* activeLayer = nullptr;
 	Canvas* canv = nullptr;

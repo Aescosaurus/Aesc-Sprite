@@ -52,6 +52,13 @@ bool Editor::HandleMouseMove( const Vei2& pos )
 
 bool Editor::HandleKeyDown( unsigned char key )
 {
+	for( int i = 0; i < int( tools.size() ); ++i )
+	{
+		if( key == tools[i]->GetSwapKey() )
+		{
+			curTool = i;
+		}
+	}
 	auto& tool = tools[curTool];
 	const auto type = tool->OnKeyDown( key );
 	return( GetReturnType( type ) );
