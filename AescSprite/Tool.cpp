@@ -29,6 +29,18 @@ void Tool::CacheImage( Surface& img )
 	Tool::activeLayer = &img;
 }
 
+Tool::ReturnType Tool::OnMouseDown( const Vei2& pos )
+{
+	mouseDown = true;
+	return( ReturnType::None );
+}
+
+Tool::ReturnType Tool::OnMouseUp( const Vei2 & pos )
+{
+	mouseDown = false;
+	return( ReturnType::None );
+}
+
 void Tool::OnWindowResize( const RectI& area )
 {
 	drawScale = float( area.GetHeight() ) / icon.GetHeight();

@@ -18,8 +18,8 @@ public:
 	{
 		if( !mouseDown )
 		{
+			Tool::OnMouseDown( pos );
 			selectArea = RectI{ 0,0,0,0 };
-			mouseDown = true;
 			const auto canvPos = canv->Mouse2CanvPos( pos );
 			selectArea.MoveTo( canvPos );
 		}
@@ -27,7 +27,7 @@ public:
 	}
 	ReturnType OnMouseUp( const Vei2& pos ) override
 	{
-		mouseDown = false;
+		Tool::OnMouseUp( pos );
 		selectArea.Fix();
 		// selection = RectI{ 0,0,0,0 };
 		return( ReturnType::None );
@@ -70,6 +70,5 @@ public:
 		}
 	}
 private:
-	bool mouseDown = false;
 	// RectI selection = RectI{ 0,0,0,0 };
 };

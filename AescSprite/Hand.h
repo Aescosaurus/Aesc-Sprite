@@ -14,13 +14,13 @@ public:
 
 	ReturnType OnMouseDown( const Vei2& pos ) override
 	{
-		mouseDown = true;
+		Tool::OnMouseDown( pos );
 		oldPos = pos;
 		return( ReturnType::None );
 	}
 	ReturnType OnMouseUp( const Vei2& pos ) override
 	{
-		mouseDown = false;
+		Tool::OnMouseUp( pos );
 		return( ReturnType::None );
 	}
 	ReturnType OnMouseMove( const Vei2& pos ) override
@@ -36,6 +36,5 @@ public:
 		return( type );
 	}
 private:
-	bool mouseDown = false;
 	Vei2 oldPos = Vei2::Zero();
 };

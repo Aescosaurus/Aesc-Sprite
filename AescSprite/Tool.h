@@ -21,8 +21,8 @@ public:
 	static void SetPalRef( Palette& pal );
 	static void CacheImage( Surface& img );
 
-	virtual ReturnType OnMouseDown( const Vei2& pos ) { return( ReturnType::None ); }
-	virtual ReturnType OnMouseUp( const Vei2& pos ) { return( ReturnType::None ); }
+	virtual ReturnType OnMouseDown( const Vei2& pos );
+	virtual ReturnType OnMouseUp( const Vei2& pos );
 	virtual ReturnType OnMouseMove( const Vei2& pos ) { return( ReturnType::None ); }
 
 	virtual ReturnType OnKeyDown( unsigned char key ) { return( ReturnType::None ); }
@@ -46,4 +46,5 @@ protected:
 	static Canvas* canv;
 	static Palette* pal;
 	static RectI selectArea;
+	bool mouseDown = false;
 };
