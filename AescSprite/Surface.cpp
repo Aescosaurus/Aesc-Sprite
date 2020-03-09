@@ -163,29 +163,20 @@ void Surface::DrawRect( const RectI& area,Color c )
 
 void Surface::Move( const RectI& selection,const Vei2& movement )
 {
-	// assert( selection.left >= 0 );
-	// assert( selection.right < width );
-	// assert( selection.top >= 0 );
-	// assert( selection.bottom < height );
-	// assert( selection.GetMovedBy( movement ).left >= 0 );
-	// assert( selection.GetMovedBy( movement ).right < width );
-	// assert( selection.GetMovedBy( movement ).top >= 0 );
-	// assert( selection.GetMovedBy( movement ).bottom < height );
-
-	// TODO: Fix this.
-
 	const int xStart = max( selection.left + movement.x,1 );
 	const int yStart = max( selection.top + movement.y,1 );
-	const int xEnd = min( selection.right + movement.x,width - 1 );
-	const int yEnd = min( selection.bottom + movement.y,height - 1 );
+	const int xEnd = min( selection.right + movement.x,width - 2 );
+	const int yEnd = min( selection.bottom + movement.y,height - 2 );
+
+	Surface temp = *this;
+	Fill( Colors::Magenta );
 
 	for( int y = yStart; y < yEnd; ++y )
 	{
 		for( int x = xStart; x < xEnd; ++x )
 		{
 			PutPixel( x + movement.x,y + movement.y,
-				GetPixel( x,y ) );
-			PutPixel( x,y,Colors::Magenta );
+				temp.GetPixel( x,y ) );
 		}
 	}
 }

@@ -53,7 +53,7 @@ public:
 	{
 		Tool::OnPaint( hdc );
 
-		if( mouseDown && selection.GetWidth() != 0 &&
+		if( selection.GetWidth() != 0 &&
 			selection.GetHeight() != 0 )
 		{
 			HPEN pen = CreatePen( PS_SOLID,1,

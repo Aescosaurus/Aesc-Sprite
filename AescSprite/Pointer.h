@@ -15,6 +15,7 @@ public:
 	ReturnType OnMouseDown( const Vei2& pos ) override
 	{
 		mouseDown = true;
+		oldPos = canv->Mouse2CanvPos( pos );
 		return( ReturnType::None );
 	}
 	ReturnType OnMouseUp( const Vei2& pos ) override
@@ -30,13 +31,14 @@ public:
 		{
 			if( oldPos != Vei2{ -1,-1 } )
 			{
-				const auto diff = pos - oldPos;
+				const auto canvPos = canv->Mouse2CanvPos( pos );
+				const auto diff = canvPos - oldPos;
 				// canv->GetImagePos() += diff;
 				activeLayer->Move( activeLayer->GetRect(),
 					diff.GetOneized() );
-				type = ReturnType::Repaint;
+				type = ReturnType::RegenImage;
 			}
-			oldPos = pos;
+			oldPos = canv->Mouse2CanvPos( pos );
 		}
 		return( type );
 	}
