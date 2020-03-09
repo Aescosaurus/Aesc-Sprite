@@ -9,7 +9,7 @@ class Hand
 public:
 	Hand()
 		:
-		Tool( "Icons/Hand.bmp",'H' )
+		Tool( "Icons/Hand.bmp",'H',' ' )
 	{}
 
 	ReturnType OnMouseDown( const Vei2& pos ) override

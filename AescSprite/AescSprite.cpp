@@ -204,7 +204,11 @@ LRESULT CALLBACK WndProc( HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam )
 		if( editor.HandleMouseMove( pos ) ) Repaint( hWnd );
 		break;
 	case WM_KEYDOWN:
-		if( editor.HandleKeyDown( static_cast<unsigned char>( wParam ) ) ) Repaint( hWnd );
+		// No auto repeat.
+		if( !( lParam & 0x40000000 ) )
+		{
+			if( editor.HandleKeyDown( static_cast< unsigned char >( wParam ) ) ) Repaint( hWnd );
+		}
 		break;
 	case WM_KEYUP:
 		if( editor.HandleKeyUp( static_cast<unsigned char>( wParam ) ) ) Repaint( hWnd );

@@ -14,7 +14,8 @@ public:
 		RegenImage
 	};
 public:
-	Tool( const std::string& icon,unsigned char swapKey );
+	Tool( const std::string& icon,unsigned char swapKey,
+		unsigned char tempSelectKey = '\0' );
 
 	static void SetCanvasRef( Canvas& canv );
 	static void SetPalRef( Palette& pal );
@@ -33,11 +34,13 @@ public:
 
 	RectI GetNextRect() const;
 	unsigned char GetSwapKey() const;
+	unsigned char GetTempSelectKey() const;
 	const RectI& GetArea() const;
 protected:
 	float drawScale = 0.0f;
 	Surface icon;
 	unsigned char swapKey;
+	unsigned char tempSelectKey;
 	RectI area = RectI{ 0,0,0,0 };
 	static Surface* activeLayer;
 	static Canvas* canv;

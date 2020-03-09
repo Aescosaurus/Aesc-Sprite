@@ -40,6 +40,7 @@ private:
 	Canvas canv;
 	std::vector<std::unique_ptr<Tool>> tools;
 	int curTool = 0;
+	int oldTool = -1;
 
 	const HBRUSH* toolbarBG;
 };

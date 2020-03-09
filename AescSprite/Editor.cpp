@@ -67,6 +67,14 @@ bool Editor::HandleKeyDown( unsigned char key )
 		if( key == tools[i]->GetSwapKey() )
 		{
 			curTool = i;
+			oldTool = -1;
+			return( true );
+		}
+		else if( key == tools[i]->GetTempSelectKey() )
+		{
+			oldTool = curTool;
+			curTool = i;
+			return( true );
 		}
 	}
 	auto& tool = tools[curTool];
@@ -76,6 +84,12 @@ bool Editor::HandleKeyDown( unsigned char key )
 
 bool Editor::HandleKeyUp( unsigned char key )
 {
+	if( oldTool != -1 && key == tools[curTool]->GetTempSelectKey() )
+	{
+		curTool = oldTool;
+		oldTool = -1;
+		return( true );
+	}
 	auto& tool = tools[curTool];
 	const auto type = tool->OnKeyUp( key );
 	return( GetReturnType( type ) );

@@ -6,10 +6,12 @@ Canvas* Tool::canv = nullptr;
 Palette* Tool::pal = nullptr;
 RectI Tool::selectArea;
 
-Tool::Tool( const std::string& icon,unsigned char swapKey )
+Tool::Tool( const std::string& icon,unsigned char swapKey,
+	unsigned char tempSelectKey )
 	:
 	icon( icon ),
-	swapKey( swapKey )
+	swapKey( swapKey ),
+	tempSelectKey( tempSelectKey )
 {}
 
 void Tool::SetCanvasRef( Canvas& canv )
@@ -53,6 +55,11 @@ RectI Tool::GetNextRect() const
 unsigned char Tool::GetSwapKey() const
 {
 	return( swapKey );
+}
+
+unsigned char Tool::GetTempSelectKey() const
+{
+	return( tempSelectKey );
 }
 
 const RectI& Tool::GetArea() const
