@@ -39,7 +39,7 @@ private:
 	LayerMenu layers;
 	Canvas canv;
 	std::vector<std::unique_ptr<Tool>> tools;
-	int curTool = 1;
+	int curTool = 0;
 
 	const HBRUSH* toolbarBG;
 };

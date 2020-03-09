@@ -44,7 +44,7 @@ public:
 		return left >= other.left && right <= other.right &&
 			top >= other.top && bottom <= other.bottom;
 	}
-	constexpr bool ContainsPoint( const Vec2_<T>& pos )
+	constexpr bool ContainsPoint( const Vec2_<T>& pos ) const
 	{
 		return pos.x > left && pos.x < right &&
 			pos.y > top && pos.y < bottom;

@@ -54,3 +54,8 @@ unsigned char Tool::GetSwapKey() const
 {
 	return( swapKey );
 }
+
+const RectI& Tool::GetArea() const
+{
+	return( area );
+}

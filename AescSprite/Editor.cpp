@@ -6,6 +6,7 @@
 #include "Selector.h"
 #include "Brush.h"
 #include "Eraser.h"
+#include "Hand.h"
 
 Editor::Editor( const Vei2& windowSize )
 	:
@@ -25,12 +26,21 @@ Editor::Editor( const Vei2& windowSize )
 	tools.emplace_back( std::make_unique<Selector>() );
 	tools.emplace_back( std::make_unique<Brush>() );
 	tools.emplace_back( std::make_unique<Eraser>() );
+	tools.emplace_back( std::make_unique<Hand>() );
 
 	HandleWindowResize( windowSize );
 }
 
 bool Editor::HandleMouseDown( const Vei2& pos )
 {
+	for( int i = 0; i < int( tools.size() ); ++i )
+	{
+		if( tools[i]->GetArea().ContainsPoint( pos ) )
+		{
+			curTool = i;
+			return( true );
+		}
+	}
 	auto& tool = tools[curTool];
 	const auto type = tool->OnMouseDown( pos );
 	return( GetReturnType( type ) );

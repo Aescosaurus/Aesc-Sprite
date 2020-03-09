@@ -33,6 +33,7 @@ public:
 
 	RectI GetNextRect() const;
 	unsigned char GetSwapKey() const;
+	const RectI& GetArea() const;
 protected:
 	float drawScale = 0.0f;
 	Surface icon;

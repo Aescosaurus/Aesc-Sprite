@@ -72,6 +72,9 @@
     <ClInclude Include="Eraser.h">
       <Filter>Header Files\Tools</Filter>
     </ClInclude>
+    <ClInclude Include="Hand.h">
+      <Filter>Header Files\Tools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
