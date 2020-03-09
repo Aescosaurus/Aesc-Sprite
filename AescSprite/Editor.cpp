@@ -7,6 +7,7 @@
 #include "Brush.h"
 #include "Eraser.h"
 #include "Hand.h"
+#include "Zoomer.h"
 
 Editor::Editor( const Vei2& windowSize )
 	:
@@ -27,6 +28,7 @@ Editor::Editor( const Vei2& windowSize )
 	tools.emplace_back( std::make_unique<Brush>() );
 	tools.emplace_back( std::make_unique<Eraser>() );
 	tools.emplace_back( std::make_unique<Hand>() );
+	tools.emplace_back( std::make_unique<Zoomer>() );
 
 	HandleWindowResize( windowSize );
 }

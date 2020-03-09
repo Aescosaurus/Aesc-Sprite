@@ -16,6 +16,7 @@ public:
 	void CacheImage( const Surface& img );
 
 	Vei2& GetImagePos();
+	float& GetImageScale();
 	Vei2 Mouse2CanvPos( const Vei2& mousePos ) const;
 	Vei2 CalcImagePos() const;
 	float GetImageScaling();

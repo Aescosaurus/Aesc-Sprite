@@ -38,6 +38,11 @@ Vei2& Canvas::GetImagePos()
 	return( imagePos );
 }
 
+float& Canvas::GetImageScale()
+{
+	return( imageScale );
+}
+
 Vei2 Canvas::Mouse2CanvPos( const Vei2& mousePos ) const
 {
 	Vei2 temp = mousePos;

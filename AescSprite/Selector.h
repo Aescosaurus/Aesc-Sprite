@@ -58,10 +58,11 @@ public:
 			HPEN pen = CreatePen( PS_SOLID,1,
 				pal->GetColor( 11 ) );
 			SelectObject( hdc,pen );
-			const auto scale = int( canv->GetImageScaling() );
-			auto sel = selectArea;
-			sel.Scale( scale );
-			sel.MoveBy( canv->CalcImagePos() );
+			const auto scale = canv->GetImageScaling();
+			auto rsel = Rect( selectArea );
+			rsel.Scale( scale );
+			rsel.MoveBy( canv->CalcImagePos() );
+			const auto sel = RectI( rsel );
 			MoveToEx( hdc,sel.left,sel.top,nullptr );
 			LineTo( hdc,sel.right,sel.top );
 			LineTo( hdc,sel.right,sel.bottom );
