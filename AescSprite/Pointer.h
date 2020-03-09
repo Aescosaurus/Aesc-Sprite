@@ -33,10 +33,14 @@ public:
 			{
 				const auto canvPos = canv->Mouse2CanvPos( pos );
 				const auto diff = canvPos - oldPos;
-				// canv->GetImagePos() += diff;
-				activeLayer->Move( activeLayer->GetRect(),
-					diff.GetOneized() );
-				type = ReturnType::RegenImage;
+				const auto move = diff.GetOneized();
+				if( selectArea.GetMovedBy( move )
+					.IsContainedBy( activeLayer->GetRect() ) )
+				{
+					activeLayer->Move( selectArea,move );
+					selectArea.MoveBy( move );
+					type = ReturnType::RegenImage;
+				}
 			}
 			oldPos = canv->Mouse2CanvPos( pos );
 		}

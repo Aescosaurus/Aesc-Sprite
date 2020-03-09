@@ -163,13 +163,13 @@ void Surface::DrawRect( const RectI& area,Color c )
 
 void Surface::Move( const RectI& selection,const Vei2& movement )
 {
-	const int xStart = max( selection.left + movement.x,1 );
-	const int yStart = max( selection.top + movement.y,1 );
-	const int xEnd = min( selection.right + movement.x,width - 2 );
-	const int yEnd = min( selection.bottom + movement.y,height - 2 );
+	const int xStart = max( selection.left,0 );
+	const int yStart = max( selection.top,0 );
+	const int xEnd = min( selection.right,width );
+	const int yEnd = min( selection.bottom,height );
 
 	Surface temp = *this;
-	Fill( Colors::Magenta );
+	DrawRect( selection,Colors::Magenta );
 
 	for( int y = yStart; y < yEnd; ++y )
 	{

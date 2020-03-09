@@ -19,12 +19,9 @@ Editor::Editor( const Vei2& windowSize )
 	tools.emplace_back( std::make_unique<Selector>() );
 
 	auto& curLayer = layers.GetCurLayer();
-	for( auto& tool : tools )
-	{
-		tool->SetCanvasRef( canv );
-		tool->SetPalRef( pal );
-		tool->CacheImage( curLayer );
-	}
+	Tool::SetCanvasRef( canv );
+	Tool::SetPalRef( pal );
+	Tool::CacheImage( curLayer );
 
 	HandleWindowResize( windowSize );
 }

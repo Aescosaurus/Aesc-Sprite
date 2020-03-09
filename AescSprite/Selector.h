@@ -10,23 +10,25 @@ public:
 	Selector()
 		:
 		Tool( Surface{ "Icons/Selector.bmp" },'M' )
-	{}
+	{
+		selectArea = RectI{ 0,0,0,0 };
+	}
 
 	ReturnType OnMouseDown( const Vei2& pos ) override
 	{
 		if( !mouseDown )
 		{
-			selection = RectI{ 0,0,0,0 };
+			selectArea = RectI{ 0,0,0,0 };
 			mouseDown = true;
 			const auto canvPos = canv->Mouse2CanvPos( pos );
-			selection.MoveTo( canvPos );
+			selectArea.MoveTo( canvPos );
 		}
 		return( ReturnType::None );
 	}
 	ReturnType OnMouseUp( const Vei2& pos ) override
 	{
 		mouseDown = false;
-		selection.Fix();
+		selectArea.Fix();
 		// selection = RectI{ 0,0,0,0 };
 		return( ReturnType::None );
 	}
@@ -38,8 +40,8 @@ public:
 			const auto canvPos = canv->Mouse2CanvPos( pos );
 			if( activeLayer->GetRect().ContainsPoint( canvPos ) )
 			{
-				selection.right = canvPos.x + 1;
-				selection.bottom = canvPos.y + 1;
+				selectArea.right = canvPos.x + 1;
+				selectArea.bottom = canvPos.y + 1;
 				type = ReturnType::Repaint;
 				// activeLayer->PutPixel( canvPos.x,canvPos.y,
 				// 	pal->GetColor( 0 ) );
@@ -53,14 +55,14 @@ public:
 	{
 		Tool::OnPaint( hdc );
 
-		if( selection.GetWidth() != 0 &&
-			selection.GetHeight() != 0 )
+		if( selectArea.GetWidth() != 0 &&
+			selectArea.GetHeight() != 0 )
 		{
 			HPEN pen = CreatePen( PS_SOLID,1,
 				pal->GetColor( 11 ) );
 			SelectObject( hdc,pen );
 			const auto scale = int( canv->GetImageScaling() );
-			auto sel = selection;
+			auto sel = selectArea;
 			sel.Scale( scale );
 			sel.MoveBy( canv->CalcImagePos() );
 			MoveToEx( hdc,sel.left,sel.top,nullptr );
@@ -72,5 +74,5 @@ public:
 	}
 private:
 	bool mouseDown = false;
-	RectI selection = RectI{ 0,0,0,0 };
+	// RectI selection = RectI{ 0,0,0,0 };
 };

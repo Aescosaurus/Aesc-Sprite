@@ -14,21 +14,11 @@ public:
 		RegenImage
 	};
 public:
-	Tool( const Surface& icon,unsigned char swapKey )
-		:
-		icon( icon ),
-		swapKey( swapKey )
-	{}
+	Tool( const Surface& icon,unsigned char swapKey );
 
-	void SetCanvasRef( Canvas& canv )
-	{
-		this->canv = &canv;
-	}
-	
-	void SetPalRef( Palette& pal )
-	{
-		this->pal = &pal;
-	}
+	static void SetCanvasRef( Canvas& canv );
+	static void SetPalRef( Palette& pal );
+	static void CacheImage( Surface& img );
 
 	virtual ReturnType OnMouseDown( const Vei2& pos ) { return( ReturnType::None ); }
 	virtual ReturnType OnMouseUp( const Vei2& pos ) { return( ReturnType::None ); }
@@ -37,43 +27,19 @@ public:
 	virtual ReturnType OnKeyDown( unsigned char key ) { return( ReturnType::None ); }
 	virtual ReturnType OnKeyUp( unsigned char key ) { return( ReturnType::None ); }
 
-	void OnWindowResize( const RectI& area )
-	{
-		drawScale = float( area.GetHeight() ) / icon.GetHeight();
-		this->area = area;
-		this->area.right = area.left + icon.GetWidth() * int( drawScale );
-	}
+	void OnWindowResize( const RectI& area );
 
-	virtual void OnPaint( HDC hdc )
-	{
-		icon.DrawDefault( hdc,area.GetTopLeft(),drawScale );
-		// buffer.Overlay( icon,area.GetTopLeft() );
-	}
+	virtual void OnPaint( HDC hdc );
 
-	void CacheImage( Surface& img )
-	{
-		activeLayer = &img;
-	}
-
-	RectI GetNextRect() const
-	{
-		auto temp = Rect( area );
-		temp.MoveBy( Vec2::Right() * float( icon.GetWidth() ) *
-			drawScale );
-		return( temp );
-		// return( area.GetMovedBy( Vei2::Right() *
-		// 	icon.GetWidth() * int( drawScale ) ) );
-	}
-	unsigned char GetSwapKey() const
-	{
-		return( swapKey );
-	}
+	RectI GetNextRect() const;
+	unsigned char GetSwapKey() const;
 protected:
 	float drawScale = 0.0f;
 	Surface icon;
 	unsigned char swapKey;
 	RectI area = RectI{ 0,0,0,0 };
-	Surface* activeLayer = nullptr;
-	Canvas* canv = nullptr;
-	Palette* pal = nullptr;
+	static Surface* activeLayer;
+	static Canvas* canv;
+	static Palette* pal;
+	static RectI selectArea;
 };
