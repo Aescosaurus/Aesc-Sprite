@@ -152,6 +152,7 @@
     <ClInclude Include="Canvas.h" />
     <ClInclude Include="Color.h" />
     <ClInclude Include="Editor.h" />
+    <ClInclude Include="Eraser.h" />
     <ClInclude Include="FileOpener.h" />
     <ClInclude Include="LayerMenu.h" />
     <ClInclude Include="Palette.h" />

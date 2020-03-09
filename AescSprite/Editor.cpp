@@ -5,6 +5,7 @@
 #include "Pointer.h"
 #include "Selector.h"
 #include "Brush.h"
+#include "Eraser.h"
 
 Editor::Editor( const Vei2& windowSize )
 	:
@@ -23,6 +24,7 @@ Editor::Editor( const Vei2& windowSize )
 	tools.emplace_back( std::make_unique<Pointer>() );
 	tools.emplace_back( std::make_unique<Selector>() );
 	tools.emplace_back( std::make_unique<Brush>() );
+	tools.emplace_back( std::make_unique<Eraser>() );
 
 	HandleWindowResize( windowSize );
 }

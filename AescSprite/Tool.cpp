@@ -4,7 +4,7 @@
 Surface* Tool::activeLayer = nullptr;
 Canvas* Tool::canv = nullptr;
 Palette* Tool::pal = nullptr;
-RectI Tool::selectArea = RectI{ 0,0,0,0 };
+RectI Tool::selectArea;
 
 Tool::Tool( const std::string& icon,unsigned char swapKey )
 	:
