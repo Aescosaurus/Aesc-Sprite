@@ -14,7 +14,7 @@ public:
 		RegenImage
 	};
 public:
-	Tool( const Surface& icon,unsigned char swapKey );
+	Tool( const std::string& icon,unsigned char swapKey );
 
 	static void SetCanvasRef( Canvas& canv );
 	static void SetPalRef( Palette& pal );

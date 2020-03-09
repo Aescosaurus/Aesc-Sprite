@@ -4,6 +4,7 @@
 
 #include "Pointer.h"
 #include "Selector.h"
+#include "Brush.h"
 
 Editor::Editor( const Vei2& windowSize )
 	:
@@ -15,13 +16,13 @@ Editor::Editor( const Vei2& windowSize )
 	canv( canvasArea,layers.GenerateFinalImage(),pal ),
 	toolbarBG( pal.GetBrush( pal.GetColor( 14 ) ) )
 {
-	tools.emplace_back( std::make_unique<Pointer>() );
-	tools.emplace_back( std::make_unique<Selector>() );
-
-	auto& curLayer = layers.GetCurLayer();
 	Tool::SetCanvasRef( canv );
 	Tool::SetPalRef( pal );
-	Tool::CacheImage( curLayer );
+	Tool::CacheImage( layers.GetCurLayer() );
+
+	tools.emplace_back( std::make_unique<Pointer>() );
+	tools.emplace_back( std::make_unique<Selector>() );
+	tools.emplace_back( std::make_unique<Brush>() );
 
 	HandleWindowResize( windowSize );
 }
@@ -120,11 +121,7 @@ void Editor::OpenFile()
 void Editor::RegenImage()
 {
 	canv.CacheImage( layers.GenerateFinalImage() );
-	auto& curLayer = layers.GetCurLayer();
-	for( auto& tool : tools )
-	{
-		tool->CacheImage( curLayer );
-	}
+	Tool::CacheImage( layers.GetCurLayer() );
 }
 
 bool Editor::GetReturnType( Tool::ReturnType type )

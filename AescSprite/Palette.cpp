@@ -167,6 +167,11 @@ Color Palette::GetColor( int i ) const
 	return( colors[i].col );
 }
 
+Color Palette::GetSelectedColor() const
+{
+	return( colors[selectedColor].col );
+}
+
 Palette::ColorItem::ColorItem( Color c,const RectI& area )
 	:
 	col( c ),

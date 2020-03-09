@@ -6,7 +6,7 @@ Canvas* Tool::canv = nullptr;
 Palette* Tool::pal = nullptr;
 RectI Tool::selectArea = RectI{ 0,0,0,0 };
 
-Tool::Tool( const Surface& icon,unsigned char swapKey )
+Tool::Tool( const std::string& icon,unsigned char swapKey )
 	:
 	icon( icon ),
 	swapKey( swapKey )

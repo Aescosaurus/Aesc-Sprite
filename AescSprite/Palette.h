@@ -33,8 +33,10 @@ public:
 	const HBRUSH* GetBrush( Color c ) const;
 	const HBRUSH* GetDefaultBrush( Color c ) const;
 	Color GetColor( int i ) const;
+	Color GetSelectedColor() const;
 private:
 	RectI area;
 	std::vector<ColorItem> colors;
 	std::vector<ColorItem> defaultColors;
+	int selectedColor = 0;
 };

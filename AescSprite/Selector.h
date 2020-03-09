@@ -9,9 +9,9 @@ class Selector
 public:
 	Selector()
 		:
-		Tool( Surface{ "Icons/Selector.bmp" },'M' )
+		Tool( "Icons/Selector.bmp",'M' )
 	{
-		selectArea = RectI{ 0,0,0,0 };
+		selectArea = activeLayer->GetRect();
 	}
 
 	ReturnType OnMouseDown( const Vei2& pos ) override
@@ -43,9 +43,6 @@ public:
 				selectArea.right = canvPos.x + 1;
 				selectArea.bottom = canvPos.y + 1;
 				type = ReturnType::Repaint;
-				// activeLayer->PutPixel( canvPos.x,canvPos.y,
-				// 	pal->GetColor( 0 ) );
-				// type = ReturnType::RegenImage;
 			}
 		}
 
