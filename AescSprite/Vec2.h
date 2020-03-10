@@ -115,6 +115,12 @@ public:
 		if( temp.y != T( 0.0 ) ) temp.y /= abs( temp.y );
 		return( temp );
 	}
+	constexpr Vec2_& Rotate()
+	{
+		std::swap( x,y );
+		x *= -1;
+		return( *this );
+	}
 
 	static constexpr Vec2_ Up()
 	{

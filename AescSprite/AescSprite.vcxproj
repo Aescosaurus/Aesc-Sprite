@@ -154,6 +154,7 @@
     <ClInclude Include="Editor.h" />
     <ClInclude Include="Eraser.h" />
     <ClInclude Include="FileOpener.h" />
+    <ClInclude Include="Filler.h" />
     <ClInclude Include="Hand.h" />
     <ClInclude Include="LayerMenu.h" />
     <ClInclude Include="Palette.h" />
