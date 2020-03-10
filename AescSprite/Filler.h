@@ -18,10 +18,14 @@ public:
 		if( !mouseDown )
 		{
 			const auto start = canv->Mouse2CanvPos( pos );
-			TryFillPlusAt( *activeLayer,start,
-				activeLayer->GetPixel( start.x,start.y ),
-				pal->GetSelectedColor() );
-			type = ReturnType::RegenImage;
+			const auto baseCol = activeLayer->GetPixel( start.x,start.y );
+			const auto targetCol = pal->GetSelectedColor();
+			if( baseCol != targetCol )
+			{
+				TryFillPlusAt( *activeLayer,start,
+					baseCol,targetCol );
+				type = ReturnType::RegenImage;
+			}
 		}
 		Tool::OnMouseDown( pos );
 
