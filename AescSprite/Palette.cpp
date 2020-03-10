@@ -116,8 +116,9 @@ void Palette::OnPaint( HDC hdc )
 	}
 	// else
 	{
-		for( auto& item : colors )
+		for( int i = 0; i < int( colors.size() ) - 1; ++i )
 		{
+			auto& item = colors[i];
 			const auto rc = RECT( item.area );
 			if( item.solidBrush == nullptr )
 			{

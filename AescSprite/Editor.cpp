@@ -105,15 +105,15 @@ void Editor::HandleWindowResize( const Vei2& windowSize )
 {
 	const auto wndSize = Vec2( windowSize );
 	static constexpr float canvasWidth = 0.85f;
-	static constexpr float toolbarHeight = 0.08f;
+	static constexpr float toolbarHeight = 0.1f;
+	const int padding = int( float( windowSize.x ) * 0.003f );
 
-	// TODO: Padding.
 	toolbarArea = RectI{ 0,windowSize.x,
-		0,int( wndSize.y * toolbarHeight ) };
+		0,int( wndSize.y * toolbarHeight ) }.GetExpanded( -padding );
 	canvasArea = RectI{ 0,int( wndSize.x * canvasWidth ),
-		toolbarArea.bottom,windowSize.y };
+		toolbarArea.bottom,windowSize.y }.GetExpanded( -padding );
 	sidebarArea = RectI{ canvasArea.right,windowSize.x,
-		toolbarArea.bottom,int( windowSize.y ) };
+		toolbarArea.bottom,int( windowSize.y ) }.GetExpanded( -padding );
 
 	pal.OnWindowResize( sidebarArea );
 	sidebarArea.top = pal.GetBottom();
@@ -124,6 +124,7 @@ void Editor::HandleWindowResize( const Vei2& windowSize )
 	{
 		tools[i]->OnWindowResize( tools[i - 1]->GetNextRect() );
 	}
+	toolbarArea = toolbarArea.GetExpandedX( padding );
 }
 
 void Editor::HandlePaint( HDC hdc )
