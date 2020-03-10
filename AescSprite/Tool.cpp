@@ -35,7 +35,7 @@ Tool::ReturnType Tool::OnMouseDown( const Vei2& pos )
 	return( ReturnType::None );
 }
 
-Tool::ReturnType Tool::OnMouseUp( const Vei2 & pos )
+Tool::ReturnType Tool::OnMouseUp( const Vei2& pos )
 {
 	mouseDown = false;
 	return( ReturnType::None );

@@ -27,6 +27,7 @@ public:
 	void GeneratePalette( const std::string& src );
 	void OnWindowResize( const RectI& area );
 	void OnPaint( HDC hdc );
+	void SelectColor( Color c );
 
 	int GetBottom() const;
 

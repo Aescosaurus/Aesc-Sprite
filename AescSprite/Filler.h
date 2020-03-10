@@ -33,7 +33,8 @@ private:
 	{
 		if( start.x >= 0 && start.x < surf.GetWidth() &&
 			start.y >= 0 && start.y < surf.GetHeight() &&
-			surf.GetPixel( start.x,start.y ) == baseColor )
+			surf.GetPixel( start.x,start.y ) == baseColor &&
+			selectArea.GetExpandedTL( 1 ).ContainsPoint( start ) )
 		{
 			surf.PutPixel( start.x,start.y,fillColor );
 

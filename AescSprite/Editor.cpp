@@ -9,6 +9,7 @@
 #include "Hand.h"
 #include "Zoomer.h"
 #include "Filler.h"
+#include "Sampler.h"
 
 Editor::Editor( const Vei2& windowSize )
 	:
@@ -31,6 +32,7 @@ Editor::Editor( const Vei2& windowSize )
 	tools.emplace_back( std::make_unique<Hand>() );
 	tools.emplace_back( std::make_unique<Zoomer>() );
 	tools.emplace_back( std::make_unique<Filler>() );
+	tools.emplace_back( std::make_unique<Sampler>() );
 
 	HandleWindowResize( windowSize );
 }

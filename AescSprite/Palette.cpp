@@ -129,6 +129,19 @@ void Palette::OnPaint( HDC hdc )
 	}
 }
 
+void Palette::SelectColor( Color c )
+{
+	for( int i = 0; i < int( colors.size() ); ++i )
+	{
+		if( colors[i].col == c )
+		{
+			selectedColor = i;
+			return;
+		}
+	}
+	assert( false );
+}
+
 int Palette::GetBottom() const
 {
 	return( colors[colors.size() - 2].area.bottom );

@@ -146,6 +146,7 @@ LRESULT CALLBACK WndProc( HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam )
 	const auto pos = Vei2{
 		GET_X_LPARAM( lParam ),
 		GET_Y_LPARAM( lParam ) };
+
 	switch( message )
 	{
 	case WM_COMMAND:
@@ -203,13 +204,15 @@ LRESULT CALLBACK WndProc( HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam )
 	case WM_MOUSEMOVE:
 		if( editor.HandleMouseMove( pos ) ) Repaint( hWnd );
 		break;
+	case WM_SYSKEYDOWN:
 	case WM_KEYDOWN:
 		// No auto repeat.
 		if( !( lParam & 0x40000000 ) )
 		{
-			if( editor.HandleKeyDown( static_cast< unsigned char >( wParam ) ) ) Repaint( hWnd );
+			if( editor.HandleKeyDown( static_cast<unsigned char>( wParam ) ) ) Repaint( hWnd );
 		}
 		break;
+	case WM_SYSKEYUP:
 	case WM_KEYUP:
 		if( editor.HandleKeyUp( static_cast<unsigned char>( wParam ) ) ) Repaint( hWnd );
 		break;

@@ -161,6 +161,7 @@
     <ClInclude Include="Pointer.h" />
     <ClInclude Include="Rect.h" />
     <ClInclude Include="Resource.h" />
+    <ClInclude Include="Sampler.h" />
     <ClInclude Include="Selector.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="Surface.h" />
