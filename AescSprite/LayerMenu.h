@@ -37,7 +37,7 @@ public:
 	Surface& GetCurLayer();
 	Surface GenerateFinalImage() const;
 private:
-	void DrawLayer( HDC hdc,int i ) const;
+	void DrawLayer( HDC hdc,int i,const HBRUSH* col ) const;
 private:
 	RectI area;
 	std::vector<Layer> layers;
@@ -47,6 +47,7 @@ private:
 	
 	const HBRUSH* bgColor;
 	const HBRUSH* layerColor;
+	const HBRUSH* selectedLayerColor;
 	const Color onCol;
 	const Color offCol;
 };

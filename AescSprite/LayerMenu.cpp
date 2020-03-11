@@ -7,6 +7,7 @@ LayerMenu::LayerMenu( const RectI& area,const Vei2& canvSize,
 	area( area ),
 	bgColor( pal.GetBrush( pal.GetColor( 8 ) ) ),
 	layerColor( pal.GetBrush( pal.GetColor( 15 ) ) ),
+	selectedLayerColor( pal.GetBrush( pal.GetColor( 14 ) ) ),
 	onCol( pal.GetColor( 12 ) ),
 	offCol( pal.GetColor( 13 ) )
 {
@@ -104,10 +105,10 @@ void LayerMenu::OnPaint( HDC hdc )
 	{
 		if( i != selectedLayer )
 		{
-			DrawLayer( hdc,i );
+			DrawLayer( hdc,i,layerColor );
 		}
 	}
-	DrawLayer( hdc,selectedLayer );
+	DrawLayer( hdc,selectedLayer,selectedLayerColor );
 }
 
 void LayerMenu::ResizeCanvas( const Vei2& canvSize )
@@ -161,12 +162,12 @@ Surface LayerMenu::GenerateFinalImage() const
 	return( temp );
 }
 
-void LayerMenu::DrawLayer( HDC hdc,int i ) const
+void LayerMenu::DrawLayer( HDC hdc,int i,const HBRUSH* col ) const
 {
 	const auto& lay = layers[i];
 
 	const auto rc = RECT( lay.area );
-	FillRect( hdc,&rc,*layerColor );
+	FillRect( hdc,&rc,*col );
 
 	lay.surf.Draw( hdc,lay.area.GetTopLeft(),
 		float( lay.area.GetHeight() ) / lay.surf.GetHeight() );
