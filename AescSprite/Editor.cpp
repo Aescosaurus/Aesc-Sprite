@@ -19,7 +19,7 @@ Editor::Editor( const Vei2& windowSize )
 	pal( sidebarArea ),
 	layers( sidebarArea,canvSize,pal ),
 	canv( canvasArea,layers.GenerateFinalImage(),pal ),
-	toolbarBG( pal.GetBrush( pal.GetColor( 14 ) ) )
+	toolbarBG( pal.GetBrush( pal.GetColor( 15 ) ) )
 {
 	Tool::SetCanvasRef( canv );
 	Tool::SetPalRef( pal );

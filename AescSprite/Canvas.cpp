@@ -6,7 +6,7 @@ Canvas::Canvas( const RectI& area,const Surface& img,
 	:
 	area( area ),
 	image( img ),
-	bgColor( pal.GetBrush( pal.GetColor( 7 ) ) )
+	bgColor( pal.GetBrush( pal.GetColor( 0 ) ) )
 {
 	OnWindowResize( area );
 	CacheImage( img );

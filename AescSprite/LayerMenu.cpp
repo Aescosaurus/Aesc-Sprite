@@ -5,7 +5,7 @@ LayerMenu::LayerMenu( const RectI& area,const Vei2& canvSize,
 	const Palette& pal )
 	:
 	area( area ),
-	bgColor( pal.GetBrush( pal.GetColor( 8 ) ) ),
+	bgColor( pal.GetBrush( pal.GetColor( 15 ) ) ),
 	layerColor( pal.GetBrush( pal.GetColor( 15 ) ) ),
 	selectedLayerColor( pal.GetBrush( pal.GetColor( 14 ) ) ),
 	onCol( pal.GetColor( 12 ) ),
