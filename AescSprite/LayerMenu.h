@@ -37,10 +37,13 @@ public:
 	Surface& GetCurLayer();
 	Surface GenerateFinalImage() const;
 private:
+	void DrawLayer( HDC hdc,int i ) const;
+private:
 	RectI area;
 	std::vector<Layer> layers;
 	int selectedLayer = 0;
 	Vei2 dragStartPos = Vei2{ -1,-1 };
+	Vei2 dragDiff = Vei2{ -1,-1 };
 	
 	const HBRUSH* bgColor;
 	const HBRUSH* layerColor;

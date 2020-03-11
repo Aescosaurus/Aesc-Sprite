@@ -23,6 +23,7 @@ Tool::ReturnType LayerMenu::OnMouseDown( const Vei2& pos )
 		{
 			selectedLayer = i;
 			dragStartPos = layers[i].area.GetTopLeft();
+			dragDiff = dragStartPos - pos;
 		}
 	}
 	return( Tool::ReturnType::None );
@@ -32,8 +33,7 @@ Tool::ReturnType LayerMenu::OnMouseMove( const Vei2& pos )
 {
 	if( dragStartPos != Vei2{ -1,-1 } )
 	{
-		layers[selectedLayer].area.MoveTo( pos -
-			layers[selectedLayer].area.GetSize() / 2 );
+		layers[selectedLayer].area.MoveTo( pos + dragDiff );
 		return( Tool::ReturnType::Repaint );
 	}
 	return( Tool::ReturnType::None );
@@ -97,12 +97,15 @@ void LayerMenu::OnPaint( HDC hdc )
 	// if( bgColor == nullptr ) bgColor = HBRUSH( CreateSolidBrush( RGB( 70,70,70 ) ) );
 	// buffer.DrawRect( area,Color{ 70,70,70 } );
 	FillRect( hdc,&rc,*bgColor );
-
-	for( auto& lay : layers )
+	
+	for( int i = 0; i < int( layers.size() ); ++i )
 	{
-		const auto rc = RECT( lay.area );
-		FillRect( hdc,&rc,*layerColor );
+		if( i != selectedLayer )
+		{
+			DrawLayer( hdc,i );
+		}
 	}
+	DrawLayer( hdc,selectedLayer );
 }
 
 void LayerMenu::ResizeCanvas( const Vei2& canvSize )
@@ -117,8 +120,9 @@ void LayerMenu::OpenImage( const std::string& imgPath )
 {
 	const auto loadedImage = Surface{ imgPath };
 	ResizeCanvas( loadedImage.GetSize() );
-	layers.emplace_back( Layer{ loadedImage,RectI{ 0,0,0,0 } } );
-	++selectedLayer;
+	// layers.emplace_back( Layer{ loadedImage,RectI{ 0,0,0,0 } } );
+	layers.emplace( layers.begin(),Layer{ loadedImage,RectI{ 0,0,0,0 } } );
+	// ++selectedLayer;
 	OnWindowResize( area );
 }
 
@@ -131,9 +135,20 @@ Surface LayerMenu::GenerateFinalImage() const
 {
 	Surface temp = Surface{ layers[0].surf.GetWidth(),layers[0].surf.GetHeight() };
 	temp.Fill( Colors::Magenta );
-	for( const auto& layer : layers )
+	for( auto l = layers.rbegin(); l != layers.rend(); ++l )
 	{
-		temp.Overlay( layer.surf );
+		temp.Overlay( l->surf );
 	}
 	return( temp );
+}
+
+void LayerMenu::DrawLayer( HDC hdc,int i ) const
+{
+	const auto& lay = layers[i];
+
+	const auto rc = RECT( lay.area );
+	FillRect( hdc,&rc,*layerColor );
+
+	lay.surf.Draw( hdc,lay.area.GetTopLeft(),
+		float( lay.area.GetHeight() ) / lay.surf.GetHeight() );
 }
