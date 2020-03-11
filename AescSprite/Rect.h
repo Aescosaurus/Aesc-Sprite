@@ -115,6 +115,10 @@ public:
 	{
 		return( Rect_{ left - offset,right + offset,top,bottom } );
 	}
+	constexpr Rect_ GetExpandedY( T offset ) const
+	{
+		return( Rect_{ left,right,top - offset,bottom + offset } );
+	}
 	constexpr Vec2_<T> GetCenter() const
 	{
 		return Vec2_<T>( ( left + right ) / T( 2 ),( top + bottom ) / T( 2 ) );

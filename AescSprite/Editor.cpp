@@ -47,9 +47,14 @@ bool Editor::HandleMouseDown( const Vei2& pos )
 			return( true );
 		}
 	}
-	auto& tool = tools[curTool];
-	const auto type = tool->OnMouseDown( pos );
-	return( GetReturnType( type ) );
+
+	if( canvasArea.ContainsPoint( pos ) )
+	{
+		auto& tool = tools[curTool];
+		const auto type = tool->OnMouseDown( pos );
+		return( GetReturnType( type ) );
+	}
+	return( false );
 }
 
 bool Editor::HandleMouseUp( const Vei2& pos )
@@ -145,7 +150,7 @@ void Editor::OpenFile()
 	const auto path = FileOpener::OpenFile();
 	if( path.length() > 0 )
 	{
-		pal.GeneratePalette( path );
+		// pal.GeneratePalette( path );
 		layers.OpenImage( path );
 		RegenImage();
 	}

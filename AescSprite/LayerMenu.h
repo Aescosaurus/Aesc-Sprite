@@ -7,6 +7,19 @@
 
 class LayerMenu
 {
+private:
+	class Layer
+	{
+	public:
+		Layer( const Surface& surf,const RectI& area )
+			:
+			surf( surf ),
+			area( area )
+		{}
+	public:
+		Surface surf;
+		RectI area;
+	};
 public:
 	LayerMenu( const RectI& area,const Vei2& canvSize,
 		const Palette& pal );
@@ -20,8 +33,9 @@ public:
 	Surface GenerateFinalImage() const;
 private:
 	RectI area;
-	std::vector<Surface> layers;
+	std::vector<Layer> layers;
 	int selectedLayer = 0;
 	
 	const HBRUSH* bgColor;
+	const HBRUSH* layerColor;
 };
