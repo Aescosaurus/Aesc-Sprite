@@ -126,7 +126,7 @@ void Surface::Overlay( const Surface& other,const Vei2& pos )
 		for( int x = 0; x < min( width,other.width ); ++x )
 		{
 			const auto pix = other.GetPixel( x,y );
-			// if( pix != Colors::Magenta )
+			if( pix != Colors::Magenta )
 			{
 				PutPixel( pos.x + x,pos.y + y,pix );
 			}

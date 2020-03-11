@@ -82,6 +82,7 @@ Surface& LayerMenu::GetCurLayer()
 Surface LayerMenu::GenerateFinalImage() const
 {
 	Surface temp = Surface{ layers[0].surf.GetWidth(),layers[0].surf.GetHeight() };
+	temp.Fill( Colors::Magenta );
 	for( const auto& layer : layers )
 	{
 		temp.Overlay( layer.surf );
