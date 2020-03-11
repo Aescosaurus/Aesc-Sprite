@@ -15,6 +15,50 @@ LayerMenu::LayerMenu( const RectI& area,const Vei2& canvSize,
 	ResizeCanvas( layers.back().surf.GetSize() );
 }
 
+Tool::ReturnType LayerMenu::OnMouseDown( const Vei2& pos )
+{
+	for( int i = 0; i < int( layers.size() ); ++i )
+	{
+		if( layers[i].area.ContainsPoint( pos ) )
+		{
+			selectedLayer = i;
+			dragStartPos = layers[i].area.GetTopLeft();
+		}
+	}
+	return( Tool::ReturnType::None );
+}
+
+Tool::ReturnType LayerMenu::OnMouseMove( const Vei2& pos )
+{
+	if( dragStartPos != Vei2{ -1,-1 } )
+	{
+		layers[selectedLayer].area.MoveTo( pos -
+			layers[selectedLayer].area.GetSize() / 2 );
+		return( Tool::ReturnType::Repaint );
+	}
+	return( Tool::ReturnType::None );
+}
+
+Tool::ReturnType LayerMenu::OnMouseUp( const Vei2& pos )
+{
+	bool swapped = false;
+	for( int i = 0; i < int( layers.size() ); ++i )
+	{
+		if( i != selectedLayer &&
+			layers[i].area.ContainsPoint( pos ) )
+		{
+			std::swap( layers[i],layers[selectedLayer] );
+			swapped = true;
+		}
+	}
+	if( !swapped )
+	{
+		layers[selectedLayer].area.MoveTo( dragStartPos );
+	}
+	dragStartPos = Vei2{ -1,-1 };
+	return( Tool::ReturnType::RegenImage );
+}
+
 void LayerMenu::OnWindowResize( const RectI& area )
 {
 	this->area = area;
@@ -25,6 +69,8 @@ void LayerMenu::OnWindowResize( const RectI& area )
 		const int maxLayerHeight = int( float( area.GetHeight() ) * 0.1f );
 		const int layerHeight = min( maxLayerHeight,
 			area.GetHeight() / int( layers.size() ) );
+
+		const auto tempLayer = layers[selectedLayer];
 
 		layers[0].area = area;
 		layers[0].area.bottom = area.top + layerHeight;
@@ -40,6 +86,8 @@ void LayerMenu::OnWindowResize( const RectI& area )
 		{
 			lay.area = lay.area.GetExpandedY( -layerPadding );
 		}
+
+		if( dragStartPos != Vei2{ -1,-1 } ) layers[selectedLayer] = tempLayer;
 	}
 }
 

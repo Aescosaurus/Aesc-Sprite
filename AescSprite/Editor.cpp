@@ -39,35 +39,64 @@ Editor::Editor( const Vei2& windowSize )
 
 bool Editor::HandleMouseDown( const Vei2& pos )
 {
-	for( int i = 0; i < int( tools.size() ); ++i )
+	auto type = Tool::ReturnType::None;
+
+	if( sidebarArea.ContainsPoint( pos ) )
 	{
-		if( tools[i]->GetArea().ContainsPoint( pos ) )
+		type = layers.OnMouseDown( pos );
+	}
+
+	if( toolbarArea.ContainsPoint( pos ) )
+	{
+		for( int i = 0; i < int( tools.size() ); ++i )
 		{
-			curTool = i;
-			return( true );
+			if( tools[i]->GetArea().ContainsPoint( pos ) )
+			{
+				curTool = i;
+				return( true );
+			}
 		}
 	}
 
 	if( canvasArea.ContainsPoint( pos ) )
 	{
-		auto& tool = tools[curTool];
-		const auto type = tool->OnMouseDown( pos );
-		return( GetReturnType( type ) );
+		type = tools[curTool]->OnMouseDown( pos );
 	}
-	return( false );
+
+	return( GetReturnType( type ) );
 }
 
 bool Editor::HandleMouseUp( const Vei2& pos )
 {
-	auto& tool = tools[curTool];
-	const auto type = tool->OnMouseUp( pos );
+	auto type = Tool::ReturnType::None;
+	
+	if( sidebarArea.ContainsPoint( pos ) )
+	{
+		type = layers.OnMouseUp( pos );
+	}
+
+	if( canvasArea.ContainsPoint( pos ) )
+	{
+		type = tools[curTool]->OnMouseUp( pos );
+	}
+
 	return( GetReturnType( type ) );
 }
 
 bool Editor::HandleMouseMove( const Vei2& pos )
 {
-	auto& tool = tools[curTool];
-	const auto type = tool->OnMouseMove( pos );
+	auto type = Tool::ReturnType::None;
+
+	if( sidebarArea.ContainsPoint( pos ) )
+	{
+		type = layers.OnMouseMove( pos );
+	}
+
+	if( canvasArea.ContainsPoint( pos ) )
+	{
+		type = tools[curTool]->OnMouseMove( pos );
+	}
+
 	return( GetReturnType( type ) );
 }
 

@@ -4,6 +4,7 @@
 #include <vector>
 #include "Surface.h"
 #include "Palette.h"
+#include "Tool.h"
 
 class LayerMenu
 {
@@ -24,6 +25,10 @@ public:
 	LayerMenu( const RectI& area,const Vei2& canvSize,
 		const Palette& pal );
 
+	Tool::ReturnType OnMouseDown( const Vei2& pos );
+	Tool::ReturnType OnMouseMove( const Vei2& pos );
+	Tool::ReturnType OnMouseUp( const Vei2& pos );
+
 	void OnWindowResize( const RectI& area );
 	void OnPaint( HDC hdc );
 	void ResizeCanvas( const Vei2& canvSize );
@@ -35,6 +40,7 @@ private:
 	RectI area;
 	std::vector<Layer> layers;
 	int selectedLayer = 0;
+	Vei2 dragStartPos = Vei2{ -1,-1 };
 	
 	const HBRUSH* bgColor;
 	const HBRUSH* layerColor;
