@@ -47,4 +47,6 @@ private:
 	
 	const HBRUSH* bgColor;
 	const HBRUSH* layerColor;
+	const Color onCol;
+	const Color offCol;
 };

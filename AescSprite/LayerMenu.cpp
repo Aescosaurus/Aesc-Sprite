@@ -6,7 +6,9 @@ LayerMenu::LayerMenu( const RectI& area,const Vei2& canvSize,
 	:
 	area( area ),
 	bgColor( pal.GetBrush( pal.GetColor( 8 ) ) ),
-	layerColor( pal.GetBrush( pal.GetColor( 15 ) ) )
+	layerColor( pal.GetBrush( pal.GetColor( 15 ) ) ),
+	onCol( pal.GetColor( 12 ) ),
+	offCol( pal.GetColor( 13 ) )
 {
 	OnWindowResize( area );
 	
@@ -134,7 +136,24 @@ Surface& LayerMenu::GetCurLayer()
 Surface LayerMenu::GenerateFinalImage() const
 {
 	Surface temp = Surface{ layers[0].surf.GetWidth(),layers[0].surf.GetHeight() };
-	temp.Fill( Colors::Magenta );
+
+	for( int y = 0; y < temp.GetHeight(); ++y )
+	{
+		for( int x = 0; x < temp.GetWidth(); ++x )
+		{
+			Color col = onCol;
+			if( y % 2 == 0 )
+			{
+				if( x % 2 == 0 ) col = offCol;
+			}
+			else
+			{
+				if( x % 2 != 0 ) col = offCol;
+			}
+			temp.PutPixel( x,y,col );
+		}
+	}
+
 	for( auto l = layers.rbegin(); l != layers.rend(); ++l )
 	{
 		temp.Overlay( l->surf );
