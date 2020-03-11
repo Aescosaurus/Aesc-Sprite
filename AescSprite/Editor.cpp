@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Editor.h"
 #include "FileOpener.h"
+#include "WriteToBitmap.h"
 
 #include "Pointer.h"
 #include "Selector.h"
@@ -182,6 +183,29 @@ void Editor::OpenFile()
 		// pal.GeneratePalette( path );
 		layers.OpenImage( path );
 		RegenImage();
+	}
+}
+
+void Editor::SaveFile()
+{
+	if( savedFilePath.length() > 0 )
+	{
+		WriteToBitmap::Write( layers.GenerateFinalImage( true ),
+			savedFilePath );
+	}
+	else
+	{
+		SaveFileAs();
+	}
+}
+
+void Editor::SaveFileAs()
+{
+	savedFilePath = FileOpener::SaveFile();
+	if( savedFilePath.length() > 0 )
+	{
+		WriteToBitmap::Write( layers.GenerateFinalImage( true ),
+			savedFilePath );
 	}
 }
 

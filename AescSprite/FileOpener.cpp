@@ -117,5 +117,10 @@ std::string FileOpener::SaveFile()
 		CoUninitialize();
 	}
 
+	if( path != "" )
+	{
+		if( path.substr( path.length() - 4 ) != ".bmp" ) path += ".bmp";
+	}
+
 	return( path );
 }

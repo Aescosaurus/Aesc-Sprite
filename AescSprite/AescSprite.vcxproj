@@ -168,6 +168,7 @@
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Tool.h" />
     <ClInclude Include="Vec2.h" />
+    <ClInclude Include="WriteToBitmap.h" />
     <ClInclude Include="Zoomer.h" />
   </ItemGroup>
   <ItemGroup>
@@ -185,6 +186,7 @@
     </ClCompile>
     <ClCompile Include="Surface.cpp" />
     <ClCompile Include="Tool.cpp" />
+    <ClCompile Include="WriteToBitmap.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="AescSprite.rc" />

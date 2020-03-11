@@ -26,6 +26,8 @@ public:
 	void HandlePaint( HDC hdc );
 
 	void OpenFile();
+	void SaveFile();
+	void SaveFileAs();
 	void RegenImage();
 	bool GetReturnType( Tool::ReturnType type );
 private:
@@ -43,4 +45,6 @@ private:
 	int oldTool = -1;
 
 	const HBRUSH* toolbarBG;
+
+	std::string savedFilePath = "";
 };

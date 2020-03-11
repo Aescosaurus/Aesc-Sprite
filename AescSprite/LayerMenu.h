@@ -35,7 +35,7 @@ public:
 	void OpenImage( const std::string& imgPath );
 
 	Surface& GetCurLayer();
-	Surface GenerateFinalImage() const;
+	Surface GenerateFinalImage( bool magentaBG = false ) const;
 private:
 	void DrawLayer( HDC hdc,int i,const HBRUSH* col ) const;
 private:

@@ -134,24 +134,31 @@ Surface& LayerMenu::GetCurLayer()
 	return( layers[selectedLayer].surf );
 }
 
-Surface LayerMenu::GenerateFinalImage() const
+Surface LayerMenu::GenerateFinalImage( bool magentaBG ) const
 {
 	Surface temp = Surface{ layers[0].surf.GetWidth(),layers[0].surf.GetHeight() };
 
-	for( int y = 0; y < temp.GetHeight(); ++y )
+	if( magentaBG )
 	{
-		for( int x = 0; x < temp.GetWidth(); ++x )
+		temp.Fill( Colors::Magenta );
+	}
+	else
+	{
+		for( int y = 0; y < temp.GetHeight(); ++y )
 		{
-			Color col = onCol;
-			if( y % 2 == 0 )
+			for( int x = 0; x < temp.GetWidth(); ++x )
 			{
-				if( x % 2 == 0 ) col = offCol;
+				Color col = onCol;
+				if( y % 2 == 0 )
+				{
+					if( x % 2 == 0 ) col = offCol;
+				}
+				else
+				{
+					if( x % 2 != 0 ) col = offCol;
+				}
+				temp.PutPixel( x,y,col );
 			}
-			else
-			{
-				if( x % 2 != 0 ) col = offCol;
-			}
-			temp.PutPixel( x,y,col );
 		}
 	}
 

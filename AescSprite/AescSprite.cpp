@@ -162,6 +162,12 @@ LRESULT CALLBACK WndProc( HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam )
 			editor.OpenFile();
 			Repaint( hWnd );
 			break;
+		case ID_FILE_SAVE:
+			editor.SaveFile();
+			break;
+		case ID_FILE_SAVEAS:
+			editor.SaveFileAs();
+			break;
 		case IDM_EXIT:
 			DestroyWindow( hWnd );
 			break;
