@@ -20,6 +20,7 @@ BOOL                InitInstance( HINSTANCE,int );
 LRESULT CALLBACK    WndProc( HWND,UINT,WPARAM,LPARAM );
 INT_PTR CALLBACK    About( HWND,UINT,WPARAM,LPARAM );
 INT_PTR CALLBACK    Resize( HWND,UINT,WPARAM,LPARAM );
+INT_PTR CALLBACK    AskPal( HWND,UINT,WPARAM,LPARAM );
 
 static constexpr Vei2 initWindowSize = { 960,540 };
 Editor editor{ initWindowSize };
@@ -164,9 +165,22 @@ LRESULT CALLBACK WndProc( HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam )
 			Repaint( hWnd );
 			break;
 		case ID_FILE_OPEN:
-			editor.OpenFile();
-			Repaint( hWnd );
-			break;
+		{
+			const int options = editor.TryOpenFile();
+			if( options >= 0 )
+			{
+				// const INT_PTR result = DialogBox( hInst,MAKEINTRESOURCE( IDD_ASKPAL ),hWnd,AskPal );
+				LPARAM dialogInfo = options;
+				const INT_PTR result = DialogBoxParam( hInst,
+					MAKEINTRESOURCE( IDD_ASKPAL ),hWnd,AskPal,dialogInfo );
+				if( result >= 0 )
+				{
+					editor.OpenFile( result );
+				}
+				Repaint( hWnd );
+			}
+		}
+		break;
 		case ID_FILE_SAVE:
 			editor.SaveFile();
 			break;
@@ -290,4 +304,55 @@ INT_PTR CALLBACK Resize( HWND hDlg,UINT message,WPARAM wParam,LPARAM lParam )
 		break;
 	}
 	return( INT_PTR( FALSE ) );
+}
+
+// Message handler for ask pal box.
+INT_PTR CALLBACK AskPal( HWND hDlg,UINT message,WPARAM wParam,LPARAM lParam )
+{
+	switch( message )
+	{
+	case WM_INITDIALOG:
+	{
+		const wchar_t* text = L"Keep existing palette, replace with loaded image's palette, or append to the current palette?";
+		SetDlgItemText( hDlg,IDC_STATIC,text );
+		switch( lParam )
+		{
+		case 0:
+			break;
+		case 1:
+			// disable keep
+			EnableWindow( GetDlgItem( hDlg,IDC_KEEP ),FALSE );
+			break;
+		case 2:
+			// disable keep and replace
+			EnableWindow( GetDlgItem( hDlg,IDC_KEEP ),FALSE );
+			EnableWindow( GetDlgItem( hDlg,IDC_REPLACE ),FALSE );
+			break;
+		}
+		return ( INT_PTR )TRUE;
+	}
+	case WM_COMMAND:
+	{
+		int result = -1;
+		switch( LOWORD( wParam ) )
+		{
+		case IDCANCEL:
+			result = -1;
+			break;
+		case IDC_KEEP:
+			result = 0;
+			break;
+		case IDC_REPLACE:
+			result = 1;
+			break;
+		case IDC_APPEND:
+			result = 2;
+			break;
+		}
+		EndDialog( hDlg,INT_PTR( result ) );
+		return ( INT_PTR )TRUE;
+	}
+	break;
+	}
+	return ( INT_PTR )FALSE;
 }

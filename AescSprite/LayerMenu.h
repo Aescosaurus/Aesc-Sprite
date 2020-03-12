@@ -36,6 +36,8 @@ public:
 
 	Surface& GetCurLayer();
 	Surface GenerateFinalImage() const;
+	int GetLayerCount() const;
+	const Surface& GetLayer( int i ) const;
 private:
 	void DrawLayer( HDC hdc,int i,const HBRUSH* col ) const;
 private:

@@ -287,6 +287,26 @@ RectI Surface::GetRect() const
 	return( RectI{ 0,width,0,height } );
 }
 
+std::vector<Color> Surface::FindUniqueColors() const
+{
+	std::vector<Color> uniqueColors;
+
+	for( int y = 0; y < height; ++y )
+	{
+		for( int x = 0; x < width; ++x )
+		{
+			const auto pix = GetPixel( x,y );
+			if( std::find( uniqueColors.begin(),uniqueColors.end(),
+				pix ) == uniqueColors.end() )
+			{
+				uniqueColors.emplace_back( pix );
+			}
+		}
+	}
+	
+	return( uniqueColors );
+}
+
 std::unordered_map<unsigned int,const HBRUSH*>& Surface::GetColorPal()
 {
 	static std::unordered_map<unsigned int,const HBRUSH*> colorRefs;

@@ -40,6 +40,7 @@ public:
 	int GetHeight() const;
 	Vei2 GetSize() const;
 	RectI GetRect() const;
+	std::vector<Color> FindUniqueColors() const;
 private:
 	static std::unordered_map<unsigned int,const HBRUSH*>& GetColorPal();
 	static std::unordered_map<unsigned int,const HBRUSH*>& GetDefaultColorPal();

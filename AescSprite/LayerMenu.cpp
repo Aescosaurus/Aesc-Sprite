@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "LayerMenu.h"
+#include <cassert>
 
 LayerMenu::LayerMenu( const RectI& area,const Vei2& canvSize,
 	const Palette& pal )
@@ -144,6 +145,19 @@ Surface LayerMenu::GenerateFinalImage() const
 		temp.Overlay( l->surf );
 	}
 	return( temp );
+}
+
+int LayerMenu::GetLayerCount() const
+{
+	return( int( layers.size() ) );
+}
+
+const Surface& LayerMenu::GetLayer( int i ) const
+{
+	assert( i >= 0 );
+	assert( i < int( layers.size() ) );
+	
+	return( layers[i].surf );
 }
 
 void LayerMenu::DrawLayer( HDC hdc,int i,const HBRUSH* col ) const

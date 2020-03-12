@@ -25,7 +25,10 @@ public:
 
 	void HandlePaint( HDC hdc );
 
-	void OpenFile();
+	// Check open reset/append dialog; -1=cancel 0=any 1=app/rep 2=app.
+	int TryOpenFile();
+	// Action: 0=no change, 1=replace pal, 2=append pal.
+	void OpenFile( int action );
 	void SaveFile();
 	void SaveFileAs();
 	void RegenImage();
@@ -49,5 +52,6 @@ private:
 
 	const HBRUSH* toolbarBG;
 
+	std::string fileOpenPath = "";
 	std::string savedFilePath = "";
 };

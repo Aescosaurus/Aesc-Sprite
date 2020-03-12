@@ -15,6 +15,8 @@ private:
 	public:
 		ColorItem( Color c,const RectI& area );
 		~ColorItem();
+
+		bool operator==( const Color& rhs ) const;
 	public:
 		Color col;
 		RectI area;
@@ -25,9 +27,9 @@ public:
 
 	Tool::ReturnType OnMouseDown( const Vei2& pos );
 
-	void LoadPalette( const Surface& pal );
+	void LoadPalette( const Surface& pal,bool append = false );
 	void LoadDefaultPalette( const Surface& pal );
-	void GeneratePalette( const std::string& src );
+	void GeneratePalette( const std::string& src,bool append = false );
 	void OnWindowResize( const RectI& area );
 	void OnPaint( HDC hdc );
 	void SelectColor( Color c );

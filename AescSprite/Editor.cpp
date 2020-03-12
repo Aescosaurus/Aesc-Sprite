@@ -2,6 +2,7 @@
 #include "Editor.h"
 #include "FileOpener.h"
 #include "WriteToBitmap.h"
+#include <cassert>
 
 #include "Pointer.h"
 #include "Selector.h"
@@ -180,15 +181,71 @@ void Editor::HandlePaint( HDC hdc )
 	}
 }
 
-void Editor::OpenFile()
+int Editor::TryOpenFile()
 {
 	const auto path = FileOpener::OpenFile();
+	fileOpenPath = path;
 	if( path.length() > 0 )
 	{
-		ResizeImage( Surface{ path }.GetSize() );
-		pal.GeneratePalette( path );
-		layers.OpenImage( path );
+		const auto surf = Surface{ path };
+		const auto uniqueCols = surf.FindUniqueColors();
+		bool forcePalUpdate = false;
+		for( auto& col : uniqueCols )
+		{
+			if( pal.GetBrush( col ) == nullptr )
+			{
+				forcePalUpdate = true;
+			}
+		}
+
+		if( forcePalUpdate )
+		{
+			bool canReplace = true;
+			for( int i = 0; i < layers.GetLayerCount(); ++i )
+			{
+				const auto layer = layers.GetLayer( i );
+				for( auto col : layer.FindUniqueColors() )
+				{
+					if( std::find( uniqueCols.begin(),
+						uniqueCols.end(),col ) == uniqueCols.end() )
+					{
+						canReplace = false;
+					}
+				}
+			}
+			if( canReplace ) return( 1 );
+			else return( 2 );
+		}
+		else
+		{
+			return( 0 );
+		}
+	}
+	return( -1 );
+}
+
+void Editor::OpenFile( int action )
+{
+	if( fileOpenPath.length() > 0 )
+	{
+		switch( action )
+		{
+		case 0:
+			break;
+		case 1:
+			pal.GeneratePalette( fileOpenPath,false );
+			break;
+		case 2:
+			pal.GeneratePalette( fileOpenPath,true );
+			break;
+		default:
+			assert( false );
+			break;
+		}
+		ResizeImage( Surface{ fileOpenPath }.GetSize() );
+		layers.OpenImage( fileOpenPath );
 		RegenImage();
+		fileOpenPath = "";
 	}
 }
 

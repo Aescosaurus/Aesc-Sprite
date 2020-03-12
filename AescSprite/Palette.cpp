@@ -26,14 +26,25 @@ Tool::ReturnType Palette::OnMouseDown( const Vei2& pos )
 	return( Tool::ReturnType::None );
 }
 
-void Palette::LoadPalette( const Surface& pal )
+void Palette::LoadPalette( const Surface& pal,bool append )
 {
-	colors.clear();
+	if( !append ) colors.clear();
+	else
+	{
+		for( auto& item : colors )
+		{
+			DeleteObject( item.solidBrush );
+			item.solidBrush = nullptr;
+		}
+	}
+	if( colors.size() > 0 ) colors.pop_back();
+	// std::remove( colors.begin(),colors.end(),Colors::Magenta );
 	assert( pal.GetHeight() == 1 );
 	for( int x = 0; x < pal.GetWidth(); ++x )
 	{
 		const auto pix = pal.GetPixel( x,0 );
-		if( pix != Colors::Magenta )
+		if( pix != Colors::Magenta && std::find( colors.begin(),
+			colors.end(),pix ) == colors.end() )
 		{
 			colors.emplace_back( ColorItem{ pix,
 				RectI{ 0,0,0,0 } } );
@@ -42,7 +53,14 @@ void Palette::LoadPalette( const Surface& pal )
 	colors.emplace_back( ColorItem{ Color{ 255,0,255 },
 		RectI{ 0,0,0,0 } } );
 
-	Surface::CacheBrushes( pal,*this );
+	auto tempPal = pal;
+	tempPal.Resize( Vei2{ int( colors.size() ),1 } );
+	for( int i = 0; i < int( colors.size() ); ++i )
+	{
+		tempPal.PutPixel( i,0,colors[i].col );
+	}
+
+	Surface::CacheBrushes( tempPal,*this );
 
 	OnWindowResize( area );
 }
@@ -67,30 +85,18 @@ void Palette::LoadDefaultPalette( const Surface& pal )
 	LoadPalette( pal );
 }
 
-void Palette::GeneratePalette( const std::string& src )
+void Palette::GeneratePalette( const std::string& src,bool append )
 {
 	selectedColor = 0;
 	const Surface img{ src };
-	std::vector<Color> uniqueColors;
-	for( int y = 0; y < img.GetHeight(); ++y )
-	{
-		for( int x = 0; x < img.GetWidth(); ++x )
-		{
-			const auto pix = img.GetPixel( x,y );
-			if( std::find( uniqueColors.begin(),uniqueColors.end(),
-				pix ) == uniqueColors.end() )
-			{
-				uniqueColors.emplace_back( pix );
-			}
-		}
-	}
+	std::vector<Color> uniqueColors = img.FindUniqueColors();
 
 	Surface tempPal{ int( uniqueColors.size() ),1 };
 	for( int i = 0; i < int( uniqueColors.size() ); ++i )
 	{
 		tempPal.PutPixel( i,0,uniqueColors[i] );
 	}
-	LoadPalette( tempPal );
+	LoadPalette( tempPal,append );
 }
 
 void Palette::OnWindowResize( const RectI& area )
@@ -178,7 +184,7 @@ const HBRUSH* Palette::GetBrush( Color c ) const
 			return( &item.solidBrush );
 		}
 	}
-	assert( false );
+	// assert( false );
 	return( nullptr );
 }
 
@@ -224,4 +230,9 @@ Palette::ColorItem::ColorItem( Color c,const RectI& area )
 Palette::ColorItem::~ColorItem()
 {
 	DeleteObject( solidBrush );
+}
+
+bool Palette::ColorItem::operator==( const Color& rhs ) const
+{
+	return( col == rhs );
 }
