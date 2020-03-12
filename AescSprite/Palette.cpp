@@ -69,6 +69,7 @@ void Palette::LoadDefaultPalette( const Surface& pal )
 
 void Palette::GeneratePalette( const std::string& src )
 {
+	selectedColor = 0;
 	const Surface img{ src };
 	std::vector<Color> uniqueColors;
 	for( int y = 0; y < img.GetHeight(); ++y )

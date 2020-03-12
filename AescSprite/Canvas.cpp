@@ -12,23 +12,7 @@ Canvas::Canvas( const RectI& area,const Surface& img,
 	offCol( pal.GetDefaultColor( 13 ) ),
 	bgSquares( image.GetWidth(),image.GetHeight() )
 {
-	for( int y = 0; y < bgSquares.GetHeight(); ++y )
-	{
-		for( int x = 0; x < bgSquares.GetWidth(); ++x )
-		{
-			Color col = onCol;
-			if( y % 2 == 0 )
-			{
-				if( x % 2 == 0 ) col = offCol;
-			}
-			else
-			{
-				if( x % 2 != 0 ) col = offCol;
-			}
-			bgSquares.PutPixel( x,y,col );
-		}
-	}
-
+	GenerateSquares();
 	OnWindowResize( area );
 	CacheImage( img );
 }
@@ -53,6 +37,8 @@ void Canvas::OnPaint( HDC hdc )
 void Canvas::CacheImage( const Surface& img )
 {
 	image = img;
+	bgSquares.Resize( img.GetSize() );
+	GenerateSquares();
 }
 
 Vei2& Canvas::GetImagePos()
@@ -82,4 +68,24 @@ Vei2 Canvas::CalcImagePos() const
 float Canvas::GetImageScaling()
 {
 	return( imageScale );
+}
+
+void Canvas::GenerateSquares()
+{
+	for( int y = 0; y < bgSquares.GetHeight(); ++y )
+	{
+		for( int x = 0; x < bgSquares.GetWidth(); ++x )
+		{
+			Color col = onCol;
+			if( y % 2 == 0 )
+			{
+				if( x % 2 == 0 ) col = offCol;
+			}
+			else
+			{
+				if( x % 2 != 0 ) col = offCol;
+			}
+			bgSquares.PutPixel( x,y,col );
+		}
+	}
 }

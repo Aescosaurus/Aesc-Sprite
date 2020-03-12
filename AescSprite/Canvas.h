@@ -20,6 +20,8 @@ public:
 	Vei2 CalcImagePos() const;
 	float GetImageScaling();
 private:
+	void GenerateSquares();
+private:
 	RectI area;
 	Surface image;
 	Vei2 imagePos = Vei2::Zero();

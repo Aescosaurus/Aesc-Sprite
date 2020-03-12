@@ -185,6 +185,7 @@ void Editor::OpenFile()
 	const auto path = FileOpener::OpenFile();
 	if( path.length() > 0 )
 	{
+		ResizeImage( Surface{ path }.GetSize() );
 		pal.GeneratePalette( path );
 		layers.OpenImage( path );
 		RegenImage();
