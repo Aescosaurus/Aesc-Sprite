@@ -47,6 +47,11 @@ bool Editor::HandleMouseDown( const Vei2& pos )
 		type = layers.OnMouseDown( pos );
 	}
 
+	if( pal.GetArea().ContainsPoint( pos ) )
+	{
+		type = pal.OnMouseDown( pos );
+	}
+
 	if( toolbarArea.ContainsPoint( pos ) )
 	{
 		for( int i = 0; i < int( tools.size() ); ++i )
@@ -215,6 +220,14 @@ void Editor::RegenImage()
 	Tool::CacheImage( layers.GetCurLayer() );
 }
 
+void Editor::ResizeImage( const Vei2& size )
+{
+	canvSize = size;
+	layers.ResizeCanvas( size );
+	Tool::UpdateSelectArea();
+	RegenImage();
+}
+
 bool Editor::GetReturnType( Tool::ReturnType type )
 {
 	switch( type )
@@ -231,4 +244,9 @@ bool Editor::GetReturnType( Tool::ReturnType type )
 		break;
 	}
 	return( false );
+}
+
+const Vei2& Editor::GetCanvSize() const
+{
+	return( canvSize );
 }

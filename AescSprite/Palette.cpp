@@ -12,6 +12,20 @@ Palette::Palette( const RectI& area )
 	OnWindowResize( area );
 }
 
+Tool::ReturnType Palette::OnMouseDown( const Vei2& pos )
+{
+	for( int i = 0; i < int( colors.size() ); ++i )
+	{
+		if( colors[i].area.ContainsPoint( pos ) )
+		{
+			selectedColor = i;
+			return( Tool::ReturnType::Repaint );
+		}
+	}
+	
+	return( Tool::ReturnType::None );
+}
+
 void Palette::LoadPalette( const Surface& pal )
 {
 	colors.clear();
@@ -141,6 +155,11 @@ void Palette::SelectColor( Color c )
 		}
 	}
 	assert( false );
+}
+
+const RectI& Palette::GetArea() const
+{
+	return( area );
 }
 
 int Palette::GetBottom() const

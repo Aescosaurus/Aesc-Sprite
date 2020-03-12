@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Tool.h"
+#include "Palette.h"
 
 Surface* Tool::activeLayer = nullptr;
 Canvas* Tool::canv = nullptr;
@@ -27,6 +28,11 @@ void Tool::SetPalRef( Palette& pal )
 void Tool::CacheImage( Surface& img )
 {
 	Tool::activeLayer = &img;
+}
+
+void Tool::UpdateSelectArea()
+{
+	selectArea = activeLayer->GetRect();
 }
 
 Tool::ReturnType Tool::OnMouseDown( const Vei2& pos )

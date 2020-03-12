@@ -2,13 +2,12 @@
 
 #include "Rect.h"
 #include "Surface.h"
-#include "Palette.h"
 
 class Canvas
 {
 public:
 	Canvas( const RectI& area,const Surface& img,
-		const Palette& pal );
+		const class Palette& pal );
 
 	void OnWindowResize( const RectI& area );
 	void OnPaint( HDC hdc );

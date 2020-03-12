@@ -5,6 +5,7 @@
 #include <string>
 #include "Color.h"
 #include "Surface.h"
+#include "Tool.h"
 
 class Palette
 {
@@ -22,6 +23,8 @@ private:
 public:
 	Palette( const RectI& area );
 
+	Tool::ReturnType OnMouseDown( const Vei2& pos );
+
 	void LoadPalette( const Surface& pal );
 	void LoadDefaultPalette( const Surface& pal );
 	void GeneratePalette( const std::string& src );
@@ -29,6 +32,7 @@ public:
 	void OnPaint( HDC hdc );
 	void SelectColor( Color c );
 
+	const RectI& GetArea() const;
 	int GetBottom() const;
 
 	const HBRUSH* GetBrush( Color c ) const;

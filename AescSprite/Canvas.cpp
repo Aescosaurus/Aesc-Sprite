@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Canvas.h"
+#include "Palette.h"
 
 Canvas::Canvas( const RectI& area,const Surface& img,
 	const Palette& pal )

@@ -29,7 +29,10 @@ public:
 	void SaveFile();
 	void SaveFileAs();
 	void RegenImage();
+	void ResizeImage( const Vei2& size );
+
 	bool GetReturnType( Tool::ReturnType type );
+	const Vei2& GetCanvSize() const;
 private:
 	RectI canvasArea;
 	RectI toolbarArea;

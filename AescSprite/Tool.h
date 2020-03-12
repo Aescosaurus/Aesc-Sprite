@@ -18,8 +18,9 @@ public:
 		unsigned char tempSelectKey = '\0' );
 
 	static void SetCanvasRef( Canvas& canv );
-	static void SetPalRef( Palette& pal );
+	static void SetPalRef( class Palette& pal );
 	static void CacheImage( Surface& img );
+	static void UpdateSelectArea();
 
 	virtual ReturnType OnMouseDown( const Vei2& pos );
 	virtual ReturnType OnMouseUp( const Vei2& pos );

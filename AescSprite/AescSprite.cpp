@@ -19,6 +19,7 @@ ATOM                MyRegisterClass( HINSTANCE hInstance );
 BOOL                InitInstance( HINSTANCE,int );
 LRESULT CALLBACK    WndProc( HWND,UINT,WPARAM,LPARAM );
 INT_PTR CALLBACK    About( HWND,UINT,WPARAM,LPARAM );
+INT_PTR CALLBACK    Resize( HWND,UINT,WPARAM,LPARAM );
 
 static constexpr Vei2 initWindowSize = { 960,540 };
 Editor editor{ initWindowSize };
@@ -158,6 +159,10 @@ LRESULT CALLBACK WndProc( HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam )
 		case IDM_ABOUT:
 			DialogBox( hInst,MAKEINTRESOURCE( IDD_ABOUTBOX ),hWnd,About );
 			break;
+		case ID_FILE_RESIZE:
+			DialogBox( hInst,MAKEINTRESOURCE( IDD_RESIZE ),hWnd,Resize );
+			Repaint( hWnd );
+			break;
 		case ID_FILE_OPEN:
 			editor.OpenFile();
 			Repaint( hWnd );
@@ -252,4 +257,37 @@ INT_PTR CALLBACK About( HWND hDlg,UINT message,WPARAM wParam,LPARAM lParam )
 		break;
 	}
 	return ( INT_PTR )FALSE;
+}
+
+// Message handler for resize box.
+INT_PTR CALLBACK Resize( HWND hDlg,UINT message,WPARAM wParam,LPARAM lParam )
+{
+	// auto test = GetDlgItemInt( hDlg,IDC_WIDTHINPUT,NULL,FALSE );
+	// auto y = 10;
+
+	// UNREFERENCED_PARAMETER( lParam );
+	switch( message )
+	{
+	case WM_INITDIALOG:
+		const auto canvSize = editor.GetCanvSize();
+		SetDlgItemInt( hDlg,IDC_WIDTHINPUT,canvSize.x,FALSE );
+		SetDlgItemInt( hDlg,IDC_HEIGHTINPUT,canvSize.y,FALSE );
+		return( INT_PTR( TRUE ) );
+	case WM_COMMAND:
+		if( LOWORD( wParam ) == IDC_ACCEPT )
+		{
+			const int width = GetDlgItemInt( hDlg,IDC_WIDTHINPUT,NULL,FALSE );
+			const int height = GetDlgItemInt( hDlg,IDC_HEIGHTINPUT,NULL,FALSE );
+			editor.ResizeImage( Vei2{ width,height } );
+			EndDialog( hDlg,LOWORD( wParam ) );
+			return( INT_PTR( TRUE ) );
+		}
+		if( LOWORD( wParam ) == IDCANCEL )
+		{
+			EndDialog( hDlg,LOWORD( wParam ) );
+			return( INT_PTR( TRUE ) );
+		}
+		break;
+	}
+	return( INT_PTR( FALSE ) );
 }
