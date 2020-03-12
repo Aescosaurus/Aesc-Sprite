@@ -56,7 +56,7 @@ public:
 			selectArea.GetHeight() != 0 )
 		{
 			HPEN pen = CreatePen( PS_SOLID,1,
-				pal->GetColor( 11 ) );
+				pal->GetDefaultColor( 11 ) );
 			SelectObject( hdc,pen );
 			const auto scale = canv->GetImageScaling();
 			auto rsel = Rect( selectArea );

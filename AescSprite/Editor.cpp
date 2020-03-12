@@ -20,7 +20,7 @@ Editor::Editor( const Vei2& windowSize )
 	pal( sidebarArea ),
 	layers( sidebarArea,canvSize,pal ),
 	canv( canvasArea,layers.GenerateFinalImage(),pal ),
-	toolbarBG( pal.GetBrush( pal.GetColor( 15 ) ) )
+	toolbarBG( pal.GetDefaultBrush( pal.GetDefaultColor( 15 ) ) )
 {
 	Tool::SetCanvasRef( canv );
 	Tool::SetPalRef( pal );
@@ -185,7 +185,7 @@ void Editor::OpenFile()
 	const auto path = FileOpener::OpenFile();
 	if( path.length() > 0 )
 	{
-		// pal.GeneratePalette( path );
+		pal.GeneratePalette( path );
 		layers.OpenImage( path );
 		RegenImage();
 	}
@@ -195,7 +195,7 @@ void Editor::SaveFile()
 {
 	if( savedFilePath.length() > 0 )
 	{
-		WriteToBitmap::Write( layers.GenerateFinalImage( true ),
+		WriteToBitmap::Write( layers.GenerateFinalImage(),
 			savedFilePath );
 	}
 	else
@@ -209,7 +209,7 @@ void Editor::SaveFileAs()
 	savedFilePath = FileOpener::SaveFile();
 	if( savedFilePath.length() > 0 )
 	{
-		WriteToBitmap::Write( layers.GenerateFinalImage( true ),
+		WriteToBitmap::Write( layers.GenerateFinalImage(),
 			savedFilePath );
 	}
 }

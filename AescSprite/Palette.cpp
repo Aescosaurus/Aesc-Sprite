@@ -116,7 +116,8 @@ void Palette::OnWindowResize( const RectI& area )
 
 void Palette::OnPaint( HDC hdc )
 {
-	if( defaultColors[0].solidBrush == nullptr )
+	if( defaultColors[0].solidBrush == nullptr ||
+		colors[0].solidBrush == nullptr )
 	{
 		for( auto& item : defaultColors )
 		{
@@ -198,6 +199,13 @@ Color Palette::GetColor( int i ) const
 	assert( i >= 0 );
 	assert( i < int( colors.size() ) );
 	return( colors[i].col );
+}
+
+Color Palette::GetDefaultColor( int i ) const
+{
+	assert( i >= 0 );
+	assert( i < int( defaultColors.size() ) );
+	return( defaultColors[i].col );
 }
 
 Color Palette::GetSelectedColor() const

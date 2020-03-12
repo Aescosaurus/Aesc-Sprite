@@ -26,4 +26,7 @@ private:
 	float imageScale = 15.0f;
 
 	const HBRUSH* bgColor;
+	const Color onCol;
+	const Color offCol;
+	Surface bgSquares;
 };

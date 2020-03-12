@@ -38,6 +38,7 @@ public:
 	const HBRUSH* GetBrush( Color c ) const;
 	const HBRUSH* GetDefaultBrush( Color c ) const;
 	Color GetColor( int i ) const;
+	Color GetDefaultColor( int i ) const;
 	Color GetSelectedColor() const;
 private:
 	RectI area;

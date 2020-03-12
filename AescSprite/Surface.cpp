@@ -198,6 +198,9 @@ void Surface::Draw( HDC hdc,const Vei2& pos,float scale ) const
 				rc.top = start.top + int( float( y ) * scale );
 				rc.right = rc.left + iscale + 1;
 				rc.bottom = rc.top + iscale + 1;
+				const auto r = pix.GetR();
+				const auto g = pix.GetG();
+				const auto b = pix.GetB();
 				FillRect( hdc,&rc,*colorRefs[pix] );
 			}
 		}

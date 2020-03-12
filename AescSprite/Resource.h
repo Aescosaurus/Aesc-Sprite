@@ -15,7 +15,6 @@
 #define IDD_RESIZE                      129
 #define IDC_WIDTHINPUT                  1000
 #define IDC_ACCEPT                      1001
-#define IDC_EDIT2                       1002
 #define IDC_HEIGHTINPUT                 1002
 #define ID_FILE_OPEN                    32771
 #define ID_FILE_SAVE                    32778
@@ -30,7 +29,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        130
-#define _APS_NEXT_COMMAND_VALUE         32787
+#define _APS_NEXT_COMMAND_VALUE         32789
 #define _APS_NEXT_CONTROL_VALUE         1003
 #define _APS_NEXT_SYMED_VALUE           110
 #endif

@@ -7,8 +7,28 @@ Canvas::Canvas( const RectI& area,const Surface& img,
 	:
 	area( area ),
 	image( img ),
-	bgColor( pal.GetBrush( pal.GetColor( 0 ) ) )
+	bgColor( pal.GetDefaultBrush( pal.GetDefaultColor( 0 ) ) ),
+	onCol( pal.GetDefaultColor( 12 ) ),
+	offCol( pal.GetDefaultColor( 13 ) ),
+	bgSquares( image.GetWidth(),image.GetHeight() )
 {
+	for( int y = 0; y < bgSquares.GetHeight(); ++y )
+	{
+		for( int x = 0; x < bgSquares.GetWidth(); ++x )
+		{
+			Color col = onCol;
+			if( y % 2 == 0 )
+			{
+				if( x % 2 == 0 ) col = offCol;
+			}
+			else
+			{
+				if( x % 2 != 0 ) col = offCol;
+			}
+			bgSquares.PutPixel( x,y,col );
+		}
+	}
+
 	OnWindowResize( area );
 	CacheImage( img );
 }
@@ -24,6 +44,7 @@ void Canvas::OnPaint( HDC hdc )
 	// if( bgColor == nullptr ) bgColor = HBRUSH( CreateSolidBrush( RGB( 40,40,40 ) ) );
 	FillRect( hdc,&rc,*bgColor );
 	// buffer.DrawRect( area,Color{ 40,40,40 } );
+	bgSquares.DrawDefault( hdc,area.GetTopLeft() + imagePos,imageScale );
 	image.Draw( hdc,area.GetTopLeft() + imagePos,imageScale );
 	// buffer.Overlay( image );
 	// TODO: Make sure to clip to window area.
