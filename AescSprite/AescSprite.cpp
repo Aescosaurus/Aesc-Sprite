@@ -153,6 +153,7 @@ LRESULT CALLBACK WndProc( HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam )
 	{
 	case WM_COMMAND:
 	{
+		while( ShowCursor( TRUE ) < 0 );
 		int wmId = LOWORD( wParam );
 		// Parse the menu selections:
 		switch( wmId )
@@ -276,10 +277,15 @@ INT_PTR CALLBACK About( HWND hDlg,UINT message,WPARAM wParam,LPARAM lParam )
 // Message handler for resize box.
 INT_PTR CALLBACK Resize( HWND hDlg,UINT message,WPARAM wParam,LPARAM lParam )
 {
-	// auto test = GetDlgItemInt( hDlg,IDC_WIDTHINPUT,NULL,FALSE );
-	// auto y = 10;
+	RECT wnd;
+	RECT rc;
+	GetClientRect( hDlg,&rc );
+	GetWindowRect( GetParent( hDlg ),&wnd );
+	SetWindowPos( hDlg,HWND_TOP,
+		( wnd.left + wnd.right ) / 2 - ( rc.left + rc.right ) / 2,
+		( wnd.top + wnd.bottom ) / 2 - ( rc.top + rc.bottom ) / 2,
+		0,0,SWP_NOSIZE );
 
-	// UNREFERENCED_PARAMETER( lParam );
 	switch( message )
 	{
 	case WM_INITDIALOG:
