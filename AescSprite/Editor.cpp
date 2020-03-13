@@ -23,6 +23,7 @@ Editor::Editor( const Vei2& windowSize )
 	canv( canvasArea,layers.GenerateFinalImage(),pal ),
 	toolbarBG( pal.GetDefaultBrush( pal.GetDefaultColor( 15 ) ) )
 {
+	// These should come before constructors.
 	Tool::SetCanvasRef( canv );
 	Tool::SetPalRef( pal );
 	Tool::CacheImage( layers.GetCurLayer() );

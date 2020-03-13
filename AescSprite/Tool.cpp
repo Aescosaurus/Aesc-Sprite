@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Tool.h"
 #include "Palette.h"
+#include <cassert>
 
 Surface* Tool::activeLayer = nullptr;
 Canvas* Tool::canv = nullptr;
@@ -17,6 +18,7 @@ Tool::Tool( const std::string& icon,unsigned char swapKey,
 {
 	if( mouseIcon.length() > 0 )
 	{
+		assert( pal != nullptr );
 		this->mouseIcon = Surface{ mouseIcon };
 	}
 }

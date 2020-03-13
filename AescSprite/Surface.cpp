@@ -198,9 +198,9 @@ void Surface::Draw( HDC hdc,const Vei2& pos,float scale ) const
 				rc.top = start.top + int( float( y ) * scale );
 				rc.right = rc.left + iscale + 1;
 				rc.bottom = rc.top + iscale + 1;
-				const auto r = pix.GetR();
-				const auto g = pix.GetG();
-				const auto b = pix.GetB();
+				// const auto r = pix.GetR();
+				// const auto g = pix.GetG();
+				// const auto b = pix.GetB();
 				FillRect( hdc,&rc,*colorRefs[pix] );
 			}
 		}
@@ -218,6 +218,7 @@ void Surface::DrawDefault( HDC hdc,const Vei2& pos,float scale ) const
 		for( int x = 0; x < width; ++x )
 		{
 			const auto pix = GetPixel( x,y );
+			assert( pix != 0 );
 			if( pix != Colors::Magenta )
 			{
 				// rc.left = start.left + int( float( x ) * scale );
@@ -305,6 +306,74 @@ std::vector<Color> Surface::FindUniqueColors() const
 	}
 	
 	return( uniqueColors );
+}
+
+Surface Surface::GenerateOutline( const Surface& src,Color outlineCol )
+{
+	Surface outline{ src.width,src.height };
+	outline.Fill( Colors::Magenta );
+
+	for( int y = 0; y < src.height; ++y )
+	{
+		for( int x = 0; x < src.width; ++x )
+		{
+			if( src.GetPixel( x,y ) != Colors::Magenta )
+			{
+				if( x == 0 || x == src.width - 1 ||
+					y == 0 || y == src.height - 1 )
+				{
+					outline.PutPixel( x,y,outlineCol );
+				}
+				else
+				{
+					std::vector<Color> pixs;
+					pixs.emplace_back( src.GetPixel( x,y - 1 ) );
+					pixs.emplace_back( src.GetPixel( x,y + 1 ) );
+					pixs.emplace_back( src.GetPixel( x - 1,y ) );
+					pixs.emplace_back( src.GetPixel( x + 1,y ) );
+
+					for( auto pix : pixs )
+					{
+						if( pix == Colors::Magenta )
+						{
+							outline.PutPixel( x,y,outlineCol );
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+	return( outline );
+}
+
+Surface Surface::GetExpanded( float scale ) const
+{
+	Surface scaled{ int( float( width ) * scale ),
+		int( float( height ) * scale ) };
+
+	// static auto& colorRefs = GetColorPal();
+	const int iscale = int( round( scale ) );
+	const RectI start = RectI{ Vei2{ 0,0 },iscale,iscale };
+	RectI rc = start;
+	for( int y = 0; y < height; ++y )
+	{
+		for( int x = 0; x < width; ++x )
+		{
+			const auto pix = GetPixel( x,y );
+			if( pix != Colors::Magenta )
+			{
+				rc.left = start.left + int( float( x ) * scale );
+				rc.top = start.top + int( float( y ) * scale );
+				rc.right = rc.left + iscale;
+				rc.bottom = rc.top + iscale;
+				// FillRect( hdc,&rc,*colorRefs[pix] );
+				scaled.DrawRect( rc,pix );
+			}
+		}
+	}
+
+	return( scaled );
 }
 
 std::unordered_map<unsigned int,const HBRUSH*>& Surface::GetColorPal()
