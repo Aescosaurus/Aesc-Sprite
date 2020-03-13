@@ -30,7 +30,7 @@ public:
 	virtual ReturnType OnKeyDown( unsigned char key ) { return( ReturnType::None ); }
 	virtual ReturnType OnKeyUp( unsigned char key ) { return( ReturnType::None ); }
 
-	void OnWindowResize( const RectI& area );
+	virtual void OnWindowResize( const RectI& area );
 
 	virtual void OnPaint( HDC hdc );
 	virtual void PaintIcon( HDC hdc );

@@ -49,6 +49,7 @@ private:
 	std::vector<std::unique_ptr<Tool>> tools;
 	int curTool = 0;
 	int oldTool = -1;
+	Vei2 mousePos = Vei2::Zero();
 
 	const HBRUSH* toolbarBG;
 

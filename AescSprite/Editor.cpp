@@ -96,6 +96,7 @@ bool Editor::HandleMouseUp( const Vei2& pos )
 bool Editor::HandleMouseMove( const Vei2& pos )
 {
 	auto type = Tool::ReturnType::None;
+	mousePos = pos;
 
 	if( sidebarArea.ContainsPoint( pos ) )
 	{
@@ -174,16 +175,23 @@ void Editor::HandleWindowResize( const Vei2& windowSize )
 
 void Editor::HandlePaint( HDC hdc )
 {
+	pal.SetupColors( hdc );
+	canv.OnPaint( hdc );
 	pal.OnPaint( hdc );
 	layers.OnPaint( hdc );
-	canv.OnPaint( hdc );
 	auto toolbarRect = RECT( toolbarArea );
 	FillRect( hdc,&toolbarRect,*toolbarBG );
 	for( auto& tool : tools )
 	{
 		tool->OnPaint( hdc );
 	}
-	tools[curTool]->PaintIcon( hdc );
+
+	if( canvasArea.ContainsPoint( mousePos ) )
+	{
+		tools[curTool]->PaintIcon( hdc );
+		while( ShowCursor( FALSE ) > 0 );
+	}
+	else while( ShowCursor( TRUE ) < 0 );
 }
 
 int Editor::TryOpenFile()

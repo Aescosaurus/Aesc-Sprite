@@ -56,19 +56,12 @@ public:
 		if( selectArea.GetWidth() != 0 &&
 			selectArea.GetHeight() != 0 )
 		{
-			HPEN pen = CreatePen( PS_SOLID,1,
-				pal->GetDefaultColor( 11 ) );
-			SelectObject( hdc,pen );
 			const auto scale = canv->GetImageScaling();
 			auto rsel = Rect( selectArea );
 			rsel.Scale( scale );
 			rsel.MoveBy( canv->CalcImagePos() );
 			const auto sel = RectI( rsel );
-			MoveToEx( hdc,sel.left,sel.top,nullptr );
-			LineTo( hdc,sel.right,sel.top );
-			LineTo( hdc,sel.right,sel.bottom );
-			LineTo( hdc,sel.left,sel.bottom );
-			LineTo( hdc,sel.left,sel.top );
+			sel.Draw( hdc,pal->GetDefaultColor( 11 ) );
 		}
 	}
 private:

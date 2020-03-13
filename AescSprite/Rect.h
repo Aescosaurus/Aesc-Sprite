@@ -2,6 +2,8 @@
 
 #include "Vec2.h"
 #include <windef.h>
+#include <algorithm>
+#include "Color.h"
 
 template<typename T>
 class Rect_
@@ -32,6 +34,18 @@ public:
 	constexpr operator RECT() const
 	{
 		return( RECT{ LONG( left ),LONG( top ),LONG( right ),LONG( bottom ) } );
+	}
+
+	void Draw( HDC hdc,Color c ) const
+	{
+		HPEN pen = CreatePen( PS_SOLID,1,c );
+		SelectObject( hdc,pen );
+		MoveToEx( hdc,left,top,nullptr );
+		LineTo( hdc,right,top );
+		LineTo( hdc,right,bottom );
+		LineTo( hdc,left,bottom );
+		LineTo( hdc,left,top );
+		DeleteObject( pen );
 	}
 
 	constexpr bool IsOverlappingWith( const Rect_& other ) const
@@ -95,6 +109,13 @@ public:
 		auto temp = *this;
 		temp.MoveTo( pos );
 		return( temp );
+	}
+	constexpr Rect_ Resize( const Vec2_<T>& size )
+	{
+		right = left + size.x;
+		bottom = top + size.y;
+
+		return( *this );
 	}
 
 	static constexpr Rect_ FromCenter( const Vec2_<T>& center,

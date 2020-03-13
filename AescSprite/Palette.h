@@ -32,7 +32,9 @@ public:
 	void GeneratePalette( const std::string& src,bool append = false );
 	void OnWindowResize( const RectI& area );
 	void OnPaint( HDC hdc );
+
 	void SelectColor( Color c );
+	void SetupColors( HDC hdc );
 
 	const RectI& GetArea() const;
 	int GetBottom() const;

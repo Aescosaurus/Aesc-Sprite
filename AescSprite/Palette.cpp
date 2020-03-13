@@ -123,30 +123,21 @@ void Palette::OnWindowResize( const RectI& area )
 
 void Palette::OnPaint( HDC hdc )
 {
-	if( defaultColors[0].solidBrush == nullptr ||
-		colors[0].solidBrush == nullptr )
-	{
-		for( auto& item : defaultColors )
-		{
-			const auto rc = RECT( item.area );
-			if( item.solidBrush == nullptr )
-			{
-				item.solidBrush = CreateSolidBrush( item.col.dword );
-			}
-			FillRect( hdc,&rc,item.solidBrush );
-		}
-	}
+	// if( defaultColors[0].solidBrush == nullptr ||
+	// 	colors[0].solidBrush == nullptr )
+	// {
+	// 	for( auto& item : defaultColors )
+	// 	{
+	// 		const auto rc = RECT( item.area );
+	// 		FillRect( hdc,&rc,item.solidBrush );
+	// 	}
+	// }
 	// else
 	{
 		for( int i = 0; i < int( colors.size() ) - 1; ++i )
 		{
 			auto& item = colors[i];
 			const auto rc = RECT( item.area );
-			if( item.solidBrush == nullptr )
-			{
-				item.solidBrush = CreateSolidBrush( item.col.dword );
-			}
-			// buffer.DrawRect( item.area,item.col );
 			FillRect( hdc,&rc,item.solidBrush );
 		}
 	}
@@ -163,6 +154,30 @@ void Palette::SelectColor( Color c )
 		}
 	}
 	assert( false );
+}
+
+void Palette::SetupColors( HDC hdc )
+{
+	if( defaultColors[0].solidBrush == nullptr )
+	{
+		for( auto& item : defaultColors )
+		{
+			if( item.solidBrush == nullptr )
+			{
+				item.solidBrush = CreateSolidBrush( item.col.dword );
+				SelectObject( hdc,item.solidBrush );
+			}
+		}
+	}
+
+	for( auto& item : colors )
+	{
+		if( item.solidBrush == nullptr )
+		{
+			item.solidBrush = CreateSolidBrush( item.col.dword );
+			SelectObject( hdc,item.solidBrush );
+		}
+	}
 }
 
 const RectI& Palette::GetArea() const
