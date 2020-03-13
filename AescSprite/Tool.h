@@ -22,6 +22,7 @@ public:
 	static void SetPalRef( class Palette& pal );
 	static void CacheImage( Surface& img );
 	static void UpdateSelectArea();
+	static void UpdateCursorCol( const Vei2& mousePos,HDC hdc );
 
 	virtual ReturnType OnMouseDown( const Vei2& pos );
 	virtual ReturnType OnMouseUp( const Vei2& pos );
@@ -50,6 +51,7 @@ protected:
 	static Canvas* canv;
 	static Palette* pal;
 	static RectI selectArea;
+	static Color cursorCol;
 	bool mouseDown = false;
 	Vei2 mousePos = Vei2::Zero();
 };

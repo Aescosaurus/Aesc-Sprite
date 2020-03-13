@@ -7,6 +7,7 @@ Surface* Tool::activeLayer = nullptr;
 Canvas* Tool::canv = nullptr;
 Palette* Tool::pal = nullptr;
 RectI Tool::selectArea;
+Color Tool::cursorCol = Colors::Magenta;
 
 Tool::Tool( const std::string& icon,unsigned char swapKey,
 	const std::string& mouseIcon,unsigned char tempSelectKey )
@@ -43,6 +44,14 @@ void Tool::UpdateSelectArea()
 	selectArea = activeLayer->GetRect();
 }
 
+void Tool::UpdateCursorCol( const Vei2& mousePos,HDC hdc )
+{
+	Color pix{ 0,0,0 };
+	pix.dword = GetPixel( hdc,mousePos.x,mousePos.y );
+
+	cursorCol = pal->GetColor( pix.GetBrightestColor() > 127 ? 0 : 12 );
+}
+
 Tool::ReturnType Tool::OnMouseDown( const Vei2& pos )
 {
 	mouseDown = true;
@@ -76,6 +85,7 @@ void Tool::OnPaint( HDC hdc )
 
 void Tool::PaintIcon( HDC hdc )
 {
+	mouseIcon.FillNonMagenta( cursorCol );
 	mouseIcon.DrawDefault( hdc,mousePos,drawScale );
 }
 

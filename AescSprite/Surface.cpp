@@ -145,6 +145,17 @@ void Surface::Fill( Color fill )
 	}
 }
 
+void Surface::FillNonMagenta( Color fill )
+{
+	for( auto& pix : pixels )
+	{
+		if( pix != Colors::Magenta )
+		{
+			pix = fill;
+		}
+	}
+}
+
 void Surface::DrawRect( int x,int y,int width,int height,Color c )
 {
 	for( int yc = y; yc < y + height; ++yc )

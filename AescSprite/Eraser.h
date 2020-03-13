@@ -71,5 +71,4 @@ private:
 private:
 	Vei2 oldPos = Vei2::Zero();
 	RectI cursorRect = RectI{ 0,0,0,0 };
-	Color cursorCol = pal->GetColor( 12 );
 };

@@ -25,6 +25,7 @@ public:
 	// Overlay the other surface on top of this one.
 	void Overlay( const Surface& other,const Vei2& pos = Vei2::Zero() );
 	void Fill( Color fill );
+	void FillNonMagenta( Color fill );
 	void DrawRect( int x,int y,int width,int height,Color c );
 	void DrawRect( const RectI& area,Color c );
 	// Move selection of surface in direction of movement.

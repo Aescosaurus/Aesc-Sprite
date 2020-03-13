@@ -36,6 +36,15 @@ public:
 	{
 		return( dword != rhs.dword );
 	}
+
+	constexpr int GetBrightestColor() const
+	{
+		int max = -1;
+		if( GetR() > max ) max = GetR();
+		if( GetG() > max ) max = GetG();
+		if( GetB() > max ) max = GetB();
+		return( max );
+	}
 public:
 	uint dword;
 };

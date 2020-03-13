@@ -120,12 +120,14 @@ bool Editor::HandleKeyDown( unsigned char key )
 		{
 			curTool = i;
 			oldTool = -1;
+			tools[curTool]->OnMouseMove( mousePos );
 			return( true );
 		}
 		else if( key == tools[i]->GetTempSelectKey() )
 		{
 			oldTool = curTool;
 			curTool = i;
+			tools[curTool]->OnMouseMove( mousePos );
 			return( true );
 		}
 	}
@@ -176,11 +178,15 @@ void Editor::HandleWindowResize( const Vei2& windowSize )
 void Editor::HandlePaint( HDC hdc )
 {
 	pal.SetupColors( hdc );
+
 	canv.OnPaint( hdc );
 	pal.OnPaint( hdc );
 	layers.OnPaint( hdc );
 	auto toolbarRect = RECT( toolbarArea );
 	FillRect( hdc,&toolbarRect,*toolbarBG );
+
+	Tool::UpdateCursorCol( mousePos,hdc );
+
 	for( auto& tool : tools )
 	{
 		tool->OnPaint( hdc );
