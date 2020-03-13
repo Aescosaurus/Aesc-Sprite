@@ -9,7 +9,7 @@ class Brush
 public:
 	Brush()
 		:
-		Tool( "Icons/Brush.bmp",'B' )
+		Tool( "Icons/Brush.bmp",'B',"" )
 	{}
 
 	ReturnType OnMouseDown( const Vei2& pos ) override
@@ -25,6 +25,7 @@ public:
 	}
 	ReturnType OnMouseMove( const Vei2& pos ) override
 	{
+		Tool::OnMouseMove( pos );
 		ReturnType type = ReturnType::None;
 		if( mouseDown && oldPos != pos )
 		{

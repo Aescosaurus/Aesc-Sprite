@@ -9,7 +9,7 @@ class Pointer
 public:
 	Pointer()
 		:
-		Tool( "Icons/Pointer.bmp",'V' )
+		Tool( "Icons/Pointer.bmp",'V',"Icons/Mouse/Pointer.bmp" )
 	{}
 
 	ReturnType OnMouseDown( const Vei2& pos ) override
@@ -26,6 +26,7 @@ public:
 	}
 	ReturnType OnMouseMove( const Vei2& pos ) override
 	{
+		Tool::OnMouseMove( pos );
 		ReturnType type = ReturnType::None;
 		if( mouseDown )
 		{

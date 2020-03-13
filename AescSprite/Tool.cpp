@@ -8,12 +8,18 @@ Palette* Tool::pal = nullptr;
 RectI Tool::selectArea;
 
 Tool::Tool( const std::string& icon,unsigned char swapKey,
-	unsigned char tempSelectKey )
+	const std::string& mouseIcon,unsigned char tempSelectKey )
 	:
 	icon( icon ),
 	swapKey( swapKey ),
+	mouseIcon( 0,0 ),
 	tempSelectKey( tempSelectKey )
-{}
+{
+	if( mouseIcon.length() > 0 )
+	{
+		this->mouseIcon = Surface{ mouseIcon };
+	}
+}
 
 void Tool::SetCanvasRef( Canvas& canv )
 {
@@ -47,6 +53,12 @@ Tool::ReturnType Tool::OnMouseUp( const Vei2& pos )
 	return( ReturnType::None );
 }
 
+Tool::ReturnType Tool::OnMouseMove( const Vei2& pos )
+{
+	mousePos = pos;
+	return( ReturnType::None );
+}
+
 void Tool::OnWindowResize( const RectI& area )
 {
 	drawScale = float( area.GetHeight() ) / icon.GetHeight();
@@ -58,6 +70,11 @@ void Tool::OnPaint( HDC hdc )
 {
 	icon.DrawDefault( hdc,area.GetTopLeft(),drawScale );
 	// buffer.Overlay( icon,area.GetTopLeft() );
+}
+
+void Tool::PaintIcon( HDC hdc )
+{
+	mouseIcon.DrawDefault( hdc,mousePos,drawScale );
 }
 
 RectI Tool::GetNextRect() const

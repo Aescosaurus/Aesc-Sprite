@@ -10,7 +10,7 @@ class Sampler
 public:
 	Sampler()
 		:
-		Tool( "Icons/Sampler.bmp",'I',VK_MENU )
+		Tool( "Icons/Sampler.bmp",'I',"Icons/Mouse/Sampler.bmp",VK_MENU )
 	{}
 
 	ReturnType OnMouseDown( const Vei2& pos ) override

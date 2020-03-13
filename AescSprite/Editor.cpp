@@ -43,6 +43,8 @@ bool Editor::HandleMouseDown( const Vei2& pos )
 {
 	auto type = Tool::ReturnType::None;
 
+	while( ShowCursor( FALSE ) > 0 );
+
 	if( sidebarArea.ContainsPoint( pos ) )
 	{
 		type = layers.OnMouseDown( pos );
@@ -99,11 +101,12 @@ bool Editor::HandleMouseMove( const Vei2& pos )
 		type = layers.OnMouseMove( pos );
 	}
 
-	if( canvasArea.ContainsPoint( pos ) )
+	// if( canvasArea.ContainsPoint( pos ) )
 	{
 		type = tools[curTool]->OnMouseMove( pos );
 	}
 
+	if( type == Tool::ReturnType::None ) type = Tool::ReturnType::Repaint;
 	return( GetReturnType( type ) );
 }
 
@@ -179,6 +182,7 @@ void Editor::HandlePaint( HDC hdc )
 	{
 		tool->OnPaint( hdc );
 	}
+	tools[curTool]->PaintIcon( hdc );
 }
 
 int Editor::TryOpenFile()

@@ -9,7 +9,7 @@ class Selector
 public:
 	Selector()
 		:
-		Tool( "Icons/Selector.bmp",'M' )
+		Tool( "Icons/Selector.bmp",'M',"Icons/Mouse/Selector.bmp" )
 	{
 		selectArea = activeLayer->GetRect();
 	}
@@ -34,6 +34,7 @@ public:
 	}
 	ReturnType OnMouseMove( const Vei2& pos ) override
 	{
+		Tool::OnMouseMove( pos );
 		ReturnType type = ReturnType::None;
 		if( mouseDown )
 		{

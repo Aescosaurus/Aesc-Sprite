@@ -9,7 +9,7 @@ class Filler
 public:
 	Filler()
 		:
-		Tool( "Icons/Filler.bmp",'G' )
+		Tool( "Icons/Filler.bmp",'G',"Icons/Mouse/Filler.bmp" )
 	{}
 
 	ReturnType OnMouseDown( const Vei2& pos ) override

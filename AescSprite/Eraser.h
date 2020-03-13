@@ -9,7 +9,7 @@ class Eraser
 public:
 	Eraser()
 		:
-		Tool( "Icons/Eraser.bmp",'E' )
+		Tool( "Icons/Eraser.bmp",'E',"" )
 	{}
 
 	ReturnType OnMouseDown( const Vei2& pos ) override
@@ -25,6 +25,7 @@ public:
 	}
 	ReturnType OnMouseMove( const Vei2& pos ) override
 	{
+		Tool::OnMouseMove( pos );
 		ReturnType type = ReturnType::None;
 		if( mouseDown && oldPos != pos )
 		{

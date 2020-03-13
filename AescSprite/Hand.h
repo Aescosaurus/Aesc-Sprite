@@ -9,7 +9,7 @@ class Hand
 public:
 	Hand()
 		:
-		Tool( "Icons/Hand.bmp",'H',' ' )
+		Tool( "Icons/Hand.bmp",'H',"Icons/Mouse/Hand.bmp",' ' )
 	{}
 
 	ReturnType OnMouseDown( const Vei2& pos ) override
@@ -25,6 +25,7 @@ public:
 	}
 	ReturnType OnMouseMove( const Vei2& pos ) override
 	{
+		Tool::OnMouseMove( pos );
 		auto type = ReturnType::None;
 		if( mouseDown )
 		{

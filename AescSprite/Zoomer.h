@@ -9,7 +9,7 @@ class Zoomer
 public:
 	Zoomer()
 		:
-		Tool( "Icons/Zoomer.bmp",'Z' )
+		Tool( "Icons/Zoomer.bmp",'Z',"Icons/Mouse/Zoomer.bmp" )
 	{}
 
 	ReturnType OnMouseDown( const Vei2& pos ) override
