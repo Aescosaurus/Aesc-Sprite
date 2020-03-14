@@ -31,6 +31,14 @@ void Repaint( HWND hWnd )
 	if( GetClientRect( hWnd,&clientRect ) )
 	{
 		InvalidateRect( hWnd,&clientRect,FALSE );
+	}
+}
+
+void ResizeWnd( HWND hWnd )
+{
+	RECT clientRect;
+	if( GetClientRect( hWnd,&clientRect ) )
+	{
 		editor.HandleWindowResize( Vei2{
 			clientRect.right - clientRect.left,
 			clientRect.bottom - clientRect.top } );
@@ -163,6 +171,7 @@ LRESULT CALLBACK WndProc( HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam )
 			break;
 		case ID_FILE_RESIZE:
 			DialogBox( hInst,MAKEINTRESOURCE( IDD_RESIZE ),hWnd,Resize );
+			// ResizeWnd( hWnd );
 			Repaint( hWnd );
 			break;
 		case ID_FILE_OPEN:
@@ -243,6 +252,7 @@ LRESULT CALLBACK WndProc( HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam )
 		if( editor.HandleKeyUp( static_cast<unsigned char>( wParam ) ) ) Repaint( hWnd );
 		break;
 	case WM_SIZE:
+		ResizeWnd( hWnd );
 		Repaint( hWnd );
 		break;
 	case WM_DESTROY:

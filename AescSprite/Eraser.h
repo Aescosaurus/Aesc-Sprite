@@ -46,6 +46,13 @@ public:
 		cursorRect.Resize( Vei2::One() * int( canv->GetImageScaling() ) );
 		cursorRect.MoveBy( cursorRect.GetSize() / 2 );
 	}
+	void OnPaint( HDC hdc ) override
+	{
+		Tool::OnPaint( hdc );
+
+		cursorRect.Resize( Vei2::One() * int( canv->GetImageScaling() ) );
+		cursorRect.MoveBy( cursorRect.GetSize() / 2 );
+	}
 	void PaintIcon( HDC hdc ) override
 	{
 		cursorRect.Draw( hdc,cursorCol );
