@@ -218,7 +218,7 @@ LRESULT CALLBACK WndProc( HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam )
 		HBITMAP hBmp = CreateCompatibleBitmap( hdc,
 			clientRect.right - clientRect.left,
 			clientRect.bottom - clientRect.top );
-		SelectObject( buffer,hBmp );
+		DeleteObject( SelectObject( buffer,hBmp ) );
 
 		editor.HandlePaint( buffer );
 
@@ -227,6 +227,7 @@ LRESULT CALLBACK WndProc( HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam )
 			clientRect.bottom - clientRect.top,
 			buffer,0,0,SRCCOPY );
 		ReleaseDC( hWnd,buffer );
+		DeleteObject( buffer );
 		EndPaint( hWnd,&ps );
 	}
 	break;
