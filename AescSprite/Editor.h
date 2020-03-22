@@ -31,11 +31,14 @@ public:
 	void OpenFile( int action );
 	void SaveFile();
 	void SaveFileAs();
+	int TryLoadPal();
+	void LoadPalette( int action );
 	void RegenImage();
 	void ResizeImage( const Vei2& size );
 
 	bool GetReturnType( Tool::ReturnType type );
 	const Vei2& GetCanvSize() const;
+	bool CanReplacePal( const Surface& surf ) const;
 private:
 	RectI canvasArea;
 	RectI toolbarArea;

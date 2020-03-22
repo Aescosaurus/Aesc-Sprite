@@ -171,22 +171,31 @@ LRESULT CALLBACK WndProc( HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam )
 			break;
 		case ID_FILE_RESIZE:
 			DialogBox( hInst,MAKEINTRESOURCE( IDD_RESIZE ),hWnd,Resize );
-			// ResizeWnd( hWnd );
 			Repaint( hWnd );
 			break;
+		case ID_FILE_LOADPALETTE:
+		{
+			const int options = editor.TryLoadPal();
+			if( options >= 0 )
+			{
+				LPARAM dialogInfo = options;
+				const INT_PTR result = DialogBoxParam( hInst,
+					MAKEINTRESOURCE( IDD_ASKPAL ),hWnd,AskPal,dialogInfo );
+				if( result >= 0 ) editor.LoadPalette( int( result ) );
+				Repaint( hWnd );
+				ResizeWnd( hWnd );
+			}
+		}
+		break;
 		case ID_FILE_OPEN:
 		{
 			const int options = editor.TryOpenFile();
 			if( options >= 0 )
 			{
-				// const INT_PTR result = DialogBox( hInst,MAKEINTRESOURCE( IDD_ASKPAL ),hWnd,AskPal );
 				LPARAM dialogInfo = options;
 				const INT_PTR result = DialogBoxParam( hInst,
 					MAKEINTRESOURCE( IDD_ASKPAL ),hWnd,AskPal,dialogInfo );
-				if( result >= 0 )
-				{
-					editor.OpenFile( result );
-				}
+				if( result >= 0 ) editor.OpenFile( int( result ) );
 				Repaint( hWnd );
 			}
 		}

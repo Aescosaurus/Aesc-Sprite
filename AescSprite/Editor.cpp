@@ -142,6 +142,7 @@ bool Editor::HandleKeyUp( unsigned char key )
 	{
 		curTool = oldTool;
 		oldTool = -1;
+		tools[curTool]->OnMouseMove( mousePos );
 		return( true );
 	}
 	auto& tool = tools[curTool];
@@ -219,19 +220,7 @@ int Editor::TryOpenFile()
 
 		if( forcePalUpdate )
 		{
-			bool canReplace = true;
-			for( int i = 0; i < layers.GetLayerCount(); ++i )
-			{
-				const auto layer = layers.GetLayer( i );
-				for( auto col : layer.FindUniqueColors() )
-				{
-					if( std::find( uniqueCols.begin(),
-						uniqueCols.end(),col ) == uniqueCols.end() )
-					{
-						canReplace = false;
-					}
-				}
-			}
+			bool canReplace = CanReplacePal( surf );
 			if( canReplace ) return( 1 );
 			else return( 2 );
 		}
@@ -291,6 +280,63 @@ void Editor::SaveFileAs()
 	}
 }
 
+int Editor::TryLoadPal()
+{
+	const auto path = FileOpener::OpenFile();
+	fileOpenPath = path;
+	if( path.length() > 0 )
+	{
+		const auto surf = Surface{ path };
+		const auto uniqueCols = surf.FindUniqueColors();
+		bool forcePalUpdate = false;
+		for( auto& col : uniqueCols )
+		{
+			if( pal.GetBrush( col ) == nullptr )
+			{
+				forcePalUpdate = true;
+			}
+		}
+
+		if( forcePalUpdate )
+		{
+			bool canReplace = CanReplacePal( surf );
+			if( canReplace ) return( 1 );
+			else return( 2 );
+		}
+		else
+		{
+			return( 1 );
+		}
+	}
+	return( -1 );
+}
+
+void Editor::LoadPalette( int action )
+{
+	if( fileOpenPath.length() > 0 )
+	{
+		const Surface newPal{ fileOpenPath };
+		switch( action )
+		{
+		case 0:
+			break;
+		case 1:
+			pal.LoadPalette( newPal,false );
+			break;
+		case 2:
+			pal.LoadPalette( newPal,true );
+			break;
+		default:
+			assert( false );
+			break;
+		}
+		// ResizeImage( Surface{ fileOpenPath }.GetSize() );
+		// layers.OpenImage( fileOpenPath );
+		RegenImage();
+		fileOpenPath = "";
+	}
+}
+
 void Editor::RegenImage()
 {
 	canv.CacheImage( layers.GenerateFinalImage() );
@@ -326,4 +372,23 @@ bool Editor::GetReturnType( Tool::ReturnType type )
 const Vei2& Editor::GetCanvSize() const
 {
 	return( canvSize );
+}
+
+bool Editor::CanReplacePal( const Surface& surf ) const
+{
+	const auto uniqueCols = surf.FindUniqueColors();
+	bool canReplace = true;
+	for( int i = 0; i < layers.GetLayerCount(); ++i )
+	{
+		const auto layer = layers.GetLayer( i );
+		for( auto col : layer.FindUniqueColors() )
+		{
+			if( col != Colors::Magenta && std::find( uniqueCols.begin(),
+				uniqueCols.end(),col ) == uniqueCols.end() )
+			{
+				canReplace = false;
+			}
+		}
+	}
+	return( canReplace );
 }
