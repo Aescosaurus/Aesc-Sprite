@@ -35,6 +35,8 @@ public:
 	void LoadPalette( int action );
 	void RegenImage();
 	void ResizeImage( const Vei2& size );
+	void ToggleMouseHiding( bool hide );
+	void ShowMouse( BOOL show );
 
 	bool GetReturnType( Tool::ReturnType type );
 	const Vei2& GetCanvSize() const;
@@ -53,6 +55,7 @@ private:
 	int curTool = 0;
 	int oldTool = -1;
 	Vei2 mousePos = Vei2::Zero();
+	bool canHideMouse = true;
 
 	const HBRUSH* toolbarBG;
 

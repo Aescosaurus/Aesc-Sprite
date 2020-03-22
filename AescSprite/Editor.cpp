@@ -44,7 +44,7 @@ bool Editor::HandleMouseDown( const Vei2& pos )
 {
 	auto type = Tool::ReturnType::None;
 
-	while( ShowCursor( FALSE ) > 0 );
+	ShowMouse( FALSE );
 
 	if( sidebarArea.ContainsPoint( pos ) )
 	{
@@ -196,14 +196,16 @@ void Editor::HandlePaint( HDC hdc )
 	if( canvasArea.ContainsPoint( mousePos ) )
 	{
 		tools[curTool]->PaintIcon( hdc );
-		while( ShowCursor( FALSE ) > 0 );
+		ShowMouse( FALSE );
 	}
-	else while( ShowCursor( TRUE ) < 0 );
+	else ShowMouse( TRUE );
 }
 
 int Editor::TryOpenFile()
 {
+	ToggleMouseHiding( false );
 	const auto path = FileOpener::OpenFile();
+	ToggleMouseHiding( true );
 	fileOpenPath = path;
 	if( path.length() > 0 )
 	{
@@ -282,7 +284,9 @@ void Editor::SaveFileAs()
 
 int Editor::TryLoadPal()
 {
+	ToggleMouseHiding( false );
 	const auto path = FileOpener::OpenFile();
+	ToggleMouseHiding( true );
 	fileOpenPath = path;
 	if( path.length() > 0 )
 	{
@@ -349,6 +353,17 @@ void Editor::ResizeImage( const Vei2& size )
 	layers.ResizeCanvas( size );
 	Tool::UpdateSelectArea();
 	RegenImage();
+}
+
+void Editor::ToggleMouseHiding( bool hide )
+{
+	canHideMouse = hide;
+}
+
+void Editor::ShowMouse( BOOL show )
+{
+	if( show ) while( ShowCursor( show ) < 0 );
+	else if( canHideMouse ) while( ShowCursor( show ) > 0 );
 }
 
 bool Editor::GetReturnType( Tool::ReturnType type )

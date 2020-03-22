@@ -197,6 +197,7 @@ LRESULT CALLBACK WndProc( HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam )
 					MAKEINTRESOURCE( IDD_ASKPAL ),hWnd,AskPal,dialogInfo );
 				if( result >= 0 ) editor.OpenFile( int( result ) );
 				Repaint( hWnd );
+				ResizeWnd( hWnd );
 			}
 		}
 		break;
