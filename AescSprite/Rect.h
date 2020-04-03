@@ -36,16 +36,16 @@ public:
 		return( RECT{ LONG( left ),LONG( top ),LONG( right ),LONG( bottom ) } );
 	}
 
-	void Draw( HDC hdc,Color c ) const
+	void Draw( HDC hdc,HPEN pen ) const
 	{
-		HPEN pen = CreatePen( PS_SOLID,1,c );
+		// HPEN pen = CreatePen( PS_SOLID,1,c );
 		SelectObject( hdc,pen );
 		MoveToEx( hdc,left,top,nullptr );
 		LineTo( hdc,right,top );
 		LineTo( hdc,right,bottom );
 		LineTo( hdc,left,bottom );
 		LineTo( hdc,left,top );
-		DeleteObject( pen );
+		// DeleteObject( pen );
 	}
 
 	constexpr bool IsOverlappingWith( const Rect_& other ) const

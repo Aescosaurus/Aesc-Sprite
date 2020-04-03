@@ -7,20 +7,29 @@ Surface* Tool::activeLayer = nullptr;
 Canvas* Tool::canv = nullptr;
 Palette* Tool::pal = nullptr;
 RectI Tool::selectArea;
-Color Tool::cursorCol = Colors::Magenta;
+// Color Tool::cursorCol = Colors::Magenta;
+int Tool::curMouseIcon = 0;
 
 Tool::Tool( const std::string& icon,unsigned char swapKey,
 	const std::string& mouseIcon,unsigned char tempSelectKey )
 	:
 	icon( icon ),
 	swapKey( swapKey ),
-	mouseIcon( 0,0 ),
 	tempSelectKey( tempSelectKey )
 {
+	cursorCols[0] = pal->GetDefaultColor( 0 );
+	cursorCols[1] = pal->GetDefaultColor( 12 );
 	if( mouseIcon.length() > 0 )
 	{
 		assert( pal != nullptr );
-		this->mouseIcon = Surface{ mouseIcon };
+		for( int i = 0; i < 2; ++i )
+		{
+			mouseIcons[i] = Surface{ mouseIcon };
+			mouseIcons[i].FillNonMagenta( cursorCols[i] );
+		}
+		// this->mouseIcon = Surface{ mouseIcon };
+		// this->mouseIcon2 = mouseIcon;
+		// this->mouseIcon2.FillNonMagenta( cursorCol );
 	}
 }
 
@@ -49,7 +58,8 @@ void Tool::UpdateCursorCol( const Vei2& mousePos,HDC hdc )
 	Color pix{ 0,0,0 };
 	pix.dword = GetPixel( hdc,mousePos.x,mousePos.y );
 
-	cursorCol = pal->GetDefaultColor( pix.GetBrightestColor() > 127 ? 0 : 12 );
+	// cursorCol = pal->GetDefaultColor( pix.GetBrightestColor() > 127 ? 0 : 12 );
+	curMouseIcon = pix.GetBrightestColor() > 127 ? 0 : 1;
 }
 
 Tool::ReturnType Tool::OnMouseDown( const Vei2& pos )
@@ -85,8 +95,7 @@ void Tool::OnPaint( HDC hdc )
 
 void Tool::PaintIcon( HDC hdc )
 {
-	mouseIcon.FillNonMagenta( cursorCol );
-	mouseIcon.DrawDefault( hdc,mousePos,drawScale );
+	mouseIcons[curMouseIcon].DrawDefault( hdc,mousePos,drawScale );
 }
 
 RectI Tool::GetNextRect() const

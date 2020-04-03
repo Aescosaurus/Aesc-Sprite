@@ -10,7 +10,20 @@ public:
 	Eraser()
 		:
 		Tool( "Icons/Eraser.bmp",'E',"" )
-	{}
+	{
+		for( int i = 0; i < 2; ++i )
+		{
+			pens[i] = CreatePen( PS_SOLID,1,cursorCols[i] );
+		}
+	}
+
+	~Eraser()
+	{
+		for( int i = 0; i < 2; ++i )
+		{
+			DeleteObject( pens[i] );
+		}
+	}
 
 	ReturnType OnMouseDown( const Vei2& pos ) override
 	{
@@ -55,15 +68,15 @@ public:
 	}
 	void PaintIcon( HDC hdc ) override
 	{
-		cursorRect.Draw( hdc,cursorCol );
+		cursorRect.Draw( hdc,pens[curMouseIcon] );
 
 		const int plusSize = cursorRect.GetWidth() / 4;
 		const auto center = cursorRect.GetCenter();
-		HPEN pen = CreatePen( PS_SOLID,1,cursorCol );
-		SelectObject( hdc,pen );
+		// HPEN pen = CreatePen( PS_SOLID,1,cursorCols[curMouseIcon] );
+		SelectObject( hdc,pens[curMouseIcon] );
 		MoveToEx( hdc,cursorRect.left + plusSize,center.y,nullptr );
 		LineTo( hdc,cursorRect.right - plusSize,center.y );
-		DeleteObject( pen );
+		// DeleteObject( pen );
 	}
 private:
 	void PutPixel( const Vei2& pos )
@@ -78,4 +91,5 @@ private:
 private:
 	Vei2 oldPos = Vei2::Zero();
 	RectI cursorRect = RectI{ 0,0,0,0 };
+	HPEN pens[2];
 };

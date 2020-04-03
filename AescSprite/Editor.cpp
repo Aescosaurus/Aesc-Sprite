@@ -118,6 +118,7 @@ bool Editor::HandleKeyDown( unsigned char key )
 	{
 		if( key == tools[i]->GetSwapKey() )
 		{
+			tools[curTool]->OnMouseUp( mousePos );
 			curTool = i;
 			oldTool = -1;
 			tools[curTool]->OnMouseMove( mousePos );
@@ -125,6 +126,7 @@ bool Editor::HandleKeyDown( unsigned char key )
 		}
 		else if( key == tools[i]->GetTempSelectKey() )
 		{
+			tools[curTool]->OnMouseUp( mousePos );
 			oldTool = curTool;
 			curTool = i;
 			tools[curTool]->OnMouseMove( mousePos );
@@ -140,6 +142,7 @@ bool Editor::HandleKeyUp( unsigned char key )
 {
 	if( oldTool != -1 && key == tools[curTool]->GetTempSelectKey() )
 	{
+		tools[curTool]->OnMouseUp( mousePos );
 		curTool = oldTool;
 		oldTool = -1;
 		tools[curTool]->OnMouseMove( mousePos );

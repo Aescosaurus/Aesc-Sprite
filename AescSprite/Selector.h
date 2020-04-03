@@ -12,6 +12,12 @@ public:
 		Tool( "Icons/Selector.bmp",'M',"Icons/Mouse/Selector.bmp" )
 	{
 		selectArea = activeLayer->GetRect();
+		pen = CreatePen( PS_SOLID,1,pal->GetDefaultColor( 11 ) );
+	}
+
+	~Selector()
+	{
+		DeleteObject( pen );
 	}
 
 	ReturnType OnMouseDown( const Vei2& pos ) override
@@ -61,9 +67,10 @@ public:
 			rsel.Scale( scale );
 			rsel.MoveBy( canv->CalcImagePos() );
 			const auto sel = RectI( rsel );
-			sel.Draw( hdc,pal->GetDefaultColor( 11 ) );
+			sel.Draw( hdc,pen );
 		}
 	}
 private:
 	// RectI selection = RectI{ 0,0,0,0 };
+	HPEN pen;
 };

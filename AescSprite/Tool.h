@@ -43,7 +43,12 @@ public:
 protected:
 	float drawScale = 0.0f;
 	Surface icon;
-	Surface mouseIcon;
+	Surface mouseIcons[2]
+	{
+		Surface{ 0,0 },Surface{ 0,0 }
+	};
+	Color cursorCols[2];
+	static int curMouseIcon;
 	unsigned char swapKey;
 	unsigned char tempSelectKey;
 	RectI area = RectI{ 0,0,0,0 };
@@ -51,7 +56,7 @@ protected:
 	static Canvas* canv;
 	static Palette* pal;
 	static RectI selectArea;
-	static Color cursorCol;
+	// static Color cursorCol;
 	bool mouseDown = false;
 	Vei2 mousePos = Vei2::Zero();
 };
