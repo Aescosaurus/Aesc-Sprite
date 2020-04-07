@@ -12,7 +12,7 @@ public:
 		Tool( "Icons/Selector.bmp",'M',"Icons/Mouse/Selector.bmp" )
 	{
 		selectArea = activeLayer->GetRect();
-		pen = CreatePen( PS_SOLID,1,pal->GetDefaultColor( 11 ) );
+		pen = CreatePen( PS_SOLID,3,pal->GetDefaultColor( 9 ) );
 	}
 
 	~Selector()

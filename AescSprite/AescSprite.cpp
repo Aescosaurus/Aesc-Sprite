@@ -161,7 +161,8 @@ LRESULT CALLBACK WndProc( HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam )
 	{
 	case WM_COMMAND:
 	{
-		while( ShowCursor( TRUE ) < 0 );
+		editor.ShowMouse( TRUE );
+		editor.ToggleMouseHiding( false );
 		int wmId = LOWORD( wParam );
 		// Parse the menu selections:
 		switch( wmId )
@@ -213,6 +214,7 @@ LRESULT CALLBACK WndProc( HWND hWnd,UINT message,WPARAM wParam,LPARAM lParam )
 		default:
 			return DefWindowProc( hWnd,message,wParam,lParam );
 		}
+		editor.ToggleMouseHiding( true );
 	}
 	break;
 	case WM_PAINT:
